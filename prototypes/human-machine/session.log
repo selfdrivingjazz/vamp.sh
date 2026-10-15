@@ -1,0 +1,64 @@
+$ export VAMP_HOME=/tmp/vamp-lander VAMP_ACTOR=agent:lander-human-machine
+
+$ vamp init --name lander
+{"context":{"library_id":"405a94fd-ce2b-4d2e-ab48-085bb725b595","original_root":null,"state_dir":"/tmp/vamp-lander/libraries/405a94fd-ce2b-4d2e-ab48-085bb725b595"},"name":"lander"}
+[exit 0]
+
+$ vamp media add moon-bat.jpg
+{"created_at":"2026-10-15T07:54:30.224246935+00:00","id":"bc8b501d-ea5a-4c0d-90a8-5c1d5c296698","metadata":{"description":null,"extra":{},"source_id":null,"source_url":null,"tags":[]},"name":"moon-bat.jpg","original":{"blake3":"504de3d9c82ce940bf99747384e890c05751591f1aa27571bb6202d36d22dfc0","byte_size":30552,"hash_state":"hashed","mime":"image/jpeg","modified_ns":1792050578151894665,"path":"/tmp/refs/moon-bat.jpg","storage":"local"},"revision":1,"updated_at":"2026-10-15T07:54:30.224246935+00:00"}
+[exit 0]
+
+$ ID=bc8b501d-ea5a-4c0d-90a8-5c1d5c296698
+
+$ cat patch.json
+{"tags":["moon","bat","night"],"description":"the icon, at night"}
+[exit 0]
+
+$ vamp media update $ID --patch patch.json --expected-revision 1
+{"created_at":"2026-10-15T07:54:30.224246935+00:00","id":"bc8b501d-ea5a-4c0d-90a8-5c1d5c296698","metadata":{"description":"the icon, at night","extra":{},"source_id":null,"source_url":null,"tags":["bat","moon","night"]},"name":"moon-bat.jpg","original":{"blake3":"504de3d9c82ce940bf99747384e890c05751591f1aa27571bb6202d36d22dfc0","byte_size":30552,"hash_state":"hashed","mime":"image/jpeg","modified_ns":1792050578151894665,"path":"/tmp/refs/moon-bat.jpg","storage":"local"},"revision":2,"updated_at":"2026-10-15T07:54:30.268075690+00:00"}
+[exit 0]
+
+$ vamp media update $ID --patch stale.json --expected-revision 1
+{"error":{"code":"operation_failed","message":"revision conflict: expected 1, current 2"},"protocol_version":"0.1"}
+[exit 1]
+
+$ vamp events --after 1
+[{"actor":"agent:lander-human-machine","asset_id":"bc8b501d-ea5a-4c0d-90a8-5c1d5c296698","created_at":"2026-10-15T07:54:30.268499690+00:00","id":"b9555dc2-1bc7-4233-a71c-82dd04b40bee","kind":"media_updated","library_id":"405a94fd-ce2b-4d2e-ab48-085bb725b595","payload":{"change":"metadata"},"revision":2,"sequence":2}]
+[exit 0]
+
+$ vamp schema | jq -r 'keys[]'
+asset
+asset_view
+collection
+context
+contract
+duplicate_candidate
+error
+event
+job
+metadata_patch
+processor
+protocol_version
+smart_folder
+store_request
+store_response
+tag_group
+tool_request
+tool_response
+[exit 0]
+
+$ vamp explore ensure night-shapes --title "Night shapes" --brief "bat silhouettes, moon discs, 1-bit"
+{"brief":"bat silhouettes, moon discs, 1-bit","folder_id":"4fcc26b5-d985-40d5-b68e-1d4f0b86c142","folders":[{"id":"4fcc26b5-d985-40d5-b68e-1d4f0b86c142","items":0,"name":"Night shapes","path":""}],"items":[],"library_id":"405a94fd-ce2b-4d2e-ab48-085bb725b595","link":"vampire://open?library=405a94fd-ce2b-4d2e-ab48-085bb725b595&folder=4fcc26b5-d985-40d5-b68e-1d4f0b86c142","name":"Night shapes","slug":"night-shapes","summary":""}
+[exit 0]
+
+$ vamp explore add night-shapes --name "Moon, 1-bit" --note "threshold at 90: the bat survives as pure ink" --tags moon,dither --url https://vamp.sh/ --file moon-1bit.png
+{"asset":{"description":"threshold at 90: the bat survives as pure ink","folder":"","id":"858e7d14-83f4-42e1-a119-1ae20b458f81","image_url":null,"kind":"file","name":"Moon, 1-bit","rating":0,"revision":2,"source_url":"https://vamp.sh/","tags":["dither","moon"],"trashed":false},"folder":"Night shapes","folder_id":"4fcc26b5-d985-40d5-b68e-1d4f0b86c142","link":"vampire://open?library=405a94fd-ce2b-4d2e-ab48-085bb725b595&folder=4fcc26b5-d985-40d5-b68e-1d4f0b86c142&asset=858e7d14-83f4-42e1-a119-1ae20b458f81","status":"created","warnings":[]}
+[exit 0]
+
+--- owner (actor local, scratch stand-in for the app) rates 858e7d14-83f4-42e1-a119-1ae20b458f81 5 + more-like-this ---
+[exit 0]
+
+$ vamp explore feedback night-shapes
+{"actor":"agent:lander-human-machine","advanced":true,"counts":{"like":1,"more_like_this":1},"cursor":11,"folder_events":[],"folder_id":"4fcc26b5-d985-40d5-b68e-1d4f0b86c142","items":[{"description":"threshold at 90: the bat survives as pure ink","events":[{"actor":"local","at":"2026-10-15T07:54:30.481908191+00:00","kind":"media_updated","payload":{"change":"metadata"},"sequence":11}],"folder":"","id":"858e7d14-83f4-42e1-a119-1ae20b458f81","image_url":null,"kind":"file","name":"Moon, 1-bit","owner_note":"","rating":5,"removed":false,"revision":3,"signals":["like","more_like_this"],"source_url":"https://vamp.sh/","tags":["dither","moon","more-like-this"],"trashed":false}],"since":0,"slug":"night-shapes"}
+[exit 0]
+

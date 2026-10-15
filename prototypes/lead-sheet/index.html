@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VAMP — an open protocol for media catalogs</title>
+<meta name="description" content="VAMP is an open (MIT) media-catalog protocol: assets, revisions, events and observations, repeated steadily enough that any app, processor or agent can play over them.">
+<meta name="theme-color" content="#f4efe6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23290922'/%3E%3Ccircle cx='16' cy='16' r='9' fill='%23ef514f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#changes">Skip to the changes</a>
+
+<header class="masthead page">
+  <a class="wordmark" href="#top" aria-label="vamp.sh, top of page">vamp.sh</a>
+  <nav class="nav" aria-label="Sections">
+    <a href="#changes"><span class="nav-mark">A</span>The changes</a>
+    <a href="#form"><span class="nav-mark">B</span>The form</a>
+    <a href="#solos"><span class="nav-mark">C</span>Solos</a>
+    <a href="#coda"><span class="nav-mark nav-mark--coda" aria-hidden="true">&#xE048;</span>Coda</a>
+  </nav>
+  <span class="folio hand" aria-hidden="true">0.1.</span>
+</header>
+
+<main id="top">
+
+<!-- ───────────── Title block ───────────── -->
+<section class="title-block page" aria-labelledby="title">
+  <div class="tempo">
+    <p class="hand tempo-mark">Medium swing</p>
+    <p class="meta">wire 0.1 &middot; experimental</p>
+  </div>
+
+  <p class="composer hand">Open protocol &mdash; MIT</p>
+
+  <h1 id="title" class="title hand">
+    <span class="title-ink"><span class="kern-v">V</span>amp</span>
+    <svg class="title-rule" viewBox="0 0 600 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 15 C 120 9, 260 8, 420 10 S 560 14, 596 7"/></svg>
+  </h1>
+
+  <p class="hero-line">An open protocol for media catalogs: a short figure&thinsp;&mdash;&thinsp;asset, revision, event, observation&thinsp;&mdash;&thinsp;kept so steady that any app, processor or agent can come in, play, and&nbsp;leave.</p>
+
+  <p class="hero-links">
+    <a class="link" href="#score">Read the contract</a>
+    <a class="link" href="#">Source, MIT &middot; soon</a>
+  </p>
+
+  <!-- The vamp: four bars, repeated -->
+  <figure class="system system--vamp" id="vamp" aria-labelledby="vamp-caption">
+    <div class="system-head">
+      <p class="hand cue" aria-hidden="true">(Vamp till ready)</p>
+      <div class="player">
+        <button class="play" type="button" aria-pressed="false" aria-describedby="play-note">
+          <span class="play-icon" aria-hidden="true"></span><span class="play-label">Play the vamp</span>
+        </button>
+        <span id="play-note" class="play-note">sound &middot; Dm9 to G13 &middot; &#9833; = 132</span>
+      </div>
+    </div>
+
+    <div class="bars" data-bars="4">
+      <div class="lead" data-lead aria-hidden="true"></div>
+      <div class="bar" data-repeat-start>
+        <p class="chord hand">Asset<sup>b3</sup></p>
+        <svg class="staff" data-staff aria-hidden="true"></svg>
+        <pre class="lyric"><code>"id": "4be1…9c02"
+"blake3": "e7a0…41d3"
+"storage": "local"</code></pre>
+      </div>
+      <div class="bar">
+        <p class="chord hand">Rev<sup>+1</sup></p>
+        <svg class="staff" data-staff aria-hidden="true"></svg>
+        <pre class="lyric"><code>"expected_revision": 1
+"metadata": {"rating": 5}
+→ "revision": 2</code></pre>
+      </div>
+      <div class="lead lead--wrap" data-lead aria-hidden="true"></div>
+      <div class="bar">
+        <p class="chord hand">Event<sup>#11</sup></p>
+        <svg class="staff" data-staff aria-hidden="true"></svg>
+        <pre class="lyric"><code>"sequence": 11
+"kind": "media_updated"
+"revision": 2</code></pre>
+      </div>
+      <div class="bar" data-repeat-end>
+        <p class="chord hand">Obs<sup>add</sup></p>
+        <svg class="staff" data-staff aria-hidden="true"></svg>
+        <pre class="lyric"><code>"kind": "tags"
+"value": {"tags":
+  ["moon", "bat"]}</code></pre>
+      </div>
+      <span class="playhead" aria-hidden="true"></span>
+    </div>
+    <figcaption id="vamp-caption" class="system-caption">
+      <span class="sr-only">The vamp, four bars repeated: asset, revision, event, observation.</span>
+      <span class="definition"><i>vamp</i>, <span class="sc">n.</span>&ensp;A short figure the band repeats under everything, <i>till ready</i>, so soloists can come in and go&nbsp;out.</span>
+      <span class="repeat-note">Repeat as needed: observation events never retrigger processors, so the figure can go round forever without running&nbsp;away.</span>
+    </figcaption>
+  </figure>
+</section>
+
+<!-- ───────────── [A] The changes ───────────── -->
+<section id="changes" class="rehearsal page" aria-labelledby="changes-h">
+  <div class="mark" aria-hidden="true"><svg viewBox="0 0 50 50"><path d="M3 4.5 L46.5 2.5 L47.5 46 L2.5 47.5 Z"/></svg><span class="hand">A</span></div>
+  <h2 id="changes-h" class="section-h hand">The changes</h2>
+  <p class="section-lede">Four bars, in order, round and round. Everything else in VAMP is a way of playing them.</p>
+
+  <ol class="changes">
+    <li>
+      <span class="bar-no">1</span>
+      <h3>Asset</h3>
+      <p>A reference, never a copy. The original stays where it lives; the catalog knows it by the BLAKE3 digest of its exact bytes, and by a UUID that outlasts every rename and move.</p>
+      <p class="spec">id &middot; original.blake3 &middot; original.path</p>
+    </li>
+    <li>
+      <span class="bar-no">2</span>
+      <h3>Revision</h3>
+      <p>Each metadata change moves the revision forward. A write may name the revision it expects; if that is stale, the write is refused&nbsp;&mdash; no change, no&nbsp;event.</p>
+      <p class="spec">--expected-revision</p>
+    </li>
+    <li>
+      <span class="bar-no">3</span>
+      <h3>Event</h3>
+      <p>Every change is an event with a sequence number, committed in the same transaction as the change. Keep your place, ask for what came after, and you have heard everything, in&nbsp;order.</p>
+      <p class="spec">media_added &middot; media_updated &middot; media_trashed &middot; representation_ready &middot; observation_added &middot; collection_updated &hellip;</p>
+    </li>
+    <li>
+      <span class="bar-no">4</span>
+      <h3>Observation</h3>
+      <p>What a processor hears and writes down: captions, tags, embeddings. Observations sit beside the original. They never touch its bytes and never advance its revision.</p>
+      <p class="spec">kind &middot; model &middot; value</p>
+    </li>
+  </ol>
+</section>
+
+<!-- ───────────── [B] The form ───────────── -->
+<section id="form" class="rehearsal page" aria-labelledby="form-h">
+  <div class="mark" aria-hidden="true"><svg viewBox="0 0 50 50"><path d="M2.5 3 L47 3.5 L46 47.5 L3.5 46 Z"/></svg><span class="hand">B</span></div>
+  <h2 id="form-h" class="section-h hand">The form</h2>
+  <p class="section-lede">One authority keeps time. A single local catalog serializes every write; replicas follow its event stream and keep their place by sequence number. Read the stream as a chart and the bar numbers are the sequence.</p>
+
+  <figure class="system system--form" aria-labelledby="form-caption">
+    <div class="bars" data-bars="8">
+      <div class="lead" data-lead aria-hidden="true"></div>
+      <div class="bar"><span class="mno">7</span><p class="chord hand chord--small">media_added</p><svg class="staff" data-staff aria-hidden="true"></svg><pre class="lyric"><code>"revision": 1
+"actor": "local"</code></pre></div>
+      <div class="bar"><span class="mno">8</span><p class="chord hand chord--small">representation_ready</p><svg class="staff" data-staff aria-hidden="true"></svg><pre class="lyric"><code>role: preview</code></pre></div>
+      <div class="lead lead--wrap" data-lead aria-hidden="true"></div>
+      <div class="bar"><span class="mno">9</span><p class="chord hand chord--small">observation_added</p><svg class="staff" data-staff aria-hidden="true"></svg><pre class="lyric"><code>"kind": "tags"
+revision unchanged</code></pre></div>
+      <div class="bar"><span class="mno">10</span><p class="chord hand chord--small">collection_updated</p><svg class="staff" data-staff aria-hidden="true"></svg><pre class="lyric"><code>"operation": "add"</code></pre></div>
+      <div class="lead" data-lead aria-hidden="true"></div>
+      <div class="bar bar--marked"><span class="mno">11</span><p class="chord hand chord--small">media_updated<svg class="ring" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true"><path d="M30 14 C 70 2, 170 4, 190 22 C 204 38, 150 56, 92 55 C 34 54, 2 44, 8 30 C 13 18, 44 9, 76 7"/></svg></p><svg class="staff" data-staff aria-hidden="true"></svg><pre class="lyric"><code>"revision": 2
+"actor": "agent:curator"</code></pre></div>
+      <div class="bar"><span class="mno">12</span><p class="chord hand chord--small">media_viewed</p><svg class="staff" data-staff aria-hidden="true"></svg><pre class="lyric"><code>"last_viewed_at"
+revision unchanged</code></pre></div>
+      <div class="lead lead--wrap" data-lead aria-hidden="true"></div>
+      <div class="bar"><span class="mno">13</span><p class="chord hand chord--small">media_trashed</p><svg class="staff" data-staff aria-hidden="true"></svg><pre class="lyric"><code>"original_deleted": false
+"revision": 3</code></pre></div>
+      <div class="bar" data-open-end><span class="mno">14</span><p class="chord hand chord--small">media_restored</p><svg class="staff" data-staff aria-hidden="true"></svg><pre class="lyric"><code>"revision": 4</code></pre></div>
+    </div>
+    <figcaption id="form-caption" class="system-caption">
+      <span class="sr-only">Eight events, sequence 7 to 14, written as eight bars.</span>
+      Eight bars of one asset&rsquo;s life. The stream never closes: it is simply where the band is now.
+    </figcaption>
+  </figure>
+
+  <div class="form-notes">
+    <div class="note">
+      <h3 class="note-h">Take it from bar&nbsp;11</h3>
+      <p>A consumer keeps the last sequence it heard and asks for everything after it. The cursor is exclusive, so nothing plays twice and nothing is skipped; events are retained, so a late arrival can start from the&nbsp;top.</p>
+      <pre class="code"><code><span class="prompt">$</span> vamp events --after 10   <span class="c"># 11, 12, 13, 14 …</span></code></pre>
+    </div>
+    <div class="note note--pencil">
+      <h3 class="note-h hand">A late entrance</h3>
+      <p>Bar 11 moved the asset to revision 2. A write that still expects revision 1 arrives after the downbeat: it is refused, and nothing changes&nbsp;&mdash; no metadata, no event, no confusion for anyone following the&nbsp;stream.</p>
+      <pre class="code"><code>{"expected_revision": 1, "metadata": {"tags": ["moon"]}}
+<span class="c">→ revision conflict: expected 1, current 2</span></code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────── [C] Solos ───────────── -->
+<section id="solos" class="rehearsal page" aria-labelledby="solos-h">
+  <div class="mark" aria-hidden="true"><svg viewBox="0 0 50 50"><path d="M3.5 2.5 L46 4 L47 46.5 L2.5 46.5 Z"/></svg><span class="hand">C</span></div>
+  <h2 id="solos-h" class="section-h hand">Open for solos</h2>
+  <p class="section-lede">Whoever plays over the vamp reads the same four bars. Personnel:</p>
+
+  <dl class="personnel">
+    <div>
+      <dt>processors</dt>
+      <dd>Any local executable you register. Argv only, never a shell. One request in on stdin, one response out on stdout. They add observations&nbsp;&mdash; captions, tags, embeddings&nbsp;&mdash; and never edit the catalog or its&nbsp;originals.</dd>
+    </div>
+    <div>
+      <dt>agents</dt>
+      <dd>Work the library from the command line; <code>vamp guide</code> prints their manual. Research &ldquo;explorations&rdquo; file findings with provenance, then read your ratings back and go&nbsp;deeper.</dd>
+    </div>
+    <div>
+      <dt>apps</dt>
+      <dd>Vampire, on Mac and iOS, is the first. The contract and its schemas are MIT, so the next one can be yours; using the protocol requires no purchase of&nbsp;anything.</dd>
+    </div>
+  </dl>
+
+  <div class="trade">
+    <p class="trade-h"><span class="hand">Trading fours</span> <span class="meta">a processor, call and response</span></p>
+    <div class="trade-grid">
+      <div class="trade-col">
+        <p class="label">register &middot; ProcessorSpec</p>
+        <pre class="code code--block"><code>{
+  "name": "tagger",
+  "events": ["representation_ready"],
+  "command": ["/usr/local/bin/tagger", "--json"],
+  "input": "preview",
+  "output": "observation"
+}</code></pre>
+      </div>
+      <div class="trade-col">
+        <p class="label">call &middot; ToolRequest on stdin</p>
+        <pre class="code code--block"><code>{
+  "protocol_version": "0.1",
+  "operation": "process",
+  "asset": { "id": "4be1…9c02", "revision": 2, … },
+  "input_path": "…/preview/e7a0…41d3.webp"
+}</code></pre>
+      </div>
+      <div class="trade-col">
+        <p class="label">response &middot; ToolResponse on stdout</p>
+        <pre class="code code--block"><code>{
+  "observation": {
+    "kind": "tags",
+    "value": { "tags": ["moon", "bat", "night"] }
+  }
+}</code></pre>
+      </div>
+    </div>
+    <p class="trade-foot">Stale answers are dropped: the input&rsquo;s digest must still match the asset before the result is applied, so a processor can never annotate bytes that have since&nbsp;changed.</p>
+  </div>
+</section>
+
+<!-- ───────────── Score & parts (the open layer) ───────────── -->
+<section id="score" class="score page" aria-labelledby="score-h">
+  <div class="score-head">
+    <h2 id="score-h" class="section-h hand">Score and parts</h2>
+    <p class="section-lede">The score is <code>contract.json</code>: identity, storage, mutations, events, processors&nbsp;&mdash; the semantics every player reads. The parts are generated JSON&nbsp;Schemas, one per&nbsp;root.</p>
+    <pre class="code code--cta"><code><span class="prompt">$</span> cargo run -p vamp-protocol --example schema</code></pre>
+    <p class="links">
+      <a class="link" href="#">Read the contract</a>
+      <a class="link" href="#">Source &middot; soon</a>
+    </p>
+    <p class="meta">MIT &middot; wire 0.1 &middot; experimental &middot; Rust crate <span class="nobr">vamp-protocol 0.1.0</span>, not yet on crates.io</p>
+  </div>
+  <ol class="parts" aria-label="Schema bundle: 16 schemas, the contract and the protocol version">
+    <li>asset</li><li>asset_view</li><li>collection</li><li>context</li><li>contract</li><li>duplicate_candidate</li>
+    <li>error</li><li>event</li><li>job</li><li>metadata_patch</li><li>processor</li><li>protocol_version</li>
+    <li>smart_folder</li><li>store_request</li><li>store_response</li><li>tag_group</li><li>tool_request</li><li>tool_response</li>
+  </ol>
+  <p class="to-coda hand" aria-hidden="true">To Coda <span class="music">&#xE048;</span></p>
+</section>
+
+<!-- ───────────── Coda ───────────── -->
+<section id="coda" class="coda" aria-labelledby="coda-h">
+  <div class="page coda-inner">
+    <div class="coda-sign" aria-hidden="true"><span class="music">&#xE048;</span><span class="hand">Coda</span></div>
+    <div class="coda-body">
+      <h2 id="coda-h" class="coda-h hand"><span>Vampire</span> <span class="coda-dash">&mdash;</span> <span>&ldquo;Mac and iOS&rdquo;</span></h2>
+      <p class="coda-line">
+        <img class="coda-icon" src="assets/vampire-icon-512.png" width="72" height="72" alt="">
+        <span>The library app we play over VAMP: your references in place, replicas over Tailscale, a browser clipper. A one-time&nbsp;purchase.</span>
+      </p>
+      <a class="link link--night" href="#">Vampire</a>
+    </div>
+    <div class="moon" aria-hidden="true"></div>
+    <div class="fine" aria-hidden="true">
+      <span class="hand">Fine</span>
+      <svg class="final-bar" viewBox="0 0 400 46" preserveAspectRatio="none"><g class="final-lines"><line x1="0" x2="400" y1="5" y2="5"/><line x1="0" x2="400" y1="14" y2="14"/><line x1="0" x2="400" y1="23" y2="23"/><line x1="0" x2="400" y1="32" y2="32"/><line x1="0" x2="400" y1="41" y2="41"/></g><rect class="thin" x="384" y="5" width="2" height="36"/><rect class="thick" x="391" y="5" width="7" height="36"/></svg>
+    </div>
+  </div>
+  <footer class="colophon page">
+    <p>VAMP is an open protocol, MIT-licensed. Vampire is proprietary and sold separately; protocol use and independent implementations do not require it.</p>
+    <p>Set in Petaluma Script (Steinberg) with LeadSheet Music, Text and Mono: renamed OFL subsets of Petaluma, Edwin (MuseScore) and IBM Plex Mono.</p>
+  </footer>
+</section>
+
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

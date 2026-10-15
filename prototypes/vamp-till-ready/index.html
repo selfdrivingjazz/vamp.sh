@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VAMP — an open protocol for media catalogs</title>
+<meta name="description" content="VAMP is an open, MIT-licensed protocol for media catalogs: reference-only assets, BLAKE3 identity, revisions and ordered events that any app, agent or tool can play over.">
+<meta name="theme-color" content="#0d0614">
+<link rel="icon" href="assets/favicon-64.png" type="image/png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="fonts/Archivo.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<svg width="0" height="0" class="defs" aria-hidden="true" focusable="false">
+  <symbol id="bat" viewBox="-122 -44 244 88">
+    <path d="M-121.2 -39.9 -121.2 -39.1 -117.2 -31.5 -113.6 -21.4 -111.2 -10.2 -110.4 1 -110 1.4 -106.4 -1 -98.8 -4.2 -90 -4.6 -84 -3.4 -79.6 -1.8 -74.7 5.8 -68.3 12.2 -63.5 15.4 -58.7 17.8 -53.1 19.8 -51.5 19.8 -47.5 16.6 -43.5 14.6 -39.5 13.4 -31.1 13 -25.5 14.2 -23.4 15.8 -19 23.4 -13 31.1 -3.8 40.3 -0.6 42.7 0 43 0.6 42.7 3.8 40.3 13 31.1 19 23.4 23.4 15.8 25.5 14.2 31.1 13 39.5 13.4 43.5 14.6 47.5 16.6 51.5 19.8 53.1 19.8 58.7 17.8 63.5 15.4 68.3 12.2 74.7 5.8 79.6 -1.8 84 -3.4 90 -4.6 98.8 -4.2 106.4 -1 110 1.4 110.4 1 111.2 -10.2 113.6 -21.4 117.2 -31.5 121.2 -39.1 121.2 -39.9 120.8 -40.3 105.2 -40.3 104.8 -39.9 100.8 -39.9 100.4 -39.5 92.8 -38.7 82 -36.3 72.7 -33.5 59.9 -28.3 48.3 -22.2 39.5 -16.6 29.9 -17.4 26.7 -18.2 21 -20.6 19.8 -22.6 18.2 -30.7 15.8 -37.9 15 -39.1 14.6 -41.1 13.8 -41.9 12.6 -39.5 12.6 -38.3 8.6 -25.9 7.4 -24.6 5.4 -24.2 -5.4 -24.2 -7.4 -24.6 -8.6 -25.9 -12.6 -38.3 -12.6 -39.5 -13.8 -41.9 -14.6 -41.1 -15 -39.1 -15.8 -37.9 -18.2 -30.7 -19.8 -22.6 -21 -20.6 -26.7 -18.2 -29.9 -17.4 -39.5 -16.6 -48.3 -22.2 -59.9 -28.3 -72.7 -33.5 -82 -36.3 -92.8 -38.7 -100.4 -39.5 -100.8 -39.9 -104.8 -39.9 -105.2 -40.3 -120.8 -40.3Z"/>
+  </symbol>
+</svg>
+
+<a class="skip" href="#side-a">Skip to the track list</a>
+
+<!-- ============ FRONT COVER ============ -->
+<header class="cover" id="top">
+  <div class="cover__top">
+    <a class="catalog" href="#top" aria-label="VAMP, wire version 0.1">
+      <span class="catalog__box"><svg aria-hidden="true"><use href="#bat"/></svg></span>
+      <span class="catalog__name">VAMP</span>
+      <span class="catalog__no">0.1</span>
+    </a>
+    <nav class="lineup" aria-label="Side A">
+      <a href="#a1">contract</a><span aria-hidden="true">/</span><a href="#a2">types</a><span aria-hidden="true">/</span><a href="#a3">schemas</a><span aria-hidden="true">/</span><a href="#a4">events</a><span aria-hidden="true">/</span><a href="#a5">processors</a>
+    </nav>
+    <div class="badges">
+      <span class="badge">Experimental</span>
+      <span class="badge badge--ghost">MIT</span>
+    </div>
+  </div>
+
+  <h1 class="wordmark">VAMP</h1>
+
+  <div class="cover__lede">
+    <p class="lede">An open protocol for media catalogs: the steady figure underneath, so any app, agent or tool can come in over the top.</p>
+    <p class="cue">
+      <a class="cta" href="#">Read the contract <span aria-hidden="true">→</span></a>
+      <span class="cue__note">MIT. Source is private for now; it opens soon.</span>
+    </p>
+  </div>
+
+  <figure class="disc" aria-hidden="true">
+    <div class="disc__spin" data-spin>
+      <svg viewBox="-300 -300 600 600">
+        <defs>
+          <radialGradient id="grooves" cx="0" cy="0" r="3.2" gradientUnits="userSpaceOnUse" spreadMethod="repeat">
+            <stop offset="0" stop-color="#050208"/>
+            <stop offset=".55" stop-color="#050208"/>
+            <stop offset=".75" stop-color="#28101f"/>
+            <stop offset="1" stop-color="#050208"/>
+          </radialGradient>
+          <path id="runout" d="M0 -129 A129 129 0 1 1 -0.01 -129"/>
+        </defs>
+        <circle r="299" fill="#000"/>
+        <circle r="298.5" fill="none" stroke="#3f0d28" stroke-width="1.5"/>
+        <circle r="292" fill="url(#grooves)"/>
+        <g class="disc__gaps" fill="none" stroke="#000" stroke-width="2.2">
+          <circle r="252"/><circle r="214"/><circle r="181"/><circle r="153"/>
+        </g>
+        <circle r="138" fill="#000"/>
+        <text class="disc__etch"><textPath href="#runout">VAMP 0.1 · SIDE A · REFERENCE-ONLY · BLAKE3 · ORDERED EVENTS · MIT ·</textPath></text>
+        <circle r="112" fill="#ef514f"/>
+        <circle r="112" fill="none" stroke="#ce2b39" stroke-width="5"/>
+        <use href="#bat" x="-96" y="-35" width="192" height="69" fill="#000"/>
+        <circle r="5.5" fill="#0d0614"/>
+      </svg>
+    </div>
+  </figure>
+
+</header>
+
+<!-- ============ THE VAMP (event band) ============ -->
+<section class="band" aria-label="Event stream, looping">
+  <div class="band__count">
+    <span class="band__label">Vamp till ready</span>
+    <span class="bars" aria-hidden="true" data-bars>
+      <i></i><i></i><i></i><i></i><b></b><i></i><i></i><i></i><i></i><b></b><i></i><i></i><i></i><i></i><b></b><i></i><i></i><i></i><i></i>
+    </span>
+    <span class="band__bar" data-barlabel>bar 1 of 4</span>
+  </div>
+  <div class="ticker" aria-hidden="true">
+    <ol class="ticker__track" data-ticker>
+      <li><span>4181</span>media_added</li>
+      <li><span>4182</span>media_hashed</li>
+      <li><span>4183</span>representation_ready</li>
+      <li><span>4184</span>processing_requested</li>
+      <li><span>4185</span>observation_added</li>
+      <li><span>4186</span>media_updated</li>
+      <li><span>4187</span>collection_updated</li>
+      <li><span>4188</span>media_viewed</li>
+      <li><span>4189</span>tag_groups_updated</li>
+      <li><span>4190</span>smart_folder_updated</li>
+      <li><span>4191</span>media_trashed</li>
+      <li><span>4192</span>media_restored</li>
+      <li><span>4193</span>collection_created</li>
+      <li><span>4194</span>original_upload_queued</li>
+      <li><span>4195</span>original_stored</li>
+      <li><span>4196</span>original_evicted</li>
+    </ol>
+  </div>
+  <button class="band__toggle" type="button" data-toggle hidden>Stop<span class="long"> the vamp</span></button>
+</section>
+
+<main>
+
+<!-- ============ SIDE A ============ -->
+<section class="side" id="side-a" aria-labelledby="side-a-title">
+  <div class="side__head">
+    <h2 class="side__title" id="side-a-title"><span>Side</span> A</h2>
+    <p class="side__sub">The protocol, in five parts. Where a record lists running times, these are counts you can check against the repository.</p>
+    <dl class="side__meta">
+      <div><dt>Wire version</dt><dd>0.1</dd></div>
+      <div><dt>Status</dt><dd>experimental</dd></div>
+      <div><dt>Crate</dt><dd>vamp-protocol 0.1.0</dd></div>
+      <div><dt>License</dt><dd>MIT</dd></div>
+    </dl>
+  </div>
+
+  <ol class="tracks">
+    <li class="track" id="a1">
+      <span class="track__no">A1</span>
+      <h3 class="track__name">Contract</h3>
+      <p class="track__time"><b>16</b> sections</p>
+      <p class="track__desc">The semantic and operation contract in one JSON file, bundled into the crate: what identity means, how storage, mutations and events behave, how processors are trusted and what errors look like.</p>
+      <p class="track__lyric"><code>contract.json</code> protocol_version · status · binding · identity · storage · mutations · events · processors · optional_capabilities · models · native · remote · errors · agent_guide · explorations · apple_client</p>
+    </li>
+    <li class="track" id="a2">
+      <span class="track__no">A2</span>
+      <h3 class="track__name">Types</h3>
+      <p class="track__time"><b>33</b> types</p>
+      <p class="track__desc">Serialized Rust types for every document on the wire, in the <code>vamp-protocol</code> crate. Implement them in any language; the shapes are the agreement.</p>
+      <p class="track__lyric">Original · Asset · Metadata · MetadataPatch · Representation · AssetView · Observation · Event · Collection · SmartFolder · TagGroup · Context · ProcessorSpec · Job · ToolRequest · ToolResponse · DuplicateCandidate · ErrorResponse …</p>
+    </li>
+    <li class="track" id="a3">
+      <span class="track__no">A3</span>
+      <h3 class="track__name">Schemas</h3>
+      <p class="track__time"><b>16</b> schemas</p>
+      <p class="track__desc">JSON Schemas generated from those types, so a client written in anything can validate what it reads and writes. <code>cargo run -p vamp-protocol --example schema</code> prints the bundle.</p>
+      <p class="track__lyric">asset · asset_view · collection · context · duplicate_candidate · error · event · job · metadata_patch · processor · smart_folder · store_request · store_response · tag_group · tool_request · tool_response</p>
+    </li>
+    <li class="track" id="a4">
+      <span class="track__no">A4</span>
+      <h3 class="track__name">Events</h3>
+      <p class="track__time"><b>18</b> kinds</p>
+      <p class="track__desc">Every change to a catalog is an event with a monotonic sequence number. The change, its event and any queued jobs commit together; consumers keep their last sequence and ask for what came after.</p>
+      <p class="track__lyric">media_added · media_updated · media_trashed · media_restored · media_removed · media_viewed · media_hashed · representation_ready · observation_added · collection_created · collection_updated · collection_deleted · smart_folder_updated · tag_groups_updated · processing_requested · original_upload_queued · original_stored · original_evicted</p>
+    </li>
+    <li class="track" id="a5">
+      <span class="track__no">A5</span>
+      <h3 class="track__name">Processors</h3>
+      <p class="track__time"><b>3</b> triggers</p>
+      <p class="track__desc">Local executables you register by name. One ToolRequest arrives on stdin, one ToolResponse leaves on stdout. Arguments go straight to the program, never through a shell. They add observations and leave originals alone.</p>
+      <p class="track__lyric">triggers media_added · media_updated · representation_ready — jobs pending · running · completed · failed — limits 1 MiB in · 4 MiB out · 1–3600 s</p>
+    </li>
+  </ol>
+</section>
+
+<!-- ============ PERSONNEL ============ -->
+<section class="personnel" aria-labelledby="personnel-title">
+  <div class="personnel__head">
+    <h2 class="personnel__title" id="personnel-title">Personnel</h2>
+    <p class="personnel__sub">Who plays over the vamp. Anyone can sit in; nobody owns the groove.</p>
+  </div>
+  <ul class="credits">
+    <li>
+      <span class="credits__name">Library</span>
+      <span class="credits__role">yours: the authority</span>
+      <span class="credits__note">One local catalog, serialized by SQLite on one machine. Your originals stay where they already live.</span>
+    </li>
+    <li>
+      <span class="credits__name">Processors</span>
+      <span class="credits__role">captions, tags, embeddings</span>
+      <span class="credits__note">Registered executables that answer a ToolRequest with observations. Nothing they do edits the catalog directly.</span>
+    </li>
+    <li>
+      <span class="credits__name">Agents</span>
+      <span class="credits__role">command line</span>
+      <span class="credits__note"><code>vamp guide</code> prints their manual. They search, file findings with provenance, and read your ratings back.</span>
+    </li>
+    <li>
+      <span class="credits__name">Replicas</span>
+      <span class="credits__role">the event stream</span>
+      <span class="credits__note">Other machines follow the authority's ordered events from their last sequence onward.</span>
+    </li>
+    <li class="credits__guest">
+      <span class="credits__name">Vampire</span>
+      <span class="credits__role">Mac &amp; iOS, by arrangement</span>
+      <span class="credits__note">The library app we build on VAMP: browse, clip from the browser, replicate over Tailscale. Proprietary, and a one-time purchase.</span>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ BACK COVER: LINER NOTES ============ -->
+<section class="back" aria-labelledby="notes-title">
+  <div class="back__masthead">
+    <p class="back__kicker">Liner notes</p>
+    <h2 class="back__title" id="notes-title">Vamp till ready</h2>
+    <p class="back__kicker back__kicker--right">Notes on VAMP 0.1</p>
+  </div>
+
+  <div class="notes">
+    <p class="notes__open"><span class="runin">In a club, the band vamps:</span> a figure of two or four bars, played again and again until the singer walks on or the soloist is ready. Nobody waits for anybody. The groundwork holds, and anyone can come in on the one.</p>
+
+    <p>VAMP is that figure for a media library. It is a small, strict agreement about what a catalog contains and how it changes, so that an app, a script, a model or an agent can join in without asking the others to stop.</p>
+
+    <h3>Reference, not custody</h3>
+    <p>VAMP never takes your files. Originals are referenced in place, and the catalog records where they are and what they are. An original is identified by the BLAKE3 digest of its exact bytes; an asset has a stable UUID that does not change when the file moves.</p>
+
+    <blockquote class="notes__pull">
+      <p>“Stable UUID independent of original path or byte digest.”</p>
+      <cite>contract.json, identity.asset</cite>
+    </blockquote>
+
+    <h3>Revisions</h3>
+    <p>Every metadata change advances an asset’s revision. Write with <code>--expected-revision</code> and a stale write is turned away whole: no change, no event. Two hands on the same asset cannot quietly overwrite each other; the second one hears about it.</p>
+
+    <h3>Ordered events</h3>
+    <p>Each change is an event with a monotonic sequence: <code>media_added</code>, <code>representation_ready</code>, <code>observation_added</code> and fifteen more. The mutation, its event and any configured jobs commit in a single transaction, so nothing can happen off the record.</p>
+
+    <h3>One authority</h3>
+    <p>There is one local authority, a SQLite catalog on one machine. Replicas follow its event stream. It is not a multi-device sync protocol, and it does not pretend to be one.</p>
+
+    <h3>Sitting in</h3>
+    <p>Processors are programs you register yourself. Each receives one ToolRequest on stdin and answers with one ToolResponse on stdout: a caption, a set of tags, an embedding. They add observations; they never touch an original.</p>
+
+    <figure class="exhibit">
+      <figcaption>Fig. 1 &nbsp;A ProcessorSpec. Field names from the schema; values are an example.</figcaption>
+<pre><code>{
+  "name": "caption",
+  "events": ["representation_ready"],
+  "command": ["./caption", "--max-words", "24"],
+  "input": "preview",
+  "output": "observation",
+  "timeout_seconds": 300
+}</code></pre>
+    </figure>
+
+    <p class="notes__close">That is the whole tune. Keep time, and the rest of the band can play.</p>
+  </div>
+
+  <footer class="credits-back">
+    <dl class="colophon">
+      <div><dt>Contract</dt><dd>crates/vamp-protocol/protocol/contract.json</dd></div>
+      <div><dt>Types</dt><dd>vamp-protocol 0.1.0, Rust</dd></div>
+      <div><dt>Schemas</dt><dd>JSON Schema, generated with schemars</dd></div>
+      <div><dt>Wire version</dt><dd>0.1, experimental</dd></div>
+      <div><dt>License</dt><dd>MIT</dd></div>
+      <div><dt>Source</dt><dd>Private for now; opening soon</dd></div>
+    </dl>
+    <div class="outro">
+      <a class="cta cta--paper" href="#">Read the contract <span aria-hidden="true">→</span></a>
+      <p class="outro__mark"><svg aria-hidden="true"><use href="#bat"/></svg> vamp.sh</p>
+    </div>
+    <p class="address">VAMP · an open media-catalog protocol · reference-only · BLAKE3 identity · ordered events · vamp.sh</p>
+  </footer>
+</section>
+
+</main>
+
+<script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VAMP — the protocol is the vamp</title>
+<meta name="description" content="VAMP is an open (MIT) media-catalog protocol: assets, revisions and events that apps and agents play over. Wire 0.1, experimental.">
+<meta name="theme-color" content="#08040f">
+<link rel="alternate" type="text/plain" href="llms.txt" title="Machine-readable index">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-view="human">
+<a class="skip" href="#figure">Skip to content</a>
+
+<header class="nav" data-md="skip">
+  <a class="brand" href="#top" aria-label="VAMP, top of page"><span class="brand-word">VAMP</span><span class="brand-tld">.sh</span></a>
+  <nav class="nav-links" aria-label="Sections">
+    <a href="#figure"><span class="pix">01</span> Figure</a>
+    <a href="#session"><span class="pix">02</span> Session</a>
+    <a href="#schema"><span class="pix">03</span> Schema</a>
+    <a href="#agents"><span class="pix">04</span> Agents</a>
+  </nav>
+  <p class="nav-status"><span class="dot" aria-hidden="true"></span>wire 0.1<span class="long"> <span class="sep">/</span> experimental <span class="sep">/</span> MIT</span></p>
+</header>
+
+<main id="human" tabindex="-1">
+
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <canvas class="field" id="field" aria-hidden="true"></canvas>
+    <div class="hero-inner">
+      <p class="kicker"><dfn>vamp</dfn> <span class="kicker-pos">n.</span> A short figure the band repeats so soloists can come in and go out.</p>
+      <h1 id="hero-title">The protocol is the vamp: a steady figure of <span class="mach">assets</span>, <span class="mach">revisions</span> and <span class="mach">events</span> that apps and agents play over.</h1>
+      <div class="hero-foot">
+        <p><span class="idx">A</span>VAMP is an open media-catalog protocol: an MIT-licensed contract, Rust types and generated JSON Schemas. Wire <code>0.1</code>, experimental.</p>
+        <p><span class="idx">B</span>Reference-only. Originals stay where they are, identified by the BLAKE3 of their exact bytes.</p>
+        <p class="caption"><span class="idx">C</span>Drawn live above: <code>moon-bat.jpg</code> as text, its moon set in its own digest <code>504de3d9…22dfc0</code>.</p>
+        <div class="counter" data-md="skip" aria-hidden="true">
+          <p class="counter-bar"><span class="pix-label">Bar</span> <span class="pix" id="bar">0001</span></p>
+          <ol class="beats" id="beats"><li>1</li><li>2</li><li>3</li><li>4</li></ol>
+          <p class="pix-label">92 bpm <span class="sep">/</span> 4/4 <span class="sep">/</span> <span id="field-state">looping</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="tape" data-md="skip" aria-hidden="true">
+    <div class="tape-track" id="tape"></div>
+  </div>
+
+  <section class="section figure" id="figure" aria-labelledby="figure-title">
+    <header class="section-head">
+      <p class="label" data-md="skip"><span class="pix">01</span> The figure</p>
+      <h2 id="figure-title">Four beats,<br> on repeat.</h2>
+      <p class="lede">Under every client the same four moves repeat for every file. Learn them once and you can come in on any bar: an app, a script, an agent.</p>
+    </header>
+
+    <div class="bar" id="bar-grid">
+      <span class="repeat repeat-open" aria-hidden="true"></span>
+      <article class="beat" data-beat="0">
+        <p class="beat-num" aria-hidden="true">1</p>
+        <h3><span class="beat-n">1.</span> Asset</h3>
+        <p>A stable UUID, independent of the file’s path. The original is referenced in place and identified by the BLAKE3 of its exact bytes.</p>
+        <pre class="snip"><code>"id": "bc8b501d-…-5c1d5c296698",
+"original": {
+  "blake3": "504de3d9…6d22dfc0",
+  "path": "/tmp/refs/moon-bat.jpg",
+  "storage": "local"
+}</code></pre>
+      </article>
+      <article class="beat" data-beat="1">
+        <p class="beat-num" aria-hidden="true">2</p>
+        <h3><span class="beat-n">2.</span> Revision</h3>
+        <p>Every metadata change advances the revision. Send <code>--expected-revision</code> and a stale write is rejected without changing metadata or emitting an event.</p>
+        <pre class="snip"><code>{"error": {
+  "code": "operation_failed",
+  "message": "revision conflict: expected 1, current 2"
+}, "protocol_version": "0.1"}</code></pre>
+      </article>
+      <article class="beat" data-beat="2">
+        <p class="beat-num" aria-hidden="true">3</p>
+        <h3><span class="beat-n">3.</span> Event</h3>
+        <p>Every change is an ordered event with one monotonic sequence per library. One local authority writes; replicas keep their last sequence and ask for what came after.</p>
+        <pre class="snip"><code>{"sequence": 2,
+ "kind": "media_updated",
+ "actor": "agent:lander-human-machine",
+ "revision": 2,
+ "payload": {"change": "metadata"}}</code></pre>
+      </article>
+      <article class="beat" data-beat="3">
+        <p class="beat-num" aria-hidden="true">4</p>
+        <h3><span class="beat-n">4.</span> Observation</h3>
+        <p>Processors are registered local executables, run with argv and never a shell. One ToolRequest in on stdin, one ToolResponse out: captions, tags, embeddings. Originals are never touched.</p>
+        <pre class="snip"><code>"required": ["name", "events",
+  "command", "input", "output"],
+"triggers": ["media_added",
+  "media_updated",
+  "representation_ready"]</code></pre>
+      </article>
+      <span class="repeat repeat-close" aria-hidden="true"></span>
+    </div>
+
+    <div class="kinds">
+      <h3 class="kinds-title"><span class="pix" id="kinds-count">18</span> event kinds, as they appear on the wire</h3>
+      <ol class="kinds-list" id="kinds"></ol>
+    </div>
+  </section>
+
+  <section class="section session" id="session" aria-labelledby="session-title">
+    <header class="section-head">
+      <p class="label" data-md="skip"><span class="pix">02</span> Session</p>
+      <h2 id="session-title">One take,<br> no overdubs.</h2>
+      <p class="lede">The <code>vamp</code> CLI ships with Vampire and speaks the protocol: JSON on stdout, errors as JSON on stderr. Here it adds a file, patches it, has a stale write refused and reads the event log back.</p>
+    </header>
+    <div class="session-grid">
+      <ol class="steps" id="steps" data-md="skip"></ol>
+      <div class="term" data-md-provider="session">
+        <div class="term-bar" aria-hidden="true"><span class="term-sq"></span><span>/tmp/refs</span><span class="term-env">VAMP_HOME=/tmp/vamp-lander</span></div>
+        <pre class="term-body" id="term" aria-live="off" tabindex="0" aria-label="Recorded vamp session"></pre>
+      </div>
+    </div>
+    <p class="footnote">Recorded on 15 Oct 2026 with <code>vamp 0.1.0</code> against a scratch library. Output is pretty-printed and shortened where you see <code>…</code>, never rewritten. The raw take: <a href="session.log">session.log</a>.</p>
+  </section>
+
+  <section class="section schema" id="schema" aria-labelledby="schema-title">
+    <header class="section-head">
+      <p class="label" data-md="skip"><span class="pix">03</span> Schema</p>
+      <h2 id="schema-title"><span class="mach num">18</span> roots.<br> Read the chart.</h2>
+      <p class="lede"><code>vamp schema</code> and the MIT crate’s <code>cargo run -p vamp-protocol --example schema</code> print the same bundle: JSON Schemas for the payloads, plus the semantic contract. Excerpts are cut from that output; <code>…</code> marks a cut.</p>
+    </header>
+    <div class="explorer" data-md-provider="schema">
+      <div class="roots" role="tablist" aria-label="Schema roots" aria-orientation="vertical" id="roots"></div>
+      <div class="root-panel" role="tabpanel" id="root-panel" tabindex="0" aria-labelledby="">
+        <header class="root-head">
+          <h3 id="root-name"></h3>
+          <p class="root-meta pix-label" id="root-meta"></p>
+        </header>
+        <p class="root-note" id="root-note"></p>
+        <pre class="root-json"><code id="root-json"></code></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="section agents" id="agents" aria-labelledby="agents-title">
+    <header class="section-head">
+      <p class="label" data-md="skip"><span class="pix">04</span> Agents</p>
+      <h2 id="agents-title">Trading<br> fours.</h2>
+      <p class="lede">Agents work in the library with the same CLI, and <code>vamp guide</code> prints their manual. A research mission is an exploration: a folder of findings, each filed with its source. The owner answers in the app with ratings and tags; the agent reads them back on its next turn.</p>
+    </header>
+
+    <ol class="trades">
+      <li class="trade call">
+        <p class="trade-bars pix-label">Bars 1–4</p>
+        <div class="trade-body">
+          <p class="who"><span class="pix">agent:lander-human-machine</span> opens a mission</p>
+          <pre><code><span class="prompt">$</span> vamp explore ensure night-shapes --title "Night shapes" \
+    --brief "bat silhouettes, moon discs, 1-bit"
+<span class="out">"name": "Night shapes", "items": [],
+"link": "vampire://open?library=405a94fd-…&amp;folder=4fcc26b5-…"</span></code></pre>
+        </div>
+      </li>
+      <li class="trade call">
+        <p class="trade-bars pix-label">Bars 5–8</p>
+        <div class="trade-body">
+          <p class="who"><span class="pix">agent:lander-human-machine</span> files a finding, with provenance</p>
+          <pre><code><span class="prompt">$</span> vamp explore add night-shapes --name "Moon, 1-bit" \
+    --note "threshold at 90: the bat survives as pure ink" \
+    --tags moon,dither --url https://vamp.sh/ --file moon-1bit.png
+<span class="out">"status": "created", "kind": "file",
+"source_url": "https://vamp.sh/", "tags": ["dither", "moon"]</span></code></pre>
+        </div>
+      </li>
+      <li class="trade response">
+        <p class="trade-bars pix-label">Bars 9–12</p>
+        <div class="trade-body">
+          <p class="who">The owner answers</p>
+          <p class="said">Rates “Moon, 1-bit” a five and tags it <code>more-like-this</code>.</p>
+          <pre><code><span class="out">{"kind": "media_updated", "actor": "local",
+ "payload": {"change": "metadata"}, "sequence": 11}</span></code></pre>
+        </div>
+      </li>
+      <li class="trade call">
+        <p class="trade-bars pix-label">Bars 13–16</p>
+        <div class="trade-body">
+          <p class="who"><span class="pix">agent:lander-human-machine</span> reads the room</p>
+          <pre><code><span class="prompt">$</span> vamp explore feedback night-shapes
+<span class="out">"counts": {"like": 1, "more_like_this": 1},
+"items": [{"name": "Moon, 1-bit", "rating": 5,
+  "signals": ["like", "more_like_this"], …}]</span></code></pre>
+        </div>
+      </li>
+      <li class="trade response cue">
+        <p class="trade-bars pix-label">Bar 17</p>
+        <div class="trade-body">
+          <p class="who">Cue</p>
+          <p class="said">Go deeper on the likes, drop the rejects, hand back a fresh link. Then the figure comes round again.</p>
+        </div>
+      </li>
+    </ol>
+    <p class="footnote">From the same scratch session. The owner’s turn was played from the CLI, so its actor reads <code>local</code>; from the app it reads <code>tailnet:&lt;login&gt;/&lt;host&gt;</code>.</p>
+  </section>
+
+  <section class="section vampire" id="vampire" aria-labelledby="vampire-title">
+    <img class="vampire-icon" src="assets/vampire-icon-128.png" width="64" height="64" alt="">
+    <div>
+      <h2 id="vampire-title" class="vampire-title">Vampire</h2>
+      <p>The Mac and iOS library app built on VAMP: an Eagle-style grid, replicas over Tailscale, a browser clipper. A one-time purchase. The protocol does not need it.</p>
+    </div>
+    <a class="vampire-link" href="#">Vampire <span aria-hidden="true">→</span></a>
+  </section>
+
+  <footer class="foot">
+    <p class="foot-big" aria-hidden="true" data-md="skip"><span>VAMP</span><a class="dc" href="#top" title="Da capo: from the top">D.C.</a></p>
+    <ul class="foot-meta" data-md="skip">
+      <li>VAMP protocol <span class="sep">/</span> MIT <span class="sep">/</span> wire 0.1 <span class="sep">/</span> experimental</li>
+      <li>Source and packages: soon</li>
+      <li><a href="llms.txt">llms.txt</a></li>
+      <li><a href="#machine" data-view-link="machine">Machine view</a></li>
+    </ul>
+  </footer>
+</main>
+
+<main id="machine" class="machine" hidden tabindex="-1" aria-label="Machine view: plain-text index">
+  <pre class="machine-doc" id="machine-doc"></pre>
+</main>
+
+<div class="toggle" role="group" aria-label="Rendering">
+  <button type="button" data-view="human" aria-pressed="true">Human</button>
+  <button type="button" data-view="machine" aria-pressed="false">Machine</button>
+</div>
+
+<script src="data.js"></script>
+<script src="bat-mask.js"></script>
+<script src="field.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

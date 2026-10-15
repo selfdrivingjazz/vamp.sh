@@ -5,13 +5,16 @@ Static, no framework, no runtime CDNs. Opens from `file://` or any static host. 
 
 ## Files
 
-- `index.html`, `styles.css`, `app.js`: the Human page, the HUMAN | MACHINE switch, the terminal replay and the schema tabs.
+- `index.html`, `styles.css`, `app.js`: the Human page (hero, then Keep, Deliver, Transform, Share, Vampire, Spec
+  footer), the HUMAN | MACHINE switch and the Deliver terminal replay.
 - `field.js` + `bat-mask.js`: the ASCII bat and moon on one 4-beat loop at 92 BPM. The canvas pauses offscreen, in
   hidden tabs and in the Machine view; with reduced motion it shows a single still frame.
-- `content.js`: the complete plain reference (session, schema notes, agents, contract index). It renders the Machine
-  view (`#machine`) and produces `llms.txt` and `index.md`. Detail lives here, not on the Human page.
+- `content.js`: the tagline, the five section lines, every artifact and the complete plain reference. It renders the
+  Machine view (`#machine`) and produces `llms.txt` and `index.md`. `build.mjs --check` fails if the lines in
+  `index.html` drift from it.
 - `data.js`: generated from the protocol repo (schema bundle, `contract.json`) and `vamp commands`.
-- `session.log`: the raw take the terminal is cut from (vamp 0.1.0, scratch `VAMP_HOME`).
+- `session.log`: the raw take every artifact is cut from (vamp 0.1.0, a scratch authority served by `vamp-server` on
+  127.0.0.1 and a scratch replica). `assets/wing-study-preview.jpg` is the preview VAMP generated in that take.
 - `404.html` uses root-absolute paths, so it only works when served from the site root.
 - Fonts (OFL, licences in `fonts/`): Archivo pinned to weight 800 (widths 100–125), Geist Mono 400–500 and
   Departure Mono, each subset to the characters the site uses.

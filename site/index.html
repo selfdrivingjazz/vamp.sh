@@ -3,41 +3,42 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>VAMP — the protocol is the vamp</title>
-<meta name="description" content="VAMP is an open, MIT-licensed media-catalog protocol: assets, revisions and events that apps and agents play over. Wire 0.1, experimental.">
+<title>VAMP — a visual media protocol for humans and agents</title>
+<meta name="description" content="VAMP is an open, MIT-licensed visual media protocol for humans and agents: keep your media where it is, deliver it between machines and agents, transform it with your own tools, share it with who you choose.">
 <meta name="theme-color" content="#08040f">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="favicon.ico" sizes="32x32">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
 <link rel="alternate" type="text/markdown" href="index.md" title="Markdown">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="VAMP">
-<meta property="og:title" content="VAMP — the protocol is the vamp">
-<meta property="og:description" content="An open media-catalog protocol: assets, revisions and events that apps and agents play over.">
+<meta property="og:title" content="VAMP — a visual media protocol for humans and agents">
+<meta property="og:description" content="Keep your media where it is. Deliver it between machines and agents. Transform it with your own tools. Share it with who you choose.">
 <meta property="og:url" content="https://vamp.sh/">
 <meta property="og:image" content="https://vamp.sh/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="The VAMP bat and moon drawn in ASCII, coral on aubergine.">
+<meta property="og:image:alt" content="VAMP: a visual media protocol for humans and agents. The bat and moon drawn in ASCII, coral on aubergine.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="VAMP — the protocol is the vamp">
-<meta name="twitter:description" content="An open media-catalog protocol: assets, revisions and events that apps and agents play over.">
+<meta name="twitter:title" content="VAMP — a visual media protocol for humans and agents">
+<meta name="twitter:description" content="Keep your media where it is. Deliver it between machines and agents. Transform it with your own tools. Share it with who you choose.">
 <meta name="twitter:image" content="https://vamp.sh/og.png">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body data-view="human">
-<a class="skip" href="#figure">Skip to content</a>
+<a class="skip" href="#keep">Skip to content</a>
 
 <header class="nav">
   <a class="brand" href="#top" aria-label="VAMP, top of page">VAMP<span>.sh</span></a>
   <nav class="nav-links" aria-label="Sections">
-    <a href="#figure">Figure</a>
-    <a href="#session">Session</a>
-    <a href="#schema">Schema</a>
-    <a href="#agents">Agents</a>
+    <a href="#keep">Keep</a>
+    <a href="#deliver">Deliver</a>
+    <a href="#transform">Transform</a>
+    <a href="#share">Share</a>
+    <a href="#vampire">Vampire</a>
   </nav>
   <p class="nav-meta"><span class="dot" aria-hidden="true"></span>wire 0.1</p>
 </header>
@@ -47,9 +48,9 @@
   <section class="hero" id="top" aria-labelledby="hero-title">
     <canvas class="field" id="field" role="img" aria-label="The VAMP bat and moon, drawn in ASCII from the BLAKE3 digest of the icon"></canvas>
     <p class="fig cap"><span>fig.</span> moon-bat.jpg <span>blake3</span> 504de3d9…22dfc0</p>
-    <h1 id="hero-title">The protocol is the vamp: <span class="px">assets</span>, <span class="px">revisions</span> and <span class="px">events</span> that apps and agents play over.</h1>
+    <h1 id="hero-title">A visual media protocol for humans and <span class="px">agents</span>.</h1>
     <div class="hero-foot">
-      <p class="cap">Open media-catalog protocol <i>/</i> MIT <i>/</i> experimental</p>
+      <p class="cap">Open protocol <i>/</i> MIT <i>/</i> experimental</p>
       <div class="counter" aria-hidden="true">
         <p class="cap">Bar</p>
         <p class="bar-n" id="bar">0001</p>
@@ -58,120 +59,89 @@
     </div>
   </section>
 
-  <section class="section" id="figure" aria-labelledby="figure-title">
+  <section class="section" id="keep" aria-labelledby="keep-title">
     <header class="head">
       <p class="label">01</p>
-      <h2 id="figure-title">Four beats, on repeat.</h2>
+      <h2 id="keep-title">Keep</h2>
+      <p class="line" data-line="keep">Originals stay where they are, identified by their exact bytes. Never duplicated, never locked in.</p>
     </header>
-    <div class="bar" id="bar-grid">
-      <article class="beat">
-        <p class="beat-num" aria-hidden="true">1</p>
-        <h3>Asset</h3>
-        <p class="line">Stable id. Original stays put.</p>
-        <pre class="code"><code>"id": "bc8b501d-…-5c1d5c296698",
-"original": {
-  "blake3": "504de3d9…6d22dfc0",
-  "path": "/tmp/refs/moon-bat.jpg" }</code></pre>
-      </article>
-      <article class="beat">
-        <p class="beat-num" aria-hidden="true">2</p>
-        <h3>Revision</h3>
-        <p class="line">Stale writes are refused.</p>
-        <pre class="code"><code>"code": "operation_failed",
-"message": "revision conflict:
-  expected 1, current 2"</code></pre>
-      </article>
-      <article class="beat">
-        <p class="beat-num" aria-hidden="true">3</p>
-        <h3>Event</h3>
-        <p class="line">Every change, in order.</p>
-        <pre class="code"><code>"sequence": 2,
-"kind": "media_updated",
-"revision": 2</code></pre>
-      </article>
-      <article class="beat">
-        <p class="beat-num" aria-hidden="true">4</p>
-        <h3>Observation</h3>
-        <p class="line">Processors add; originals untouched.</p>
-        <pre class="code"><code>"triggers": ["media_added",
-  "media_updated",
-  "representation_ready"]</code></pre>
-      </article>
-    </div>
-    <div class="kinds">
-      <p class="kinds-n"><span id="kinds-count">18</span> event kinds</p>
-      <ol class="kinds-list" id="kinds"></ol>
+    <div class="keep">
+      <div><p class="cap">Add</p><pre class="code card" id="keep-1"></pre></div>
+      <div><p class="cap">Add again</p><pre class="code card" id="keep-2"></pre></div>
     </div>
   </section>
 
-  <section class="section" id="session" aria-labelledby="session-title">
+  <section class="section" id="deliver" aria-labelledby="deliver-title">
     <header class="head">
       <p class="label">02</p>
-      <h2 id="session-title">One take.</h2>
+      <h2 id="deliver-title">Deliver</h2>
+      <p class="line" data-line="deliver">One authority, replicas on your other machines, agents on all of them, following one event stream.</p>
     </header>
     <div class="session">
       <ol class="steps" id="steps" aria-label="Session steps"></ol>
       <div class="term">
-        <p class="term-bar"><span class="sq" aria-hidden="true"></span>vamp 0.1.0 <i>/</i> scratch library</p>
-        <pre class="term-body" id="term" tabindex="0" role="region" aria-label="Recorded vamp session"></pre>
+        <p class="term-bar"><span class="sq" aria-hidden="true"></span>vamp 0.1.0 <i>/</i> authority + replica</p>
+        <pre class="term-body" id="term" tabindex="0" role="region" aria-label="Recorded vamp session: an authority and a replica"></pre>
       </div>
     </div>
     <p class="cap note">Recorded, trimmed at <span class="cut">…</span>, never rewritten. <a href="session.log">session.log</a></p>
   </section>
 
-  <section class="section" id="schema" aria-labelledby="schema-title">
+  <section class="section" id="transform" aria-labelledby="transform-title">
     <header class="head">
       <p class="label">03</p>
-      <h2 id="schema-title"><span class="px">18</span> roots.</h2>
+      <h2 id="transform-title">Transform</h2>
+      <p class="line" data-line="transform">Previews, tags and embeddings from the tools you choose. Originals are never touched.</p>
     </header>
-    <div class="explorer">
-      <div class="roots" id="roots" role="tablist" aria-label="Schema roots" aria-orientation="vertical"></div>
-      <div class="panel" id="root-panel" role="tabpanel" tabindex="0">
-        <p class="panel-head"><span id="root-name"></span><span class="cap" id="root-meta"></span></p>
-        <pre class="code json"><code id="root-json"></code></pre>
+    <div class="transform">
+      <figure class="specimen">
+        <img src="assets/wing-study-preview.jpg" width="680" height="340" loading="lazy" decoding="async" alt="wing-study.png, the bat's wing over the coral moon: the 680 × 340 preview VAMP generated">
+        <div class="swatches" id="swatches" role="img" aria-label="Palette recorded on the asset"></div>
+        <figcaption class="cap">preview 680 x 340 <i>/</i> suggested <span class="tag">wing</span> <span class="tag">study</span></figcaption>
+      </figure>
+      <div class="transform-code">
+        <p class="cap">name-tags.json</p>
+        <pre class="code card" id="spec-code"></pre>
+        <p class="cap">vamp media inspect</p>
+        <pre class="code card" id="inspect-code"></pre>
       </div>
     </div>
-    <p class="cap note"><code>vamp schema</code> <i>/</i> <code>cargo run -p vamp-protocol --example schema</code></p>
   </section>
 
-  <section class="section" id="agents" aria-labelledby="agents-title">
+  <section class="section" id="share" aria-labelledby="share-title">
     <header class="head">
       <p class="label">04</p>
-      <h2 id="agents-title">Trading fours.</h2>
+      <h2 id="share-title">Share</h2>
+      <p class="line" data-line="share">Let in the people, machines and agents you choose. Every change records who made it.</p>
     </header>
-    <ol class="trades">
-      <li class="trade">
-        <p class="cap">Bars 1–4 <i>/</i> agent</p>
-        <pre class="code"><code><b>$</b> vamp explore ensure night-shapes --title "Night shapes" \
-    --brief "bat silhouettes, moon discs, 1-bit"
-<span>"name": "Night shapes", "items": []</span></code></pre>
-      </li>
-      <li class="trade">
-        <p class="cap">5–8 <i>/</i> agent</p>
-        <pre class="code"><code><b>$</b> vamp explore add night-shapes --name "Moon, 1-bit" \
-    --note "threshold at 90: the bat survives as pure ink" \
-    --tags moon,dither --url https://vamp.sh/ --file moon-1bit.png
-<span>"status": "created", "source_url": "https://vamp.sh/"</span></code></pre>
-      </li>
-      <li class="trade reply">
-        <p class="cap">9–12 <i>/</i> owner</p>
-        <p class="said"><span class="stars" role="img" aria-label="Rated 5 of 5">★★★★★</span> <span class="px">more-like-this</span></p>
-      </li>
-      <li class="trade">
-        <p class="cap">13–16 <i>/</i> agent</p>
-        <pre class="code"><code><b>$</b> vamp explore feedback night-shapes
-<span>"counts": {"like": 1, "more_like_this": 1}</span></code></pre>
-      </li>
-    </ol>
+    <div class="share">
+      <table class="log">
+        <caption class="cap">vamp events <i>/</i> authority</caption>
+        <thead><tr><th scope="col">seq</th><th scope="col">kind</th><th scope="col">actor</th><th scope="col">asset</th></tr></thead>
+        <tbody id="events"></tbody>
+      </table>
+      <div class="allow">
+        <p class="cap">Tailnet allowlist</p>
+        <pre class="code card" id="allow-code"></pre>
+      </div>
+    </div>
   </section>
 
-  <section class="vampire" aria-labelledby="vampire-title">
-    <img src="assets/vampire-icon-112.png" width="56" height="56" alt="">
-    <p><strong id="vampire-title">Vampire</strong> The Mac and iOS app on VAMP. One-time purchase.</p>
-    <p class="cap">soon</p>
+  <section class="section vampire" id="vampire" aria-labelledby="vampire-title">
+    <img src="assets/vampire-icon-112.png" width="112" height="112" alt="The Vampire app icon: a black bat across a coral moon">
+    <header class="head">
+      <p class="label">05</p>
+      <h2 id="vampire-title">Vampire</h2>
+      <p class="line" data-line="vampire">The viewer for humans, on Mac and iOS. One-time purchase. Soon.</p>
+    </header>
   </section>
 
   <footer class="foot">
+    <div class="spec">
+      <p class="cap">Spec</p>
+      <p class="spec-line">Open protocol, MIT: the operation contract, Rust types and <span id="schema-count">16</span> JSON Schemas. Source soon.</p>
+      <ul class="spec-roots" id="roots" aria-label="Schema roots"></ul>
+    </div>
     <p class="foot-word" aria-hidden="true">VAMP</p>
     <div class="foot-row">
       <p class="cap">MIT <i>/</i> wire 0.1 <i>/</i> source soon</p>

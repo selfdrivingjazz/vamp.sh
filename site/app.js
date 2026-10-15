@@ -1,4 +1,4 @@
-/* vamp.sh. No dependencies. One clock (92 BPM) drives the field, the counter, the bar and the terminal. */
+/* vamp.sh. No dependencies. One clock (92 BPM) drives the field, the bar counter and the terminal. */
 (function () {
   'use strict';
 
@@ -21,19 +21,39 @@
         return '<span class="j-cut">' + cut + '</span>';
       });
   }
+  function promptHtml(host) { return (host ? '<span class="host">' + host + '</span>' : '') + '<span class="prompt">$</span> '; }
+  function outHtml(r) {
+    var h = '';
+    if (r.out) h += (r.err ? '<span class="err">' + esc(r.out) + '</span>' : r.plain ? esc(r.out) : hl(r.out)) + '\n';
+    if (r.exit) h += '<span class="exit">[exit ' + r.exit + ']</span>\n';
+    return h;
+  }
+  function runHtml(r, host) { return promptHtml(host) + '<span class="cmd">' + esc(r.cmd) + '</span>\n' + outHtml(r); }
 
-  /* ── static renders ── */
-  $('#kinds').innerHTML = D.event_kinds.map(function (k) { return '<li>' + k + '</li>'; }).join('');
-  $('#kinds-count').textContent = D.event_kinds.length;
+  /* ── static artifacts, from content.js ── */
+  C.KEEP.forEach(function (r, i) {
+    $('#keep-' + (i + 1)).innerHTML = runHtml(r).replace(/\n$/, '').split(C.ID_M).join('<mark>' + C.ID_M + '</mark>');
+  });
+  $('#spec-code').innerHTML = hl(JSON.stringify(JSON.parse(C.PROCESSOR_SPEC), null, 2)
+    .replace(/\[\s+("[^"\]]*")\s+\]/g, '[$1]'));
+  $('#inspect-code').innerHTML = hl(C.INSPECT);
+  $('#swatches').innerHTML = C.COLORS.map(function (c) {
+    return '<span style="flex-grow:' + c[1] + ';background:' + c[0] + '"></span>';
+  }).join('');
+  $('#swatches').setAttribute('aria-label', 'Palette recorded on the asset: ' + C.COLORS.map(function (c) { return c[0] + ' ' + Math.round(c[1] * 100) + '%'; }).join(', '));
+  $('#events').innerHTML = C.EVENTS.map(function (e) {
+    var agent = e[2].indexOf('agent:') === 0;
+    return '<tr' + (agent ? ' class="hot"' : '') + '><td>' + pad2(e[0]) + '</td><td>' + e[1] + '</td><td>' + esc(e[2]) + '</td><td>' + e[3] + '</td></tr>';
+  }).join('');
+  $('#allow-code').innerHTML = runHtml(C.ALLOW).replace(/\n$/, '');
+  $('#roots').innerHTML = D.schema.map(function (s) { return '<li>' + s.root + '</li>'; }).join('');
+  $('#schema-count').textContent = D.schema.filter(function (s) { return s.root !== 'contract' && s.root !== 'protocol_version'; }).length;
 
   /* ── the clock ── */
-  var beatEls = all('#beats li'), beatCols = all('.beat'), barEl = $('#bar');
+  var beatEls = all('#beats li'), barEl = $('#bar');
   function onBeat(bar, beat) {
     barEl.textContent = String(bar).padStart(4, '0');
-    for (var i = 0; i < 4; i++) {
-      beatEls[i].classList.toggle('on', i === beat);
-      beatCols[i].classList.toggle('on', i === beat);
-    }
+    for (var i = 0; i < 4; i++) beatEls[i].classList.toggle('on', i === beat);
   }
   var metro = { on: false, last: -1 };
   function metroTick(now) {
@@ -58,18 +78,14 @@
   function initField() {
     var canvas = $('#field');
     field = new F.Field(canvas, { layout: layout, epoch: EPOCH, reduced: reduced.matches });
-    var heroOn = true, barOn = false;
+    var heroOn = true;
     sync = function () {
-      var live = !document.hidden && !reduced.matches && document.body.dataset.view === 'human';
-      if (live && heroOn) field.start(); else field.stop();
-      var tick = live && (heroOn || barOn);
-      if (tick && !metro.on) { metro.on = true; requestAnimationFrame(metroTick); }
-      if (!tick) metro.on = false;
+      var live = !document.hidden && !reduced.matches && document.body.dataset.view === 'human' && heroOn;
+      if (live) field.start(); else field.stop();
+      if (live && !metro.on) { metro.on = true; requestAnimationFrame(metroTick); }
+      if (!live) metro.on = false;
     };
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (e) { heroOn = e[0].isIntersecting; sync(); }).observe(canvas);
-      new IntersectionObserver(function (e) { barOn = e[0].isIntersecting; sync(); }).observe($('#bar-grid'));
-    }
+    new IntersectionObserver(function (e) { heroOn = e[0].isIntersecting; sync(); }).observe(canvas);
     document.addEventListener('visibilitychange', sync);
     reduced.addEventListener('change', function () {
       field.reduced = reduced.matches;
@@ -82,22 +98,13 @@
     sync();
   }
 
-  /* ── terminal: commands enter on the beat, steps on the downbeat ── */
-  var S = C.SESSION, term = $('#term'), stepsEl = $('#steps');
+  /* ── Deliver: terminal replay; commands enter on the beat, steps on the downbeat ── */
+  var S = C.DELIVER, term = $('#term'), stepsEl = $('#steps');
   stepsEl.innerHTML = S.map(function (s, i) {
-    return '<li><button type="button" data-step="' + i + '"><span class="n">' + pad2(i + 1) + '</span> ' + esc(s.t) + '</button></li>';
+    return '<li><button type="button" data-step="' + i + '"><span class="n">' + pad2(i + 1) + '</span> ' + esc(s.t) + ' <span class="where">' + s.host + '</span></button></li>';
   }).join('');
   var stepLis = Array.prototype.slice.call(stepsEl.children);
-
-  function outHtml(r) {
-    var o = C.sessionOut(D, r), h = '';
-    if (o) h += (r.err ? '<span class="err">' + esc(o) + '</span>' : r.plain ? esc(o) : hl(o)) + '\n';
-    if (r.exit) h += '<span class="exit">[exit ' + r.exit + ']</span>\n';
-    return h;
-  }
-  function stepHtml(s) {
-    return s.run.map(function (r) { return '<span class="prompt">$</span> <span class="cmd">' + esc(r.cmd) + '</span>\n' + outHtml(r); }).join('\n') + '\n';
-  }
+  function stepHtml(s) { return s.run.map(function (r) { return runHtml(r, s.host); }).join('\n') + '\n'; }
   function mark(i) { stepLis.forEach(function (li, k) { li.classList.toggle('on', k === i); li.classList.toggle('done', k < i); }); }
 
   var P = { token: 0, timer: 0, visible: false, started: false };
@@ -125,7 +132,7 @@
         var r = S[i].run[k];
         if (!(await wait(untilGrid(1), tok))) return;
         var line = document.createElement('span');
-        line.innerHTML = '<span class="prompt">$</span> <span class="cmd"></span><span class="caret"></span>';
+        line.innerHTML = promptHtml(S[i].host) + '<span class="cmd"></span><span class="caret"></span>';
         term.appendChild(line);
         var cmd = line.querySelector('.cmd');
         for (var c = 1; c <= r.cmd.length; c++) {
@@ -177,34 +184,6 @@
       if (P.visible && !P.started) { P.started = true; play(0); }
     }, { threshold: 0.3 }).observe(term);
   }
-
-  /* ── schema roots as tabs ── */
-  var rootsEl = $('#roots');
-  rootsEl.innerHTML = D.schema.map(function (s, i) {
-    return '<button type="button" role="tab" id="tab-' + s.root + '" aria-controls="root-panel" aria-selected="false" tabindex="-1" data-i="' + i + '">' +
-      '<span class="n">' + pad2(i + 1) + '</span> ' + s.root + '</button>';
-  }).join('');
-  var tabs = Array.prototype.slice.call(rootsEl.children);
-  function selectRoot(i, focus) {
-    var s = D.schema[i];
-    tabs.forEach(function (t, k) { t.setAttribute('aria-selected', k === i ? 'true' : 'false'); t.tabIndex = k === i ? 0 : -1; });
-    if (focus) tabs[i].focus();
-    $('#root-panel').setAttribute('aria-labelledby', 'tab-' + s.root);
-    $('#root-name').textContent = s.root;
-    var meta = s.root === 'protocol_version' ? ['string'] : s.root === 'contract' ? [s.props + ' keys'] : [s.title, s.props + ' properties'];
-    $('#root-meta').textContent = meta.join(' / ');
-    $('#root-json').innerHTML = hl(s.json);
-  }
-  rootsEl.addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) selectRoot(+b.dataset.i); });
-  rootsEl.addEventListener('keydown', function (e) {
-    var cur = tabs.indexOf(document.activeElement); if (cur < 0) return;
-    var n = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
-    if (e.key === 'Home') n = -cur; else if (e.key === 'End') n = tabs.length - 1 - cur;
-    if (n === undefined) return;
-    e.preventDefault();
-    selectRoot((cur + n + tabs.length) % tabs.length, true);
-  });
-  selectRoot(0);
 
   /* ── Machine view ── */
   function renderMachine() {

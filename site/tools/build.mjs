@@ -83,20 +83,27 @@ if (args.has('--check')) {
     if (!/<title>[^<]+<\/title>/.test(html)) fail(`${page}: no <title>`);
     if (!/<html lang="/.test(html)) fail(`${page}: no lang`);
   }
+  // The Human page's one-liners must match content.js (the Machine view, llms.txt and index.md use the same lines).
+  const index = fs.readFileSync(rel('index.html'), 'utf8');
+  for (const s of ctx.VampContent.SECTIONS) {
+    if (!index.includes(`data-line="${s.id}">${s.line}</p>`)) fail(`index.html: line for ${s.id} differs from content.js`);
+  }
+  if (!index.includes(ctx.VampContent.TAGLINE.replace('agents.', '<span class="px">agents</span>.'))) fail('index.html: hero differs from content.js TAGLINE');
   for (const m of fs.readFileSync(rel('styles.css'), 'utf8').matchAll(/url\("([^"]+)"\)/g)) {
     if (!fs.existsSync(rel(m[1]))) fail(`styles.css: missing ${m[1]}`);
   }
-  // Transfer weight of the first visit: index.html and everything it loads (og/touch/manifest icons excluded).
+  // Transfer weight of a full visit: index.html and everything it loads (og/touch icons excluded).
   const assets = ['index.html', 'styles.css', 'data.js', 'bat-mask.js', 'field.js', 'content.js', 'app.js',
-    'fonts/archivo-800.woff2', 'fonts/geist-mono.woff2', 'fonts/departure-mono.woff2', 'favicon.svg', 'assets/vampire-icon-112.png'];
+    'fonts/archivo-800.woff2', 'fonts/geist-mono.woff2', 'fonts/departure-mono.woff2', 'favicon.svg',
+    'assets/wing-study-preview.jpg', 'assets/vampire-icon-112.png'];
   let raw = 0, gz = 0;
   const rows = assets.map((a) => {
     const b = fs.readFileSync(rel(a));
-    const z = /\.(woff2|png)$/.test(a) ? b.length : zlib.gzipSync(b, { level: 9 }).length;
+    const z = /\.(woff2|png|jpe?g)$/.test(a) ? b.length : zlib.gzipSync(b, { level: 9 }).length;
     raw += b.length; gz += z;
     return `  ${a.padEnd(30)} ${String(b.length).padStart(7)}  ${String(z).padStart(7)}`;
   });
-  console.log('first visit (bytes)                raw  gzip/br-ish\n' + rows.join('\n') +
+  console.log('full visit (bytes)                 raw  gzip/br-ish\n' + rows.join('\n') +
     `\n  ${'total'.padEnd(30)} ${String(raw).padStart(7)}  ${String(gz).padStart(7)}  (${(gz / 1024).toFixed(1)} KiB over the wire)`);
   if (!failed) console.log('✓ checks passed');
 }

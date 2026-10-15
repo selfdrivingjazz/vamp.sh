@@ -1,64 +1,88 @@
-$ export VAMP_HOME=/tmp/vamp-lander VAMP_ACTOR=agent:lander-human-machine
+# vamp 0.1.0, one take against scratch homes on 15 Oct 2026.
+# Authority VAMP_HOME=/tmp/vamp-site/authority; replica VAMP_HOME=/tmp/vamp-site/replica; cwd /tmp/vamp-site/media.
+# `vamp-server` is the binary shipped with Vampire (path shortened). Full script: steps marked "# ..." below.
 
-$ vamp init --name lander
-{"context":{"library_id":"405a94fd-ce2b-4d2e-ab48-085bb725b595","original_root":null,"state_dir":"/tmp/vamp-lander/libraries/405a94fd-ce2b-4d2e-ab48-085bb725b595"},"name":"lander"}
+# authority: VAMP_HOME=/tmp/vamp-site/authority, cwd /tmp/vamp-site/media
+$ vamp init --name studio
+{"context":{"library_id":"a0df847b-4413-4e3f-b823-fa2b7ff0df25","original_root":null,"state_dir":"/tmp/vamp-site/authority/libraries/a0df847b-4413-4e3f-b823-fa2b7ff0df25"},"name":"studio"}
 [exit 0]
 
 $ vamp media add moon-bat.jpg
-{"created_at":"2026-10-15T07:54:30.224246935+00:00","id":"bc8b501d-ea5a-4c0d-90a8-5c1d5c296698","metadata":{"description":null,"extra":{},"source_id":null,"source_url":null,"tags":[]},"name":"moon-bat.jpg","original":{"blake3":"504de3d9c82ce940bf99747384e890c05751591f1aa27571bb6202d36d22dfc0","byte_size":30552,"hash_state":"hashed","mime":"image/jpeg","modified_ns":1792050578151894665,"path":"/tmp/refs/moon-bat.jpg","storage":"local"},"revision":1,"updated_at":"2026-10-15T07:54:30.224246935+00:00"}
+{"created_at":"2026-10-15T09:55:46.578601796+00:00","id":"7c36410c-bdcb-425f-958b-de92e9e29d66","metadata":{"description":null,"extra":{},"source_id":null,"source_url":null,"tags":[]},"name":"moon-bat.jpg","original":{"blake3":"504de3d9c82ce940bf99747384e890c05751591f1aa27571bb6202d36d22dfc0","byte_size":30552,"hash_state":"hashed","mime":"image/jpeg","modified_ns":1792058052168083395,"path":"/tmp/vamp-site/media/moon-bat.jpg","storage":"local"},"revision":1,"updated_at":"2026-10-15T09:55:46.578601796+00:00"}
 [exit 0]
 
-$ ID=bc8b501d-ea5a-4c0d-90a8-5c1d5c296698
-
-$ cat patch.json
-{"tags":["moon","bat","night"],"description":"the icon, at night"}
+$ vamp media add moon-bat.jpg
+{"created_at":"2026-10-15T09:55:46.578601796+00:00","id":"7c36410c-bdcb-425f-958b-de92e9e29d66","metadata":{"description":null,"extra":{},"source_id":null,"source_url":null,"tags":[]},"name":"moon-bat.jpg","original":{"blake3":"504de3d9c82ce940bf99747384e890c05751591f1aa27571bb6202d36d22dfc0","byte_size":30552,"hash_state":"hashed","mime":"image/jpeg","modified_ns":1792058052168083395,"path":"/tmp/vamp-site/media/moon-bat.jpg","storage":"local"},"revision":1,"updated_at":"2026-10-15T09:55:46.578601796+00:00"}
 [exit 0]
 
-$ vamp media update $ID --patch patch.json --expected-revision 1
-{"created_at":"2026-10-15T07:54:30.224246935+00:00","id":"bc8b501d-ea5a-4c0d-90a8-5c1d5c296698","metadata":{"description":"the icon, at night","extra":{},"source_id":null,"source_url":null,"tags":["bat","moon","night"]},"name":"moon-bat.jpg","original":{"blake3":"504de3d9c82ce940bf99747384e890c05751591f1aa27571bb6202d36d22dfc0","byte_size":30552,"hash_state":"hashed","mime":"image/jpeg","modified_ns":1792050578151894665,"path":"/tmp/refs/moon-bat.jpg","storage":"local"},"revision":2,"updated_at":"2026-10-15T07:54:30.268075690+00:00"}
+$ cat name-tags.json
+{"name":"name-tags","events":["media_added"],"command":["/tmp/vamp-site/bin/name-tags"],"input":"original","output":"observation"}
 [exit 0]
 
-$ vamp media update $ID --patch stale.json --expected-revision 1
-{"error":{"code":"operation_failed","message":"revision conflict: expected 1, current 2"},"protocol_version":"0.1"}
-[exit 1]
-
-$ vamp events --after 1
-[{"actor":"agent:lander-human-machine","asset_id":"bc8b501d-ea5a-4c0d-90a8-5c1d5c296698","created_at":"2026-10-15T07:54:30.268499690+00:00","id":"b9555dc2-1bc7-4233-a71c-82dd04b40bee","kind":"media_updated","library_id":"405a94fd-ce2b-4d2e-ab48-085bb725b595","payload":{"change":"metadata"},"revision":2,"sequence":2}]
+$ vamp processors add --spec name-tags.json
+{"name":"name-tags","registered":true}
 [exit 0]
 
-$ vamp schema | jq -r 'keys[]'
-asset
-asset_view
-collection
-context
-contract
-duplicate_candidate
-error
-event
-job
-metadata_patch
-processor
-protocol_version
-smart_folder
-store_request
-store_response
-tag_group
-tool_request
-tool_response
+$ vamp media add wing-study.png
+{"created_at":"2026-10-15T09:55:46.657749379+00:00","id":"563ebe0c-0f68-4301-a58e-efcf9de6610d","metadata":{"description":null,"extra":{},"source_id":null,"source_url":null,"tags":[]},"name":"wing-study.png","original":{"blake3":"ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014","byte_size":145264,"hash_state":"hashed","mime":"image/png","modified_ns":1792058052225083300,"path":"/tmp/vamp-site/media/wing-study.png","storage":"local"},"revision":1,"updated_at":"2026-10-15T09:55:46.657749379+00:00"}
 [exit 0]
 
-$ vamp explore ensure night-shapes --title "Night shapes" --brief "bat silhouettes, moon discs, 1-bit"
-{"brief":"bat silhouettes, moon discs, 1-bit","folder_id":"4fcc26b5-d985-40d5-b68e-1d4f0b86c142","folders":[{"id":"4fcc26b5-d985-40d5-b68e-1d4f0b86c142","items":0,"name":"Night shapes","path":""}],"items":[],"library_id":"405a94fd-ce2b-4d2e-ab48-085bb725b595","link":"vampire://open?library=405a94fd-ce2b-4d2e-ab48-085bb725b595&folder=4fcc26b5-d985-40d5-b68e-1d4f0b86c142","name":"Night shapes","slug":"night-shapes","summary":""}
+$ vamp jobs run
+{"completed":1,"deferred":0,"evicted":[],"failed":0,"jobs":[{"asset_id":"563ebe0c-0f68-4301-a58e-efcf9de6610d","attempts":1,"created_at":"2026-10-15T09:55:46.658188008+00:00","error":null,"event_id":"f6779511-3273-4445-abe2-124b2e18de38","id":"d71aac9f-ddda-40b1-9895-4284aee93455","processor":{"command":["/tmp/vamp-site/bin/name-tags"],"events":["media_added"],"input":"original","name":"name-tags","output":"observation","timeout_seconds":300},"source_hash":"ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014","status":"completed"}],"thumbnails":{"copied":0,"failed":0,"generated":0,"remaining":0},"uploads":[]}
 [exit 0]
 
-$ vamp explore add night-shapes --name "Moon, 1-bit" --note "threshold at 90: the bat survives as pure ink" --tags moon,dither --url https://vamp.sh/ --file moon-1bit.png
-{"asset":{"description":"threshold at 90: the bat survives as pure ink","folder":"","id":"858e7d14-83f4-42e1-a119-1ae20b458f81","image_url":null,"kind":"file","name":"Moon, 1-bit","rating":0,"revision":2,"source_url":"https://vamp.sh/","tags":["dither","moon"],"trashed":false},"folder":"Night shapes","folder_id":"4fcc26b5-d985-40d5-b68e-1d4f0b86c142","link":"vampire://open?library=405a94fd-ce2b-4d2e-ab48-085bb725b595&folder=4fcc26b5-d985-40d5-b68e-1d4f0b86c142&asset=858e7d14-83f4-42e1-a119-1ae20b458f81","status":"created","warnings":[]}
+$ vamp media thumbnail 563ebe0c-0f68-4301-a58e-efcf9de6610d
+{"byte_size":15791,"height":256,"kind":"thumbnail","mime":"image/jpeg","path":"representations/ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014/thumbnail-6d2cc80e300a463b832028ae9e23de91.jpg","source_hash":"ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014","width":512}
 [exit 0]
 
---- owner (actor local, scratch stand-in for the app) rates 858e7d14-83f4-42e1-a119-1ae20b458f81 5 + more-like-this ---
+$ vamp media preview 563ebe0c-0f68-4301-a58e-efcf9de6610d
+{"byte_size":22820,"height":340,"kind":"preview","mime":"image/jpeg","path":"representations/ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014/preview-c6440d438a394a1a9ea81a09b5a84d7a.jpg","source_hash":"ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014","width":680}
 [exit 0]
 
-$ vamp explore feedback night-shapes
-{"actor":"agent:lander-human-machine","advanced":true,"counts":{"like":1,"more_like_this":1},"cursor":11,"folder_events":[],"folder_id":"4fcc26b5-d985-40d5-b68e-1d4f0b86c142","items":[{"description":"threshold at 90: the bat survives as pure ink","events":[{"actor":"local","at":"2026-10-15T07:54:30.481908191+00:00","kind":"media_updated","payload":{"change":"metadata"},"sequence":11}],"folder":"","id":"858e7d14-83f4-42e1-a119-1ae20b458f81","image_url":null,"kind":"file","name":"Moon, 1-bit","owner_note":"","rating":5,"removed":false,"revision":3,"signals":["like","more_like_this"],"source_url":"https://vamp.sh/","tags":["dither","moon","more-like-this"],"trashed":false}],"since":0,"slug":"night-shapes"}
+$ vamp media inspect 563ebe0c-0f68-4301-a58e-efcf9de6610d
+{"asset":{"created_at":"2026-10-15T09:55:46.657749379+00:00","height":340,"id":"563ebe0c-0f68-4301-a58e-efcf9de6610d","metadata":{"colors":[{"hex":"#e13942","ratio":0.32568359375},{"hex":"#130714","ratio":0.32421875},{"hex":"#481128","ratio":0.2236328125},{"hex":"#f55953","ratio":0.07568359375},{"hex":"#a22a34","ratio":0.03955078125},{"hex":"#78212d","ratio":0.01123046875}],"description":null,"extra":{},"source_id":null,"source_url":null,"tags":[]},"name":"wing-study.png","original":{"blake3":"ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014","byte_size":145264,"hash_state":"hashed","mime":"image/png","modified_ns":1792058052225083300,"path":"/tmp/vamp-site/media/wing-study.png","storage":"local"},"revision":1,"updated_at":"2026-10-15T09:55:46.657749379+00:00","width":680},"observations":[{"asset_id":"563ebe0c-0f68-4301-a58e-efcf9de6610d","created_at":"2026-10-15T09:55:46.769061977+00:00","id":"d71aac9f-ddda-40b1-9895-4284aee93455","kind":"tags","model":"name-tags","processor":"name-tags","source_hash":"ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014","value":{"tags":["wing","study"]}}],"representations":[{"byte_size":22820,"height":340,"kind":"preview","mime":"image/jpeg","path":"representations/ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014/preview-c6440d438a394a1a9ea81a09b5a84d7a.jpg","source_hash":"ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014","width":680},{"byte_size":15791,"height":256,"kind":"thumbnail","mime":"image/jpeg","path":"representations/ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014/thumbnail-6d2cc80e300a463b832028ae9e23de91.jpg","source_hash":"ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014","width":512}],"suggested_tags":["wing","study"]}
 [exit 0]
 
+$ vamp-server allow --user collaborator@example.com
+{"users":["collaborator@example.com"],"tags":[]}
+[exit 0]
+
+# serve the authority (background; its stdout is at the end): vamp-server --home /tmp/vamp-site/authority serve --bind 127.0.0.1:7791 --auth token --no-jobs
+# replica: VAMP_HOME=/tmp/vamp-site/replica (another machine)
+$ vamp contexts remote studio --url http://127.0.0.1:7791 --token $TOKEN
+{"library_id":"a0df847b-4413-4e3f-b823-fa2b7ff0df25","name":"studio","remote_url":"http://127.0.0.1:7791","state_dir":"/tmp/vamp-site/replica/replicas/f34d85bd-6eac-4f50-8925-f2424234a538","sync":{"applied":2,"asset_ids":[],"cursor":5,"kinds":{},"pending_thumbnails":1,"snapshot":true}}
+[exit 0]
+
+$ vamp media search wing
+[{"created_at":"2026-10-15T09:55:46.657749379+00:00","height":340,"id":"563ebe0c-0f68-4301-a58e-efcf9de6610d","metadata":{"colors":[{"hex":"#e13942","ratio":0.32568359375},{"hex":"#130714","ratio":0.32421875},{"hex":"#481128","ratio":0.2236328125},{"hex":"#f55953","ratio":0.07568359375},{"hex":"#a22a34","ratio":0.03955078125},{"hex":"#78212d","ratio":0.01123046875}],"description":null,"extra":{},"source_id":null,"source_url":null,"tags":[]},"name":"wing-study.png","original":{"blake3":"ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014","byte_size":145264,"hash_state":"hashed","mime":"image/png","modified_ns":1792058052225083300,"path":"/tmp/vamp-site/media/wing-study.png","storage":"local"},"revision":1,"updated_at":"2026-10-15T09:55:46.657749379+00:00","width":680}]
+[exit 0]
+
+# agent on the authority accepts the processor's tags; the owner rates
+$ vamp media accept-tags 563ebe0c-0f68-4301-a58e-efcf9de6610d --expected-revision 1
+{"created_at":"2026-10-15T09:55:46.657749379+00:00","height":340,"id":"563ebe0c-0f68-4301-a58e-efcf9de6610d","metadata":{"colors":[{"hex":"#e13942","ratio":0.32568359375},{"hex":"#130714","ratio":0.32421875},{"hex":"#481128","ratio":0.2236328125},{"hex":"#f55953","ratio":0.07568359375},{"hex":"#a22a34","ratio":0.03955078125},{"hex":"#78212d","ratio":0.01123046875}],"description":null,"extra":{},"source_id":null,"source_url":null,"tags":["study","wing"]},"name":"wing-study.png","original":{"blake3":"ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014","byte_size":145264,"hash_state":"hashed","mime":"image/png","modified_ns":1792058052225083300,"path":"/tmp/vamp-site/media/wing-study.png","storage":"local"},"revision":2,"updated_at":"2026-10-15T09:55:48.476514209+00:00","width":680}
+[exit 0]
+
+$ cat rate.json
+{"rating":5,"add_tags":["keep"]}
+[exit 0]
+
+$ vamp media update 7c36410c-bdcb-425f-958b-de92e9e29d66 --patch rate.json --expected-revision 1
+{"created_at":"2026-10-15T09:55:46.578601796+00:00","id":"7c36410c-bdcb-425f-958b-de92e9e29d66","metadata":{"description":null,"extra":{},"rating":5,"source_id":null,"source_url":null,"tags":["keep"]},"name":"moon-bat.jpg","original":{"blake3":"504de3d9c82ce940bf99747384e890c05751591f1aa27571bb6202d36d22dfc0","byte_size":30552,"hash_state":"hashed","mime":"image/jpeg","modified_ns":1792058052168083395,"path":"/tmp/vamp-site/media/moon-bat.jpg","storage":"local"},"revision":2,"updated_at":"2026-10-15T09:55:48.512026406+00:00"}
+[exit 0]
+
+# replica follows the event stream
+$ vamp sync
+{"applied":2,"asset_ids":["563ebe0c-0f68-4301-a58e-efcf9de6610d","7c36410c-bdcb-425f-958b-de92e9e29d66"],"cursor":7,"kinds":{"media_updated":2},"pending_thumbnails":1,"snapshot":false,"thumbnails":{"downloaded":1,"failed":0,"pending":0,"transient":null}}
+[exit 0]
+
+$ vamp media search keep
+[{"created_at":"2026-10-15T09:55:46.578601796+00:00","id":"7c36410c-bdcb-425f-958b-de92e9e29d66","metadata":{"description":null,"extra":{},"rating":5,"source_id":null,"source_url":null,"tags":["keep"]},"name":"moon-bat.jpg","original":{"blake3":"504de3d9c82ce940bf99747384e890c05751591f1aa27571bb6202d36d22dfc0","byte_size":30552,"hash_state":"hashed","mime":"image/jpeg","modified_ns":1792058052168083395,"path":"/tmp/vamp-site/media/moon-bat.jpg","storage":"local"},"revision":2,"updated_at":"2026-10-15T09:55:48.512026406+00:00"}]
+[exit 0]
+
+# authority event log
+$ vamp events --after 0
+[{"actor":"owner","asset_id":"7c36410c-bdcb-425f-958b-de92e9e29d66","created_at":"2026-10-15T09:55:46.579323154+00:00","id":"cfb8553e-e647-4c15-b7e3-c92d5f107662","kind":"media_added","library_id":"a0df847b-4413-4e3f-b823-fa2b7ff0df25","payload":{"storage":"referenced"},"revision":1,"sequence":1},{"actor":"owner","asset_id":"563ebe0c-0f68-4301-a58e-efcf9de6610d","created_at":"2026-10-15T09:55:46.658112593+00:00","id":"f6779511-3273-4445-abe2-124b2e18de38","kind":"media_added","library_id":"a0df847b-4413-4e3f-b823-fa2b7ff0df25","payload":{"storage":"referenced"},"revision":1,"sequence":2},{"actor":"owner","asset_id":"563ebe0c-0f68-4301-a58e-efcf9de6610d","created_at":"2026-10-15T09:55:46.769524414+00:00","id":"3d7eebc7-eba4-41e7-a222-6cd046acc712","kind":"observation_added","library_id":"a0df847b-4413-4e3f-b823-fa2b7ff0df25","payload":{"observation_id":"d71aac9f-ddda-40b1-9895-4284aee93455","processor":"name-tags"},"revision":1,"sequence":3},{"actor":"owner","asset_id":"563ebe0c-0f68-4301-a58e-efcf9de6610d","created_at":"2026-10-15T09:55:46.852407761+00:00","id":"456eda82-3acb-4604-8863-ac5bf3041f9a","kind":"representation_ready","library_id":"a0df847b-4413-4e3f-b823-fa2b7ff0df25","payload":{"kind":"thumbnail","path":"representations/ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014/thumbnail-6d2cc80e300a463b832028ae9e23de91.jpg"},"revision":1,"sequence":4},{"actor":"owner","asset_id":"563ebe0c-0f68-4301-a58e-efcf9de6610d","created_at":"2026-10-15T09:55:46.892797090+00:00","id":"7f49916e-af73-4fc1-a51c-2b30e24278d3","kind":"representation_ready","library_id":"a0df847b-4413-4e3f-b823-fa2b7ff0df25","payload":{"kind":"preview","path":"representations/ff94ef3501d5fcbde45afb7b9d0c0d4d7e1ab24e991026edf2d02418eb3e7014/preview-c6440d438a394a1a9ea81a09b5a84d7a.jpg"},"revision":1,"sequence":5},{"actor":"agent:night-shift","asset_id":"563ebe0c-0f68-4301-a58e-efcf9de6610d","created_at":"2026-10-15T09:55:48.477637909+00:00","id":"53326538-1bf4-4de3-83a0-b835b7d3517b","kind":"media_updated","library_id":"a0df847b-4413-4e3f-b823-fa2b7ff0df25","payload":{"change":"metadata"},"revision":2,"sequence":6},{"actor":"owner","asset_id":"7c36410c-bdcb-425f-958b-de92e9e29d66","created_at":"2026-10-15T09:55:48.517880518+00:00","id":"577288fd-005a-4eee-bd62-6d202384c086","kind":"media_updated","library_id":"a0df847b-4413-4e3f-b823-fa2b7ff0df25","payload":{"change":"metadata"},"revision":2,"sequence":7}]
+[exit 0]
+
+# server stdout
+vamp-server: serving context studio on http://127.0.0.1:7791 (token: vamp-server token --context studio)

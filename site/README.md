@@ -2,9 +2,15 @@
 
 Static, no framework, no runtime CDNs. Opens from `file://` or any static host. Deploy every file here except
 `tools/` and this README. The design reference is `../prototypes/human-machine/`.
+`.github/workflows/pages.yml` deploys it to GitHub Pages on every push to `main` that touches `site/`
+(`https://selfdrivingjazz.github.io/vamp.sh/` until the vamp.sh domain is set in the Pages settings).
 
 ## Files
 
+- `install` (and `install.sh`, a symlink to it): the POSIX `sh` installer behind `curl -fsSL https://vamp.sh/install | sh`.
+  It downloads `vamp-VERSION-TARGET.tar.gz` from the latest GitHub release of this repo, checks it against the release's
+  `SHA256SUMS` and installs `vamp` + `vamp-media` into `${VAMP_INSTALL_DIR:-~/.local/bin}`; `sh -s -- --version X --dir D`,
+  `VAMP_INSTALL_BASE` overrides the download base. `vamp self-update` uses the same releases.
 - `index.html`, `styles.css`, `app.js`: the Human page (hero with the install one-liner and its copy button, then
   Keep, Deliver, Transform, Share, Vampire, Spec footer), the HUMAN | MACHINE switch and the Deliver terminal replay.
   Copy uses the Clipboard API in secure contexts, otherwise selection + `execCommand('copy')`; if both fail the

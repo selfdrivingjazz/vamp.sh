@@ -1,0 +1,190 @@
+#!/bin/sh
+# vamp installer: https://vamp.sh/install (also /install.sh)
+#
+#   curl -fsSL https://vamp.sh/install | sh
+#   curl -fsSL https://vamp.sh/install | sh -s -- --version 0.1.0 --dir ~/bin
+#
+# Installs `vamp` and its optional `vamp-media` helper from the GitHub release of
+# selfdrivingjazz/vamp.sh into ${VAMP_INSTALL_DIR:-$HOME/.local/bin}, after checking the
+# archive against the release's SHA256SUMS. No sudo. Re-running updates in place; so does
+# `vamp self-update`.
+#
+# Options: --version X (default: latest), --dir D, --help.
+# Environment: VAMP_INSTALL_DIR (same as --dir), VAMP_VERSION (same as --version),
+# VAMP_INSTALL_BASE (release download base, default
+# https://github.com/selfdrivingjazz/vamp.sh/releases; it must serve
+# latest/download/<file> and download/v<version>/<file>).
+#
+# Builds: macOS on Apple silicon or Intel; Linux on x86_64 or aarch64 (static binaries,
+# so glibc and musl distributions alike).
+
+# Everything runs from main, called on the last line, so a truncated download runs nothing.
+set -eu
+
+say() { printf '%s\n' "$*"; }
+err() {
+	printf 'vamp install: %s\n' "$*" >&2
+	exit 1
+}
+
+usage() {
+	cat <<'EOF'
+usage: curl -fsSL https://vamp.sh/install | sh -s -- [--version X] [--dir DIR]
+
+Installs vamp and vamp-media (checksum-verified) into DIR, default
+${VAMP_INSTALL_DIR:-$HOME/.local/bin}. Re-run to update, or run `vamp self-update`.
+  --version X  install release X instead of the latest (env VAMP_VERSION)
+  --dir DIR    install directory (env VAMP_INSTALL_DIR)
+Env VAMP_INSTALL_BASE overrides the release download base.
+EOF
+}
+
+detect_target() {
+	os="$(uname -s)"
+	arch="$(uname -m)"
+	case "$os" in
+	Darwin)
+		# An x86_64 shell under Rosetta on Apple silicon still gets the native build.
+		if [ "$arch" = x86_64 ] && [ "$(sysctl -n sysctl.proc_translated 2>/dev/null || echo 0)" = 1 ]; then
+			arch=arm64
+		fi
+		case "$arch" in
+		arm64 | aarch64) target=aarch64-apple-darwin ;;
+		x86_64) target=x86_64-apple-darwin ;;
+		*) err "unsupported Mac CPU '$arch' (builds exist for Apple silicon and Intel)" ;;
+		esac
+		;;
+	Linux)
+		# The Linux builds are static (musl), so they run on glibc (Debian, Ubuntu, Fedora…)
+		# and musl (Alpine) alike; only the CPU matters.
+		case "$arch" in
+		x86_64 | amd64) target=x86_64-unknown-linux-musl ;;
+		aarch64 | arm64) target=aarch64-unknown-linux-musl ;;
+		armv7* | armv6* | armhf | i?86) err "unsupported Linux CPU '$arch': vamp needs a 64-bit x86_64 or aarch64 system" ;;
+		*) err "unsupported Linux CPU '$arch' (builds exist for x86_64 and aarch64)" ;;
+		esac
+		;;
+	MINGW* | MSYS* | CYGWIN* | Windows_NT) err "Windows is not supported yet; use WSL (Linux x86_64/aarch64)" ;;
+	*) err "unsupported OS '$os' (builds exist for macOS and Linux)" ;;
+	esac
+}
+
+download() { # URL FILE
+	if command -v curl >/dev/null 2>&1; then
+		curl -fsSL --retry 3 -o "$2" "$1"
+	elif command -v wget >/dev/null 2>&1; then
+		wget -q -O "$2" "$1"
+	else
+		err "needs curl or wget"
+	fi
+}
+
+sha256() {
+	if command -v sha256sum >/dev/null 2>&1; then
+		sha256sum "$1" | cut -d' ' -f1
+	elif command -v shasum >/dev/null 2>&1; then
+		shasum -a 256 "$1" | cut -d' ' -f1
+	elif command -v openssl >/dev/null 2>&1; then
+		openssl dgst -sha256 "$1" | sed 's/.*= *//'
+	else
+		err "needs sha256sum, shasum or openssl to verify the download"
+	fi
+}
+
+path_advice() {
+	case ":${PATH}:" in
+	*":$dir:"*) return ;;
+	esac
+	case "$(basename "${SHELL:-sh}")" in
+	zsh) rc="$HOME/.zshrc" ;;
+	bash) if [ "$(uname -s)" = Darwin ]; then rc="$HOME/.bash_profile"; else rc="$HOME/.bashrc"; fi ;;
+	fish)
+		say ""
+		say "$dir is not on your PATH. Add it with:"
+		say "  fish_add_path $dir"
+		return
+		;;
+	*) rc="$HOME/.profile" ;;
+	esac
+	say ""
+	say "$dir is not on your PATH. Add it with:"
+	say "  echo 'export PATH=\"$dir:\$PATH\"' >> $rc && . $rc"
+}
+
+main() {
+	version="${VAMP_VERSION:-}"
+	dir="${VAMP_INSTALL_DIR:-$HOME/.local/bin}"
+	while [ "$#" -gt 0 ]; do
+		case "$1" in
+		--version) [ "$#" -ge 2 ] || err "--version needs a value"; version="$2"; shift 2 ;;
+		--version=*) version="${1#*=}"; shift ;;
+		--dir) [ "$#" -ge 2 ] || err "--dir needs a value"; dir="$2"; shift 2 ;;
+		--dir=*) dir="${1#*=}"; shift ;;
+		-h | --help) usage; exit 0 ;;
+		*) err "unknown option '$1' (try --help)" ;;
+		esac
+	done
+	version="${version#v}"
+	base="${VAMP_INSTALL_BASE:-https://github.com/selfdrivingjazz/vamp.sh/releases}"
+	base="${base%/}"
+	if [ -n "$version" ]; then
+		url="$base/download/v$version"
+	else
+		url="$base/latest/download"
+	fi
+
+	detect_target
+	command -v tar >/dev/null 2>&1 || err "needs tar"
+
+	tmp="$(mktemp -d 2>/dev/null || mktemp -d -t vamp)"
+	trap 'rm -rf "$tmp"' EXIT
+	trap 'exit 130' INT TERM
+
+	download "$url/SHA256SUMS" "$tmp/SHA256SUMS" ||
+		err "could not fetch $url/SHA256SUMS (${version:+no release v$version? }check your connection)"
+	line="$(grep -E "[ *]vamp-[^ ]+-$target\.tar\.gz\$" "$tmp/SHA256SUMS" || true)"
+	[ -n "$line" ] || err "this release has no build for $target"
+	want="$(printf '%s\n' "$line" | cut -d' ' -f1)"
+	asset="$(printf '%s\n' "$line" | sed 's/^[0-9a-fA-F]* [ *]//')"
+	new="${asset#vamp-}"
+	new="${new%-"$target".tar.gz}"
+
+	say "downloading $asset"
+	download "$url/$asset" "$tmp/$asset" || err "could not fetch $url/$asset"
+	got="$(sha256 "$tmp/$asset")"
+	[ "$got" = "$want" ] || err "checksum mismatch for $asset (expected $want, got $got); nothing installed"
+	tar -xzf "$tmp/$asset" -C "$tmp" || err "could not unpack $asset"
+	src="$tmp/vamp-$new-$target"
+	[ -f "$src/vamp" ] || err "$asset has no vamp binary"
+
+	old=""
+	[ -x "$dir/vamp" ] && old="$("$dir/vamp" --version 2>/dev/null | sed 's/^vamp //' || true)"
+	mkdir -p "$dir" || err "cannot create $dir (pick another with --dir)"
+	for bin in vamp-media vamp; do
+		[ -f "$src/$bin" ] || continue
+		# Copy beside the target, then rename over it: a running vamp keeps its file.
+		cp "$src/$bin" "$dir/.$bin.install.$$" 2>/dev/null || err "cannot write to $dir (pick another with --dir)"
+		chmod 755 "$dir/.$bin.install.$$"
+		mv -f "$dir/.$bin.install.$$" "$dir/$bin"
+	done
+	"$dir/vamp" --version >/dev/null 2>&1 || err "installed $dir/vamp does not run on this system ($target)"
+
+	if [ -z "$old" ]; then
+		say "installed vamp $new ($target) in $dir"
+	elif [ "$old" = "$new" ]; then
+		say "vamp $new is up to date in $dir (reinstalled)"
+	else
+		say "updated vamp $old -> $new in $dir"
+	fi
+	found="$(command -v vamp 2>/dev/null || true)"
+	if [ -n "$found" ] && [ "$found" != "$dir/vamp" ]; then
+		case ":${PATH}:" in
+		*":$dir:"*) say "note: $found comes first on your PATH and shadows $dir/vamp" ;;
+		esac
+	fi
+	path_advice
+	say ""
+	say "next: vamp guide    (manual)    vamp self-update    (update later)"
+}
+
+main "$@"

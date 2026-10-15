@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 — VAMP</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#08040f">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<main class="lost">
+  <canvas class="field" id="field" aria-hidden="true"></canvas>
+  <a class="brand" href="/" aria-label="VAMP, home">VAMP<span>.sh</span></a>
+  <h1><span class="px">404</span><br>Tacet.</h1>
+  <p class="cap">Nothing plays here. <a href="/">D.C., from the top</a></p>
+</main>
+<script src="/bat-mask.js"></script>
+<script src="/field.js"></script>
+<script>
+  (document.fonts ? document.fonts.load('500 11px "Geist Mono"') : Promise.resolve()).then(function () {
+    new VampField.Field(document.getElementById('field'), {
+      reduced: true, epoch: 0,
+      layout: function (w, h) { return w < 600 ? { cx: w * 0.5, cy: h * 0.36, r: w * 0.32 } : { cx: w * 0.72, cy: h * 0.45, r: Math.min(w * 0.2, h * 0.3) }; }
+    });
+  });
+</script>
+</body>
+</html>

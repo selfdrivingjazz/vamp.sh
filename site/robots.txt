@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /tools/
+
+# Plain-text twin for agents: https://vamp.sh/llms.txt (markdown: https://vamp.sh/index.md)

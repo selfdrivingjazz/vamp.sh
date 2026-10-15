@@ -49,23 +49,37 @@
   $('#roots').innerHTML = D.schema.map(function (s) { return '<li>' + s.root + '</li>'; }).join('');
   $('#schema-count').textContent = D.schema.filter(function (s) { return s.root !== 'contract' && s.root !== 'protocol_version'; }).length;
 
-  /* ── the clock (shared by the field and the terminal) ── */
+  /* ── the clock (shared by the field, its stepper and the terminal) ── */
   /* ms until the next multiple of `beats` on the shared clock */
   function untilGrid(beats) {
     var span = BEAT * beats, t = performance.now() - EPOCH;
     return Math.ceil(t / span + 1e-6) * span - t;
   }
 
+  /* The moon: right of the headline on wide screens, above it on phones. */
   function layout(w, h) {
-    if (w < 600) return { cx: w * 0.5, cy: w * 0.52, r: w * 0.3 };
-    if (w < 1100) return { cx: w * 0.7, cy: h * 0.33, r: Math.min(w * 0.22, h * 0.24) };
-    return { cx: w * 0.75, cy: h * 0.45, r: Math.min(w * 0.22, h * 0.35) };
+    if (w < 600) return { cx: w * 0.5, cy: w * 0.44, r: w * 0.29 };
+    if (w < 1100) return { cx: w * 0.75, cy: h * 0.44, r: Math.min(w * 0.19, h * 0.3) };
+    return { cx: w * 0.75, cy: h * 0.44, r: Math.min(w * 0.22, h * 0.33) };
+  }
+
+  /* The stepper sits under the moon, counting the figure's beats. */
+  var stepper = $('#stepper'), barEl = $('#bar'), beatEls = all('#beats li');
+  function onBeat(n) {
+    barEl.textContent = String((n >> 2) + 1).padStart(4, '0');
+    for (var i = 0; i < 4; i++) beatEls[i].classList.toggle('on', i === (n & 3));
+  }
+  function placeStepper(g) {
+    stepper.style.left = g.cx + 'px';
+    stepper.style.top = (g.cy + g.r * 1.16) + 'px';
   }
 
   var field, sync = function () {};
   function initField() {
     var canvas = $('#field');
-    field = new F.Field(canvas, { layout: layout, epoch: EPOCH, reduced: reduced.matches });
+    field = new F.Field(canvas, { layout: layout, epoch: EPOCH, reduced: reduced.matches, onBeat: onBeat });
+    placeStepper(field.geom);
+    onBeat(0);
     var heroOn = true;
     sync = function () {
       var live = !document.hidden && !reduced.matches && document.body.dataset.view === 'human' && heroOn;
@@ -79,7 +93,10 @@
       sync();
     });
     var raf = 0;
-    new ResizeObserver(function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(function () { field.resize(); }); }).observe(canvas);
+    new ResizeObserver(function () {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(function () { field.resize(); placeStepper(field.geom); });
+    }).observe(canvas);
     sync();
   }
 

@@ -3,11 +3,11 @@
  * The moon's dense cells are the hex digits of moon-bat.jpg's real BLAKE3 digest
  * (see session.log), so the picture is literally drawn from its catalog data.
  *
- * Motion is one seamless loop on the 92 BPM clock, a continuous function of time (no steps, no holds):
- *   the wings flap once every 2 beats (a sine, so the stroke eases through top and bottom),
- *   a faint ring leaves the rim on each downstroke and fades out before the next,
- *   the moon breathes once per bar.
- * Every term is periodic in 4 beats, so the loop point is invisible.
+ * Motion is the 92 BPM figure, stepped (eight redraws per beat) and looping without rests:
+ *   the wings lift on beats 1 and 3 and settle on 2 and 4 (two strokes a bar),
+ *   the moon swells on each downbeat,
+ *   a ring leaves the rim once, on beat 3 of the first bar after load (after the reveal), and never again.
+ * The Bayer matrix and the digest digits shift on every beat, so the texture re-voices like a comping hand.
  *
  * Works in the browser (canvas) and in Node (ascii() only, for llms.txt).
  */
@@ -16,12 +16,11 @@
 
   var TEMPO = 92;
   var BEAT_MS = 60000 / TEMPO;
-  var FRAME_MS = 1000 / 30; // redraw cap
+  var STEPS = 8; // redraws per beat
   var HASH = '504de3d9c82ce940bf99747384e890c05751591f1aa27571bb6202d36d22dfc0';
   var RAMP = ' .:-=+*#%@';
   var HEX = '0123456789abcdef';
   var BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
-  var TAU = Math.PI * 2;
 
   // Palette from the icon (BRIEF.md). Index = colour slot in the glyph atlas.
   var COLORS = ['#ef514f', '#df3f46', '#ce2b39', '#59142d', '#3f0d28', '#290922', '#ce2b39'];
@@ -48,47 +47,48 @@
 
   function smooth(t) { t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); }
 
-  // The figure at continuous time t (in beats). Periodic in 4 beats.
-  function figure(t) {
-    var flap = t / 2;                         // one wingbeat per 2 beats
-    var ring = flap - Math.floor(flap);        // 0..1 within the wingbeat
+  // The figure on beat n (counted from the clock's origin), at step p (0..1) within the beat.
+  function figure(n, p) {
+    var beat = n & 3;
     return {
-      lift: Math.sin(TAU * flap),              // -1 (down) .. 1 (up), eased at both ends
-      ring: ring,
-      ringA: Math.sin(Math.PI * ring),         // fades in and out: no pop at the loop point
-      swell: 0.5 - 0.5 * Math.cos(TAU * t / 4) // once per bar
+      swell: beat === 0 ? (1 - p) * (1 - p) : 0,
+      ring: n === 2 ? p : -1,                              // once: beat 3 of the first bar, after the reveal
+      lift: beat === 0 || beat === 2 ? smooth(p) : 1 - smooth(p),
+      shift: beat
     };
   }
 
   // One cell. dx, dy in moon radii. Returns glyph char code slot or -1, and colour.
   // out = [glyphIndex (0..9 ramp, 10..25 hex), colour]
-  function cell(dx, dy, col, row, f, out) {
-    // Wings flap by sampling the mask lower (up) or higher (down), more toward the tips.
+  function cell(dx, dy, col, row, f, hashOff, out) {
+    // Wings lift by sampling the mask lower, more toward the tips.
     var ax = dx < 0 ? -dx : dx;
     var wing = smooth((ax - 0.22) / 1.0);
-    var by = dy + f.lift * (0.02 + 0.17 * wing * wing);
+    var by = dy + f.lift * (0.035 + 0.2 * wing * wing);
     var d = Math.sqrt(dx * dx + dy * dy);
-    var bx = BAYER[(row & 3) * 4 + (col & 3)] / 16 - 0.5;
+    var bx = BAYER[((row + f.shift * 3) & 3) * 4 + ((col + f.shift) & 3)] / 16 - 0.5;
 
     if (isBat(dx, by)) { out[0] = -1; return; }
 
     var L, c;
-    var rim = 1 + 0.02 * f.swell;
+    var rim = 1 + 0.025 * f.swell;
     if (d < rim) {
       // 1-bit ordered dither inside the moon: a cell is a digest digit or nothing.
-      L = 0.82 - 0.26 * (dx * 0.45 + dy * 0.8) + 0.14 * f.swell - 0.36 * Math.pow(d / rim, 8);
+      L = 0.82 - 0.26 * (dx * 0.45 + dy * 0.8) + 0.2 * f.swell - 0.36 * Math.pow(d / rim, 8);
       if (L + bx * 0.9 < 0.5) { out[0] = -1; return; }
       var g = (dy + 1) * 0.42 + (dx + 1) * 0.08;
-      out[0] = 10 + HEX.indexOf(HASH.charAt((row * 11 + col) & 63));
+      out[0] = 10 + HEX.indexOf(HASH.charAt(((row * 11 + col) + hashOff) & 63));
       out[1] = C_MOON + (g < 0.42 ? 0 : g < 0.66 ? 1 : 2);
       return;
     }
 
-    // Halo and the ring that leaves the rim on each downstroke.
+    // Halo, and the one ring.
     L = 0.46 * Math.exp(-(d - 1) * 1.9);
     c = d < 1.28 ? C_HALO : d < 1.8 ? C_HALO + 1 : C_FAR;
-    var rr = 1.08 + f.ring * 1.3;
-    if (Math.abs(d - rr) < 0.04) { L += 0.3 * f.ringA * (1 - f.ring); if (f.ring < 0.5) c = C_RING; }
+    if (f.ring >= 0) {
+      var rr = 1.08 + f.ring * 1.3;
+      if (Math.abs(d - rr) < 0.04) { L += 0.36 * (1 - f.ring); if (f.ring < 0.5) c = C_RING; }
+    }
     if (d > 2.1) L = Math.max(L, 0.055 + 0.035 * Math.sin(col * 0.21 + row * 0.37));
     var lv = Math.round(L * 9 + bx * 1.6);
     out[0] = lv < 1 ? -1 : lv > 9 ? 9 : lv; out[1] = c;
@@ -107,7 +107,7 @@
     var aspect = opts.aspect || 0.5; // cell width / cell height
     var r = opts.radius || rows * 0.34;
     var cx = cols / 2, cy = rows / 2;
-    var f = figure(0.5); // wings at the top of the stroke
+    var f = figure(0, 0.99);
     var out = [0, 0], lines = [];
     for (var y = 0; y < rows; y++) {
       var s = '';
@@ -115,7 +115,7 @@
         var dx = ((x + 0.5 - cx) * aspect) / r, dy = (y + 0.5 - cy) / r;
         var d = Math.sqrt(dx * dx + dy * dy);
         if (d > 1.3) { s += ' '; continue; }
-        cell(dx, dy, x, y, f, out);
+        cell(dx, dy, x, y, f, 0, out);
         s += out[0] < 0 ? ' ' : out[0] >= 10 ? HEX.charAt(out[0] - 10) : RAMP.charAt(out[0]);
       }
       lines.push(s.replace(/\s+$/, ''));
@@ -131,7 +131,8 @@
     this.opts = opts;
     this.reduced = !!opts.reduced;
     this.running = false;
-    this.lastDraw = 0;
+    this.lastStep = -1;
+    this.lastBeat = -1;
     this.revealStart = 0;
     this.out = [0, 0];
     batBits();
@@ -161,9 +162,9 @@
     for (var i = 0; i <= this.cols; i++) this.xs[i] = Math.round(i * this.cw * dpr);
     for (var j = 0; j <= this.rows; j++) this.ys[j] = Math.round(j * this.ch * dpr);
     this.state = new Int16Array(this.cols * this.rows).fill(-1); // resizing cleared the canvas
-    this.lastDraw = 0;
-    // Still frame (reduced motion, OG card, 404): wings at the top of the stroke.
-    if (!this.running && (this.reduced || this.revealStart)) this.draw(0.5, 1);
+    this.lastStep = -1;
+    // Still frame (reduced motion, OG card, 404): just after the downbeat, moon swelled.
+    if (!this.running && (this.reduced || this.revealStart)) this.draw(0, 0.25, 1);
   };
 
   Field.prototype.buildAtlas = function (font) {
@@ -183,9 +184,9 @@
 
   /* Only cells whose glyph changed since the last frame are cleared and redrawn: the moon and halo
      are mostly still, so a frame of the flap touches a few hundred cells, not ~15k. */
-  Field.prototype.draw = function (t, reveal) {
+  Field.prototype.draw = function (n, p, reveal) {
     var ctx = this.ctx, dpr = this.dpr, cw = this.cw, ch = this.ch, g = this.geom;
-    var f = figure(t), out = this.out, atlas = this.atlas, state = this.state, xs = this.xs, ys = this.ys;
+    var f = figure(n, p), out = this.out, atlas = this.atlas, state = this.state, xs = this.xs, ys = this.ys;
     var sw = cw * dpr, sh = ch * dpr, cols = this.cols;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     for (var row = 0; row < this.rows; row++) {
@@ -193,7 +194,7 @@
       for (var col = 0; col < cols; col++) {
         var code = -1;
         if (reveal >= 1 || hash2((col / 4) | 0, (row / 3) | 0) <= reveal) {
-          cell(((col + 0.5) * cw - g.cx) / g.r, dy, col, row, f, out);
+          cell(((col + 0.5) * cw - g.cx) / g.r, dy, col, row, f, n, out);
           if (out[0] >= 0) code = out[0] * 8 + out[1];
         }
         var k = row * cols + col;
@@ -210,9 +211,13 @@
     if (!this.running) return;
     requestAnimationFrame(this.frame);
     if (!this.revealStart) this.revealStart = now;
-    if (now - this.lastDraw < FRAME_MS) return;
-    this.lastDraw = now;
-    this.draw((now - this.opts.epoch) / BEAT_MS, smooth((now - this.revealStart) / 1100));
+    var step = Math.floor((now - this.opts.epoch) / (BEAT_MS / STEPS));
+    var reveal = smooth((now - this.revealStart) / 1100);
+    if (step === this.lastStep && reveal >= 1) return;
+    this.lastStep = step;
+    var n = Math.floor(step / STEPS);
+    if (n !== this.lastBeat) { this.lastBeat = n; if (this.opts.onBeat) this.opts.onBeat(n); }
+    this.draw(n, (step % STEPS) / STEPS, reveal);
   };
 
   Field.prototype.start = function () {

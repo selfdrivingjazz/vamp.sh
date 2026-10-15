@@ -137,7 +137,7 @@ main() {
 	command -v tar >/dev/null 2>&1 || err "needs tar"
 
 	tmp="$(mktemp -d 2>/dev/null || mktemp -d -t vamp)"
-	trap 'rm -rf "$tmp"' EXIT
+	trap 'rm -rf "$tmp"; rm -f "$dir/.vamp.install.$$" "$dir/.vamp-media.install.$$"' EXIT
 	trap 'exit 130' INT TERM
 
 	download "$url/SHA256SUMS" "$tmp/SHA256SUMS" ||
@@ -160,14 +160,20 @@ main() {
 	old=""
 	[ -x "$dir/vamp" ] && old="$("$dir/vamp" --version 2>/dev/null | sed 's/^vamp //' || true)"
 	mkdir -p "$dir" || err "cannot create $dir (pick another with --dir)"
-	for bin in vamp-media vamp; do
+	# Stage beside the targets and check the new vamp runs before renaming over the old files:
+	# a running vamp keeps its inode, and a failure leaves the old install alone.
+	bins=""
+	for bin in vamp vamp-media; do
 		[ -f "$src/$bin" ] || continue
-		# Copy beside the target, then rename over it: a running vamp keeps its file.
 		cp "$src/$bin" "$dir/.$bin.install.$$" 2>/dev/null || err "cannot write to $dir (pick another with --dir)"
 		chmod 755 "$dir/.$bin.install.$$"
+		bins="$bins $bin"
+	done
+	"$dir/.vamp.install.$$" --version >/dev/null 2>&1 ||
+		err "the $target build does not run on this system; nothing was replaced"
+	for bin in $bins; do
 		mv -f "$dir/.$bin.install.$$" "$dir/$bin"
 	done
-	"$dir/vamp" --version >/dev/null 2>&1 || err "installed $dir/vamp does not run on this system ($target)"
 
 	if [ -z "$old" ]; then
 		say "installed vamp $new ($target) in $dir"

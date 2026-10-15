@@ -184,7 +184,7 @@ main() {
 	fi
 	path_advice
 	say ""
-	say "next: vamp guide    (manual)    vamp self-update    (update later)"
+	say "Run 'vamp guide' for the manual. Update later with 'vamp self-update' (or re-run this installer)."
 }
 
 main "$@"

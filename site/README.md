@@ -5,13 +5,15 @@ Static, no framework, no runtime CDNs. Opens from `file://` or any static host. 
 
 ## Files
 
-- `index.html`, `styles.css`, `app.js`: the Human page (hero, then Keep, Deliver, Transform, Share, Vampire, Spec
-  footer), the HUMAN | MACHINE switch and the Deliver terminal replay.
+- `index.html`, `styles.css`, `app.js`: the Human page (hero with the install one-liner and its copy button, then
+  Keep, Deliver, Transform, Share, Vampire, Spec footer), the HUMAN | MACHINE switch and the Deliver terminal replay.
+  Copy uses the Clipboard API in secure contexts, otherwise selection + `execCommand('copy')`; if both fail the
+  command is left selected.
 - `field.js` + `bat-mask.js`: the ASCII bat and moon on the stepped 92 BPM figure (wings lift on 1 and 3, settle on 2 and 4, looping without rests; one ring on the first bar only), with the BAR/beat stepper under the moon. Only changed cells are redrawn. The canvas pauses offscreen, in
   hidden tabs and in the Machine view; with reduced motion it shows a single still frame.
-- `content.js`: the tagline, the five section lines, every artifact and the complete plain reference. It renders the
-  Machine view (`#machine`) and produces `llms.txt` and `index.md`. `build.mjs --check` fails if the lines in
-  `index.html` drift from it.
+- `content.js`: the tagline, the install one-liner, the five section lines, every artifact and the complete plain
+  reference. It renders the Machine view (`#machine`) and produces `llms.txt` and `index.md`. `build.mjs --check`
+  fails if the tagline, one-liner or lines in `index.html` drift from it.
 - `data.js`: generated from the protocol repo (schema bundle, `contract.json`) and `vamp commands`.
 - `session.log`: the raw take every artifact is cut from (vamp 0.1.0, a scratch authority served by `vamp-server` on
   127.0.0.1 and a scratch replica). `assets/wing-study-preview.jpg` is the preview VAMP generated in that take.

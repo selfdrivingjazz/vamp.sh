@@ -10,6 +10,8 @@
   'use strict';
 
   var TAGLINE = 'A visual media protocol for humans and agents.';
+  /* The hero's one-liner (index.html#install-cmd must match: build.mjs --check). */
+  var INSTALL = 'curl -fsSL https://vamp.sh/install | sh';
   var ID_M = '7c36410c-bdcb-425f-958b-de92e9e29d66';
   var ID_W = '563ebe0c-0f68-4301-a58e-efcf9de6610d';
   var BLAKE_M = '504de3d9c82ce940bf99747384e890c05751591f1aa27571bb6202d36d22dfc0';
@@ -104,9 +106,12 @@
       leader('LICENSE', 'MIT: the operation contract, Rust types and generated JSON Schemas'),
       leader('SOURCE', 'not public yet (soon); no crates.io or npm package yet'),
       leader('BINDING', D.binding),
+      leader('INSTALL', INSTALL + '  (vamp CLI; macOS, Linux)'),
       leader('VIEWER', 'Vampire, Mac/iOS, proprietary, one-time purchase (soon); ships the vamp CLI and vamp-server')
     ].join('\n')), '');
     p('VAMP keeps a catalog of your media without taking the media: files stay where they are, the catalog holds ids, revisions, metadata and what your tools observe. One authority writes; replicas on other machines and the agents on them follow its ordered event stream.', '');
+    p('## Install', '', fence('sh', INSTALL), '');
+    p('Installs the `vamp` CLI and its `vamp-media` helper from the latest GitHub release of `selfdrivingjazz/vamp.sh`: macOS (Apple silicon, Intel) and Linux (x86_64, aarch64; static, any distro). The installer verifies the archive against `SHA256SUMS` and writes to `~/.local/bin`; set `VAMP_INSTALL_DIR`, or pass `sh -s -- --dir DIR`, for another directory, and `--version X` to pin a release. Update with `vamp self-update` (`--check` only reports), or run the installer again. The script is also at `https://vamp.sh/install.sh`.', '');
 
     head('keep');
     p('The catalog is reference-only. An asset has a stable UUID independent of its path; its original is the file in place, identified by the BLAKE3 digest of its exact bytes. Adding the same file at the same path again returns the same asset. Changed bytes need an explicit `vamp media refresh`, which keeps the asset id and advances its revision. Removing moves an asset to the trash; VAMP never modifies or deletes an original, with one opt-in exception: evicting the local copy after a verified cloud upload (`--delete-local-after-upload`). Bytes that arrive without a file (browser clips, uploads, exploration findings) are stored in the library inbox. Optional cloud storage (S3 or a folder) holds a copy of originals only when you configure it. `vamp export` writes metadata and locators.', '');
@@ -148,7 +153,7 @@
     }).join('\n'), '');
 
     p('## Links', '');
-    p('- [Human view](index.html)', '- [llms.txt](llms.txt)', '- [index.md](index.md): this page as markdown', '- [session.log](session.log): the raw take (vamp 0.1.0, scratch homes, 15 Oct 2026)', '- Protocol source and packages: soon', '- Vampire: soon');
+    p('- [Human view](index.html)', '- [llms.txt](llms.txt)', '- [index.md](index.md): this page as markdown', '- [install](install): the installer script (`' + INSTALL + '`)', '- [session.log](session.log): the raw take (vamp 0.1.0, scratch homes, 15 Oct 2026)', '- Protocol source and packages: soon', '- Vampire: soon');
     return L.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
   }
 
@@ -157,7 +162,7 @@
   function banner() { return root.VampField.ascii(76, 27, { aspect: 0.5, radius: 10.5 }); }
 
   var api = {
-    TAGLINE: TAGLINE, SECTIONS: SECTIONS, KEEP: KEEP, DELIVER: DELIVER, PROCESSOR_SPEC: PROCESSOR_SPEC,
+    TAGLINE: TAGLINE, INSTALL: INSTALL, SECTIONS: SECTIONS, KEEP: KEEP, DELIVER: DELIVER, PROCESSOR_SPEC: PROCESSOR_SPEC,
     INSPECT: INSPECT, COLORS: COLORS, EVENTS: EVENTS, ALLOW: ALLOW, ID_W: ID_W, ID_M: ID_M,
     machine: function (D) {
       return banner() + '\n\nVAMP.SH :: MACHINE-READABLE INDEX\n' +

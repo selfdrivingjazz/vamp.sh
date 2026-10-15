@@ -89,6 +89,7 @@ if (args.has('--check')) {
     if (!index.includes(`data-line="${s.id}">${s.line}</p>`)) fail(`index.html: line for ${s.id} differs from content.js`);
   }
   if (!index.includes(ctx.VampContent.TAGLINE.replace(/(humans|agents)/g, '<span class="px">$1</span>'))) fail('index.html: hero differs from content.js TAGLINE');
+  if (!index.includes(`<code id="install-cmd">${ctx.VampContent.INSTALL}</code>`)) fail('index.html: install one-liner differs from content.js INSTALL');
   for (const m of fs.readFileSync(rel('styles.css'), 'utf8').matchAll(/url\("([^"]+)"\)/g)) {
     if (!fs.existsSync(rel(m[1]))) fail(`styles.css: missing ${m[1]}`);
   }

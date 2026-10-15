@@ -12,10 +12,19 @@ STATUS ............. experimental
 LICENSE ............ MIT: the operation contract, Rust types and generated JSON Schemas
 SOURCE ............. not public yet (soon); no crates.io or npm package yet
 BINDING ............ local CLI; discover operations with vamp commands and types with vamp schema
+INSTALL ............ curl -fsSL https://vamp.sh/install | sh  (vamp CLI; macOS, Linux)
 VIEWER ............. Vampire, Mac/iOS, proprietary, one-time purchase (soon); ships the vamp CLI and vamp-server
 ```
 
 VAMP keeps a catalog of your media without taking the media: files stay where they are, the catalog holds ids, revisions, metadata and what your tools observe. One authority writes; replicas on other machines and the agents on them follow its ordered event stream.
+
+## Install
+
+```sh
+curl -fsSL https://vamp.sh/install | sh
+```
+
+Installs the `vamp` CLI and its `vamp-media` helper from the latest GitHub release of `selfdrivingjazz/vamp.sh`: macOS (Apple silicon, Intel) and Linux (x86_64, aarch64; static, any distro). The installer verifies the archive against `SHA256SUMS` and writes to `~/.local/bin`; set `VAMP_INSTALL_DIR`, or pass `sh -s -- --dir DIR`, for another directory, and `--version X` to pin a release. Update with `vamp self-update` (`--check` only reports), or run the installer again. The script is also at `https://vamp.sh/install.sh`.
 
 ## Keep
 
@@ -273,6 +282,7 @@ remote_attach, sync, sync_wait, representation, download_progress, download_prio
 
 - [Human view](index.html)
 - [index.md](index.md): this page as markdown
+- [install](install): the installer script (`curl -fsSL https://vamp.sh/install | sh`)
 - [session.log](session.log): the raw take (vamp 0.1.0, scratch homes, 15 Oct 2026)
 - Protocol source and packages: soon
 - Vampire: soon

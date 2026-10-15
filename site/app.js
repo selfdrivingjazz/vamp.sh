@@ -49,6 +49,40 @@
   $('#roots').innerHTML = D.schema.map(function (s) { return '<li>' + s.root + '</li>'; }).join('');
   $('#schema-count').textContent = D.schema.filter(function (s) { return s.root !== 'contract' && s.root !== 'protocol_version'; }).length;
 
+  /* ── hero: copy the install one-liner. The Clipboard API needs a secure context; elsewhere (or if it is
+     refused) select the command and use execCommand('copy'); if that fails too, leave it selected. ── */
+  var copyBtn = $('.copy'), copyCode = document.getElementById(copyBtn.dataset.copy), copyStatus = $('#copy-status');
+  var copyTimer = 0;
+  function selectCommand() {
+    var range = document.createRange(), sel = window.getSelection();
+    range.selectNodeContents(copyCode);
+    sel.removeAllRanges();
+    sel.addRange(range);
+    return sel;
+  }
+  function legacyCopy() {
+    var sel = selectCommand(), ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    if (ok) sel.removeAllRanges();
+    return ok;
+  }
+  function announce(msg) {
+    copyStatus.textContent = '';
+    setTimeout(function () { copyStatus.textContent = msg; }, 50);
+  }
+  copyBtn.addEventListener('click', function () {
+    var text = copyCode.textContent;
+    var copied = navigator.clipboard && window.isSecureContext
+      ? navigator.clipboard.writeText(text).then(function () { return true; }, legacyCopy)
+      : Promise.resolve(legacyCopy());
+    copied.then(function (ok) {
+      clearTimeout(copyTimer);
+      copyBtn.classList.toggle('done', ok);
+      announce(ok ? 'Copied to clipboard' : 'Command selected: press Ctrl+C or Command+C to copy');
+      if (ok) copyTimer = setTimeout(function () { copyBtn.classList.remove('done'); copyStatus.textContent = ''; }, BEAT * 3);
+    });
+  });
+
   /* ── the clock (shared by the field, its stepper and the terminal) ── */
   /* ms until the next multiple of `beats` on the shared clock */
   function untilGrid(beats) {

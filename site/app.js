@@ -1,4 +1,4 @@
-/* vamp.sh. No dependencies. One clock (92 BPM) drives the field, the bar counter and the terminal. */
+/* vamp.sh. No dependencies. One clock (92 BPM) drives the field's flap and the terminal's entries. */
 (function () {
   'use strict';
 
@@ -49,19 +49,7 @@
   $('#roots').innerHTML = D.schema.map(function (s) { return '<li>' + s.root + '</li>'; }).join('');
   $('#schema-count').textContent = D.schema.filter(function (s) { return s.root !== 'contract' && s.root !== 'protocol_version'; }).length;
 
-  /* ── the clock ── */
-  var beatEls = all('#beats li'), barEl = $('#bar');
-  function onBeat(bar, beat) {
-    barEl.textContent = String(bar).padStart(4, '0');
-    for (var i = 0; i < 4; i++) beatEls[i].classList.toggle('on', i === beat);
-  }
-  var metro = { on: false, last: -1 };
-  function metroTick(now) {
-    if (!metro.on) return;
-    requestAnimationFrame(metroTick);
-    var b = Math.floor((now - EPOCH) / BEAT);
-    if (b !== metro.last) { metro.last = b; onBeat((b >> 2) + 1, b & 3); }
-  }
+  /* ── the clock (shared by the field and the terminal) ── */
   /* ms until the next multiple of `beats` on the shared clock */
   function untilGrid(beats) {
     var span = BEAT * beats, t = performance.now() - EPOCH;
@@ -82,19 +70,16 @@
     sync = function () {
       var live = !document.hidden && !reduced.matches && document.body.dataset.view === 'human' && heroOn;
       if (live) field.start(); else field.stop();
-      if (live && !metro.on) { metro.on = true; requestAnimationFrame(metroTick); }
-      if (!live) metro.on = false;
     };
     new IntersectionObserver(function (e) { heroOn = e[0].isIntersecting; sync(); }).observe(canvas);
     document.addEventListener('visibilitychange', sync);
     reduced.addEventListener('change', function () {
       field.reduced = reduced.matches;
-      if (reduced.matches) { field.stop(); field.resize(); onBeat(1, 0); }
+      if (reduced.matches) { field.stop(); field.resize(); }
       sync();
     });
     var raf = 0;
     new ResizeObserver(function () { cancelAnimationFrame(raf); raf = requestAnimationFrame(function () { field.resize(); }); }).observe(canvas);
-    if (reduced.matches) onBeat(1, 0);
     sync();
   }
 

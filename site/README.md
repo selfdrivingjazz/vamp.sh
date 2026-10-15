@@ -7,7 +7,7 @@ Static, no framework, no runtime CDNs. Opens from `file://` or any static host. 
 
 - `index.html`, `styles.css`, `app.js`: the Human page (hero, then Keep, Deliver, Transform, Share, Vampire, Spec
   footer), the HUMAN | MACHINE switch and the Deliver terminal replay.
-- `field.js` + `bat-mask.js`: the ASCII bat and moon on one 4-beat loop at 92 BPM. The canvas pauses offscreen, in
+- `field.js` + `bat-mask.js`: the ASCII bat and moon; the wings flap in one seamless sine loop (a wingbeat per 2 beats at 92 BPM, redrawn at up to 30 fps). The canvas pauses offscreen, in
   hidden tabs and in the Machine view; with reduced motion it shows a single still frame.
 - `content.js`: the tagline, the five section lines, every artifact and the complete plain reference. It renders the
   Machine view (`#machine`) and produces `llms.txt` and `index.md`. `build.mjs --check` fails if the lines in

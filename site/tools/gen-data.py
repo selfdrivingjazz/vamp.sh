@@ -1,6 +1,6 @@
 """Regenerate data.js from the real sources: the schema bundle
 (`cargo run -p vamp-protocol --example schema` in the protocol repo), its contract.json,
-and `vamp commands` (the CLI that ships with Vampire, on PATH).
+and `vamp commands` (the vamp CLI from the same repo, on PATH).
 
     python3 tools/gen-data.py [path/to/vamp-protocol-repo]   # default: ../vamp beside vamp.sh
 """

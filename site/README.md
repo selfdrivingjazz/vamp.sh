@@ -8,7 +8,7 @@ Static, no framework, no runtime CDNs. Opens from `file://` or any static host. 
 ## Files
 
 - `install` (and `install.sh`, a symlink to it): the POSIX `sh` installer behind `curl -fsSL https://vamp.sh/install | sh`.
-  It downloads `vamp-VERSION-TARGET.tar.gz` from the latest GitHub release of this repo, checks it against the release's
+  It downloads `vamp-VERSION-TARGET.tar.gz` from the latest GitHub release of `selfdrivingjazz/vamp`, checks it against the release's
   `SHA256SUMS` and installs `vamp` + `vamp-media` into `${VAMP_INSTALL_DIR:-~/.local/bin}`; `sh -s -- --version X --dir D`,
   `VAMP_INSTALL_BASE` overrides the download base. `vamp self-update` uses the same releases.
 - `index.html`, `styles.css`, `app.js`: the Human page (hero with the install one-liner and its copy button, then

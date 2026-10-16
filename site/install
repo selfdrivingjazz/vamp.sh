@@ -5,14 +5,14 @@
 #   curl -fsSL https://vamp.sh/install | sh -s -- --version 0.1.0 --dir ~/bin
 #
 # Installs `vamp` and its optional `vamp-media` helper from the GitHub release of
-# selfdrivingjazz/vamp.sh into ${VAMP_INSTALL_DIR:-$HOME/.local/bin}, after checking the
+# selfdrivingjazz/vamp (MIT) into ${VAMP_INSTALL_DIR:-$HOME/.local/bin}, after checking the
 # archive against the release's SHA256SUMS. No sudo. Re-running updates in place; so does
 # `vamp self-update`.
 #
 # Options: --version X (default: latest), --dir D, --help.
 # Environment: VAMP_INSTALL_DIR (same as --dir), VAMP_VERSION (same as --version),
 # VAMP_INSTALL_BASE (release download base, default
-# https://github.com/selfdrivingjazz/vamp.sh/releases; it must serve
+# https://github.com/selfdrivingjazz/vamp/releases; it must serve
 # latest/download/<file> and download/v<version>/<file>).
 #
 # Builds: macOS on Apple silicon or Intel; Linux on x86_64 or aarch64 (static binaries,
@@ -125,7 +125,7 @@ main() {
 		esac
 	done
 	version="${version#v}"
-	base="${VAMP_INSTALL_BASE:-https://github.com/selfdrivingjazz/vamp.sh/releases}"
+	base="${VAMP_INSTALL_BASE:-https://github.com/selfdrivingjazz/vamp/releases}"
 	base="${base%/}"
 	if [ -n "$version" ]; then
 		url="$base/download/v$version"

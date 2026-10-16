@@ -2,8 +2,9 @@
 
 Static, no framework, no runtime CDNs. Opens from `file://` or any static host. Deploy every file here except
 `tools/` and this README. The design reference is `../prototypes/human-machine/`.
-`.github/workflows/pages.yml` deploys it to GitHub Pages on every push to `main` that touches `site/`
-(`https://selfdrivingjazz.github.io/vamp.sh/` until the vamp.sh domain is set in the Pages settings).
+Production is https://vamp.sh on Cloudflare (`../tools/deploy.sh`, see `../README.md`); `.github/workflows/pages.yml`
+mirrors it to `https://selfdrivingjazz.github.io/vamp.sh/` on every push to `main` that touches `site/`.
+`_headers` is Cloudflare's header rules (`/install` and `/install.sh` as `text/plain`).
 
 ## Files
 

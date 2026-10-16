@@ -1,0 +1,9 @@
+// www.vamp.sh -> https://vamp.sh (301, path and query kept). Deployed by tools/deploy.sh.
+{
+  "name": "vamp-sh-www",
+  "main": "worker.js",
+  "compatibility_date": "2026-10-01",
+  "routes": [{ "pattern": "www.vamp.sh", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false
+}

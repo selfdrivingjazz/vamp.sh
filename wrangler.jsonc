@@ -1,0 +1,16 @@
+// https://vamp.sh: Workers static assets, no Worker code. Deploy with tools/deploy.sh, which assembles
+// .deploy/site from the committed site/ (minus tools/ and README.md, symlinks resolved).
+// www.vamp.sh redirects here from a separate Worker: www/wrangler.jsonc.
+{
+  "name": "vamp-sh",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./.deploy/site",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  // Custom domains create the proxied DNS record and the certificate.
+  "routes": [{ "pattern": "vamp.sh", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false
+}

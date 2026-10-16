@@ -1,0 +1,101 @@
+/* /pricing and /legal/*: loaded after styles.css (same faces, colors and grid), so the Human page never pays for it. */
+
+[hidden] { display: none !important; }
+.page-top { padding-top: clamp(48px, 6vw, 96px); }
+.head h1 { grid-column: 1 / -1; grid-row: 2; font: 800 var(--d2)/0.86 var(--display); font-stretch: 125%; letter-spacing: -0.03em; text-transform: uppercase; }
+.nav-links a[aria-current="page"] { color: var(--coral); }
+
+/* ── pricing: two plans ── */
+.plans { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 24px; align-items: stretch; }
+.plan { grid-column: span 6; display: flex; flex-direction: column; gap: 20px; min-width: 0; background: var(--ink); border: 1px solid var(--aub-2); padding: clamp(20px, 2.4vw, 36px); }
+.plan-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; min-height: 34px; }
+.plan-head .cap { color: var(--paper); }
+.plan-head .cap span { color: var(--coral); margin-right: 0.8em; }
+.price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; }
+.amt { font: 800 clamp(64px, 8vw, 128px)/0.86 var(--display); font-stretch: 125%; letter-spacing: -0.04em; color: var(--paper); }
+.per { font: 400 var(--px-m)/1 var(--pixel); color: var(--coral); text-transform: uppercase; }
+.price-note { margin-top: -8px; }
+.price-note b { font-weight: 400; color: var(--coral); }
+.facts { list-style: none; margin: 4px 0 0; padding: 0; border-top: 1px solid var(--aub-1); }
+.facts li { display: grid; grid-template-columns: 22px minmax(0, 1fr); padding: 11px 0; border-bottom: 1px solid var(--aub-1); color: var(--muted); }
+.facts li::before { content: ""; width: 7px; height: 7px; margin-top: 0.55em; background: var(--coral); }
+.facts li b { font-weight: 500; color: var(--paper); }
+.buy-row { margin-top: auto; padding-top: 8px; display: grid; gap: 10px; justify-items: start; }
+
+/* Monthly | Yearly: the HUMAN | MACHINE pill, inline. */
+.period { display: inline-flex; gap: 2px; padding: 3px; background: var(--ground); border: 1px solid var(--aub-2); border-radius: 999px; }
+.period button {
+  all: unset; cursor: pointer; padding: 8px 14px; border-radius: 999px;
+  font: 400 var(--px-s)/1 var(--pixel); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+}
+.period button:hover { color: var(--paper); }
+.period button[aria-pressed="true"] { background: var(--aub-2); color: var(--coral); }
+.period button:focus-visible { outline: 2px solid var(--coral); outline-offset: 1px; }
+
+/* Buy: a coral pill when checkout is configured (checkout.js); a dashed, inert pill until then. */
+.buy {
+  all: unset; box-sizing: border-box; display: inline-flex; align-items: center; gap: 10px; cursor: pointer;
+  padding: 14px 22px; border-radius: 999px; background: var(--coral); color: var(--ink); border: 1px solid var(--coral);
+  font: 400 var(--px-s)/1 var(--pixel); letter-spacing: 0.08em; text-transform: uppercase;
+}
+a.buy:hover { background: var(--paper); border-color: var(--paper); color: var(--ink); }
+.buy:focus-visible { outline: 2px solid var(--coral); outline-offset: 3px; }
+.buy[disabled] { cursor: not-allowed; background: transparent; color: var(--muted); border: 1px dashed var(--aub-3); }
+.buy[disabled]::before { content: ""; width: 7px; height: 7px; border: 1px solid var(--muted); }
+
+/* Free, always: the MIT side, under the plans. */
+.free { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--aub-2); }
+.free > .cap { grid-column: 1 / span 2; color: var(--coral); }
+.free > p:not(.cap) { grid-column: 3 / span 6; color: var(--paper); max-width: 60ch; }
+.free .install-cmd { grid-column: 9 / -1; align-self: start; justify-self: start; }
+
+/* FAQ */
+.faq { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); margin: 0; border-top: 1px solid var(--aub-2); }
+.faq > div { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; padding: 20px 0; border-bottom: 1px solid var(--aub-1); }
+.faq dt { grid-column: 1 / span 5; color: var(--paper); font-weight: 500; padding-right: var(--gap); }
+.faq dd { grid-column: 6 / -1; margin: 0; color: var(--muted); max-width: 64ch; }
+.faq dd + dd { margin-top: 10px; }
+.faq code, .doc code { color: var(--paper); }
+
+/* Footer: seller + legal links (pricing and legal pages). Without the big VAMP word it gets its own rule. */
+.foot-row .cap a { white-space: nowrap; }
+.foot:not(:has(.foot-word)) { padding-top: 96px; }
+.foot > .foot-row:first-child { border-top: 1px solid var(--aub-2); }
+
+/* ── legal documents ── */
+.doc { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); align-items: start; }
+.doc-nav { grid-column: 1 / span 3; position: sticky; top: calc(var(--nav-h) + 24px); display: grid; gap: 4px; border-top: 1px solid var(--aub-2); padding-top: 14px; }
+.doc-nav a { font: 400 var(--px-s)/1.9 var(--pixel); letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+.doc-nav a:hover { color: var(--paper); }
+.doc-nav a[aria-current="page"] { color: var(--coral); }
+.doc-nav a[aria-current="page"]::before { content: "> "; }
+.prose { grid-column: 4 / span 7; min-width: 0; font-size: 14px; line-height: 1.7; color: var(--muted); }
+.prose > .cap { margin-bottom: 28px; }
+.prose h2 { margin: 44px 0 14px; font: 400 var(--px-s)/1.6 var(--pixel); letter-spacing: 0.08em; text-transform: uppercase; color: var(--coral); }
+.prose h2:first-of-type { margin-top: 0; }
+.prose p, .prose ul { margin: 0 0 14px; max-width: 68ch; }
+.prose ul { padding-left: 0; list-style: none; }
+.prose li { position: relative; padding-left: 22px; margin-bottom: 6px; }
+.prose li::before { content: ""; position: absolute; left: 0; top: 0.72em; width: 7px; height: 7px; background: var(--aub-3); }
+.prose strong { font-weight: 500; color: var(--paper); }
+.prose .lead { color: var(--paper); font-size: var(--d3); line-height: 1.4; margin-bottom: 32px; }
+
+@media (max-width: 1100px) {
+  .plan { grid-column: 1 / -1; }
+  .free > .cap { grid-column: 1 / -1; margin-bottom: 12px; }
+  .free > p:not(.cap) { grid-column: 1 / span 8; }
+  .free .install-cmd { grid-column: 1 / -1; margin-top: 20px; }
+  .doc-nav { grid-column: 1 / -1; position: static; grid-auto-flow: column; justify-content: start; gap: 24px; margin-bottom: 40px; }
+  .prose { grid-column: 1 / span 10; }
+}
+@media (max-width: 860px) {
+  .faq dt, .faq dd { grid-column: 1 / -1; }
+  .faq dt { margin-bottom: 8px; }
+  .free > p:not(.cap), .prose { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .prose { font-size: 13px; }
+  .prose .lead { font-size: 17px; }
+  .doc-nav { gap: 18px; }
+  .buy { padding: 13px 18px; }
+}

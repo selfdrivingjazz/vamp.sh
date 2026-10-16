@@ -47,7 +47,8 @@ const TYPES = {
 // Refuse to report ready without the page the preview exists for.
 await stat(join(siteRoot, "index.html"));
 
-// Map a request path to a file under site/, or null. Directories resolve only to their index.html.
+// Map a request path to a file under site/, or null. Directories resolve only to their index.html; like Cloudflare's
+// auto-trailing-slash, /pricing also resolves to pricing.html.
 async function resolveFile(pathname) {
   let decoded;
   try {
@@ -62,7 +63,9 @@ async function resolveFile(pathname) {
     if (!segment || segment.startsWith(".") || /[\\\0]/.test(segment)) return null;
   }
   const root = await realpath(siteRoot);
-  for (const candidate of [join(root, ...segments), join(root, ...segments, "index.html")]) {
+  const candidates = [join(root, ...segments), join(root, ...segments, "index.html")];
+  if (segments.length && !extname(segments.at(-1))) candidates.push(join(root, ...segments.slice(0, -1), segments.at(-1) + ".html"));
+  for (const candidate of candidates) {
     try {
       const real = await realpath(candidate);
       if (!real.startsWith(root + sep)) return null;

@@ -5,9 +5,9 @@
  *
  * Motion is the 92 BPM figure, stepped (eight redraws per beat) and looping without rests:
  *   the wings lift on beats 1 and 3 and settle on 2 and 4 (two strokes a bar),
- *   the moon swells on each downbeat,
  *   a ring leaves the rim once, on beat 3 of the first bar after load (after the reveal), and never again.
  * The Bayer matrix and the digest digits shift on every beat, so the texture re-voices like a comping hand.
+ * Every beat changes the field by the same amount, the wrap back to beat 1 included: no accent on the downbeat.
  *
  * Works in the browser (canvas) and in Node (ascii() only, for llms.txt).
  */
@@ -51,7 +51,6 @@
   function figure(n, p) {
     var beat = n & 3;
     return {
-      swell: beat === 0 ? (1 - p) * (1 - p) : 0,
       ring: n === 2 ? p : -1,                              // once: beat 3 of the first bar, after the reveal
       lift: beat === 0 || beat === 2 ? smooth(p) : 1 - smooth(p),
       shift: beat
@@ -71,10 +70,9 @@
     if (isBat(dx, by)) { out[0] = -1; return; }
 
     var L, c;
-    var rim = 1 + 0.025 * f.swell;
-    if (d < rim) {
+    if (d < 1) {
       // 1-bit ordered dither inside the moon: a cell is a digest digit or nothing.
-      L = 0.82 - 0.26 * (dx * 0.45 + dy * 0.8) + 0.2 * f.swell - 0.36 * Math.pow(d / rim, 8);
+      L = 0.82 - 0.26 * (dx * 0.45 + dy * 0.8) - 0.36 * Math.pow(d, 8);
       if (L + bx * 0.9 < 0.5) { out[0] = -1; return; }
       var g = (dy + 1) * 0.42 + (dx + 1) * 0.08;
       out[0] = 10 + HEX.indexOf(HASH.charAt(((row * 11 + col) + hashOff) & 63));
@@ -163,7 +161,7 @@
     for (var j = 0; j <= this.rows; j++) this.ys[j] = Math.round(j * this.ch * dpr);
     this.state = new Int16Array(this.cols * this.rows).fill(-1); // resizing cleared the canvas
     this.lastStep = -1;
-    // Still frame (reduced motion, OG card, 404): just after the downbeat, moon swelled.
+    // Still frame (reduced motion, OG card, 404): just after the downbeat.
     if (!this.running && (this.reduced || this.revealStart)) this.draw(0, 0.25, 1);
   };
 

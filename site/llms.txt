@@ -9,10 +9,10 @@ NAME ............... VAMP
 WHAT ............... visual media protocol for humans and agents
 WIRE_VERSION ....... 0.1
 STATUS ............. experimental
-LICENSE ............ MIT: the protocol (operation contract, Rust types, JSON Schemas), the engine and the vamp CLI
+LICENSE ............ MIT: the protocol (operation contract, Rust types, JSON Schemas), the engine, the vamp CLI, vamp-server and vamp-store
 SOURCE ............. https://github.com/selfdrivingjazz/vamp (no crates.io or npm package yet)
 BINDING ............ local CLI; discover operations with vamp commands and types with vamp schema
-INSTALL ............ curl -fsSL https://vamp.sh/install | sh  (vamp CLI; macOS, Linux)
+INSTALL ............ curl -fsSL https://vamp.sh/install | sh  (vamp CLI + server; macOS, Linux)
 VIEWER ............. Vampire, Mac/iOS, proprietary, one-time purchase (soon); ships the vamp CLI and vamp-server
 ```
 
@@ -24,7 +24,7 @@ VAMP keeps a catalog of your media without taking the media: files stay where th
 curl -fsSL https://vamp.sh/install | sh
 ```
 
-Installs the `vamp` CLI and its `vamp-media` helper from the latest GitHub release of `selfdrivingjazz/vamp` (MIT, source included): macOS (Apple silicon, Intel) and Linux (x86_64, aarch64; static, any distro). The installer verifies the archive against `SHA256SUMS` and writes to `~/.local/bin`; set `VAMP_INSTALL_DIR`, or pass `sh -s -- --dir DIR`, for another directory, and `--version X` to pin a release. Update with `vamp self-update` (`--check` only reports), or run the installer again. The script is also at `https://vamp.sh/install.sh`.
+Installs the `vamp` CLI, its `vamp-media` helper, the `vamp-server` library server and the `vamp-store` S3 helper from the latest GitHub release of `selfdrivingjazz/vamp` (MIT, source included): macOS (Apple silicon, Intel) and Linux (x86_64, aarch64; static, any distro). The installer verifies the archive against `SHA256SUMS` and writes to `~/.local/bin`; set `VAMP_INSTALL_DIR`, or pass `sh -s -- --dir DIR`, for another directory, and `--version X` to pin a release. Update with `vamp self-update` (`--check` only reports; it replaces all four), or run the installer again. The script is also at `https://vamp.sh/install.sh`.
 
 ## Keep
 
@@ -60,7 +60,7 @@ $ vamp media add moon-bat.jpg
 
 One authority, replicas on your other machines, agents on all of them, following one event stream.
 
-One local authority (SQLite) owns each library and orders every change into a monotonic event stream. `vamp-server` serves it over HTTP (`/v1`), to replicas on other machines (`vamp contexts remote` with a bearer token, or `vamp join` over Tailscale without one), browser clippers and remote GPU workers. A replica keeps a full mirror, reads offline and follows the stream (`vamp sync`, `vamp sync --watch`, or `GET /v1/events/stream`). The CLI on a replica is read-only: writes go to the authority, through its CLI or HTTP API, or through the Vampire app, which forwards them. Agents use the same CLI and API (`vamp guide` is their manual); `--expected-revision` rejects stale writes.
+One local authority (SQLite) owns each library and orders every change into a monotonic event stream. `vamp serve` (which runs `vamp-server`) serves it over HTTP (`/v1`), on 127.0.0.1 unless `--bind` says otherwise, to replicas on other machines (`vamp join URL --token TOKEN`, or `vamp join` over Tailscale without one), browser clippers and remote GPU workers. A replica keeps a full mirror, reads offline and follows the stream (`vamp sync`, `vamp sync --watch`, or `GET /v1/events/stream`). The CLI on a replica is read-only: writes go to the authority, through its CLI or HTTP API, or through the Vampire app, which forwards them. Agents use the same CLI and API (`vamp guide` is their manual); `--expected-revision` rejects stale writes.
 
 ### 1. Serve (authority)
 
@@ -212,9 +212,9 @@ invalid_arguments, operation_failed, output_failed
 
 ### Native operations (contract.native)
 
-remote_attach, sync, sync_wait, representation, download_progress, download_priority, cancel_download, fetch_grid, init, browse, layout, items, micro, galaxy, galaxy_search, generate_thumbs, add, ingest, update, remove, restore, empty_trash, touch, collections_ops, collections, smart_folders, sidebar, tags, tag_ops, export, import_eagle, copy_thumbnails, prioritize_thumbnails, thumbnail_updates, import_eagle_start, import_status, hash, palette, inspect, find_duplicates
+remote_attach, sync, sync_wait, representation, download_progress, download_priority, cancel_download, fetch_grid, init, browse, layout, items, micro, galaxy, galaxy_search, generate_thumbs, add, ingest, update, remove, restore, empty_trash, touch, collections_ops, collections, smart_folders, sidebar, added_by, tags, tag_ops, export, import_eagle, copy_thumbnails, prioritize_thumbnails, thumbnail_updates, import_eagle_start, import_status, hash, palette, inspect, find_duplicates
 
-### HTTP endpoints (vamp-server, part of Vampire)
+### HTTP endpoints (vamp-server, `vamp serve`)
 
 - `GET /v1/library`
 - `GET /v1/hello`
@@ -238,6 +238,8 @@ remote_attach, sync, sync_wait, representation, download_progress, download_prio
 - `POST /v1/ingest?filename=&name=&source_url=&tags=a,b&note=|description=&collection_id=`
 - `POST /v1/clip`
 - `POST /v1/clip/batch`
+- `POST /v1/assets/{id}/preview`
+- `POST /v1/assets/{id}/original?filename=`
 - `GET /v1/collections`
 - `POST /v1/collections`
 - `POST /v1/collections/{id}`
@@ -256,11 +258,11 @@ remote_attach, sync, sync_wait, representation, download_progress, download_prio
 - `vamp schema`: Print protocol JSON schemas
 - `vamp commands`: Print the machine-readable command and argument tree
 - `vamp init`: Create an empty reference-only catalog
-- `vamp contexts` [list|use|add|remote]: Manage named catalog contexts
+- `vamp contexts` [list|use|add|remote|url]: Manage named catalog contexts
 - `vamp media` [add|list|search|similar|accept-tags|inspect|update|refresh|remove|restore|empty-trash|hash|export|fetch|thumbnail|preview|sheet]: Catalog references, metadata, and explicit local derivatives
 - `vamp import` [eagle]: Import references without modifying the source library
 - `vamp collections` [create|list|add|remove|rename|describe|delete|move]: Manage catalog collections (nested folders)
-- `vamp explore` [ensure|add|summary|show|list|link|feedback]: Agent research missions: an exploration folder (brief, findings summary, sub-folders) under Exp…
+- `vamp explore` [ensure|add|summary|show|list|link|changes]: Agent research missions: an exploration folder (brief, findings summary, sub-folders) under Exp…
 - `vamp smart` [list|create|update|delete]: Smart folders: saved rule sets evaluated on browse
 - `vamp tags` [list|rename|delete]: Tag usage, groups, rename/merge and delete
 - `vamp sidebar`: Sidebar counts (all, uncategorized, untagged, recently used, trash, folders, smart folders)
@@ -270,13 +272,15 @@ remote_attach, sync, sync_wait, representation, download_progress, download_prio
 - `vamp jobs` [list|run|watch|retry|cancel]: Inspect and explicitly run durable processor jobs
 - `vamp setup`: Inspect optional capabilities; installation requires --install
 - `vamp sync` [install-service]: Pull the authority's changes into the current replica context's mirror
-- `vamp join`: Attach a replica of a tailnet vamp-server (no token: the server admits this machine by its Tail…
+- `vamp join`: Attach a replica of a vamp-server library (`vamp serve` on another machine) and sync its catalo…
+- `vamp serve`: Serve this authority library (current or --context) to other machines and the Vampire apps: run…
 - `vamp embedder` [set|show|remove]: Configure the text embedder used by semantic search (ToolRequest embed_text)
 - `vamp storage` [set|show|unset|migrate|uploads]: Cloud storage for originals (authority only). Uploads drain in `jobs run/watch`
 - `vamp cache` [prune|policy|stats]: Rehydrated-original cache (pinned until pruned); replica preview/original cache policy
 - `vamp thumbs` [regenerate|stats]: Authority thumbnail tiers (micro, 800 px grid WebP, 2048 px preview WebP)
 - `vamp galaxy` [layout|search]: Galaxy view: 3-D embedding projection (authority) and its search ranking
 - `vamp worker` [install-service]: Run this machine's model processors for a vamp-server authority's jobs (GPU worker)
+- `vamp self-update`: Update this release install (vamp, vamp-media, vamp-server, vamp-store) to the latest release,…
 
 ## Links
 
@@ -284,5 +288,5 @@ remote_attach, sync, sync_wait, representation, download_progress, download_prio
 - [index.md](index.md): this page as markdown
 - [install](install): the installer script (`curl -fsSL https://vamp.sh/install | sh`)
 - [session.log](session.log): the raw take (vamp 0.1.0, scratch homes, 15 Oct 2026)
-- [Source](https://github.com/selfdrivingjazz/vamp): protocol, engine and vamp CLI (MIT); packages: soon
+- [Source](https://github.com/selfdrivingjazz/vamp): protocol, engine, vamp CLI, vamp-server and vamp-store (MIT); packages: soon
 - Vampire: soon

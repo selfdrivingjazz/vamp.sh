@@ -4,7 +4,8 @@
 #   curl -fsSL https://vamp.sh/install | sh
 #   curl -fsSL https://vamp.sh/install | sh -s -- --version 0.1.0 --dir ~/bin
 #
-# Installs `vamp` and its optional `vamp-media` helper from the GitHub release of
+# Installs `vamp`, its optional `vamp-media` helper, the `vamp-server` library server
+# (`vamp serve`) and the `vamp-store` S3 helper from the GitHub release of
 # selfdrivingjazz/vamp (MIT) into ${VAMP_INSTALL_DIR:-$HOME/.local/bin}, after checking the
 # archive against the release's SHA256SUMS. No sudo. Re-running updates in place; so does
 # `vamp self-update`.
@@ -31,7 +32,7 @@ usage() {
 	cat <<'EOF'
 usage: curl -fsSL https://vamp.sh/install | sh -s -- [--version X] [--dir DIR]
 
-Installs vamp and vamp-media (checksum-verified) into DIR, default
+Installs vamp, vamp-media, vamp-server and vamp-store (checksum-verified) into DIR, default
 ${VAMP_INSTALL_DIR:-$HOME/.local/bin}. Re-run to update, or run `vamp self-update`.
   --version X  install release X instead of the latest (env VAMP_VERSION)
   --dir DIR    install directory (env VAMP_INSTALL_DIR)
@@ -137,7 +138,7 @@ main() {
 	command -v tar >/dev/null 2>&1 || err "needs tar"
 
 	tmp="$(mktemp -d 2>/dev/null || mktemp -d -t vamp)"
-	trap 'rm -rf "$tmp"; rm -f "$dir/.vamp.install.$$" "$dir/.vamp-media.install.$$"' EXIT
+	trap 'rm -rf "$tmp"; for b in vamp vamp-media vamp-server vamp-store; do rm -f "$dir/.$b.install.$$"; done' EXIT
 	trap 'exit 130' INT TERM
 
 	download "$url/SHA256SUMS" "$tmp/SHA256SUMS" ||
@@ -163,7 +164,8 @@ main() {
 	# Stage beside the targets and check the new vamp runs before renaming over the old files:
 	# a running vamp keeps its inode, and a failure leaves the old install alone.
 	bins=""
-	for bin in vamp vamp-media; do
+	# Releases before 0.2.0 hold only vamp and vamp-media.
+	for bin in vamp vamp-media vamp-server vamp-store; do
 		[ -f "$src/$bin" ] || continue
 		cp "$src/$bin" "$dir/.$bin.install.$$" 2>/dev/null || err "cannot write to $dir (pick another with --dir)"
 		chmod 755 "$dir/.$bin.install.$$"

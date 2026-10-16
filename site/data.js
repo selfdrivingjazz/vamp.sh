@@ -67,6 +67,7 @@ window.VAMP_DATA = {
   "collections",
   "smart_folders",
   "sidebar",
+  "added_by",
   "tags",
   "tag_ops",
   "export",
@@ -104,6 +105,8 @@ window.VAMP_DATA = {
   "POST /v1/ingest?filename=&name=&source_url=&tags=a,b&note=|description=&collection_id=",
   "POST /v1/clip",
   "POST /v1/clip/batch",
+  "POST /v1/assets/{id}/preview",
+  "POST /v1/assets/{id}/original?filename=",
   "GET /v1/collections",
   "POST /v1/collections",
   "POST /v1/collections/{id}",
@@ -144,7 +147,8 @@ window.VAMP_DATA = {
     "list",
     "use",
     "add",
-    "remote"
+    "remote",
+    "url"
    ]
   },
   {
@@ -201,7 +205,7 @@ window.VAMP_DATA = {
     "show",
     "list",
     "link",
-    "feedback"
+    "changes"
    ]
   },
   {
@@ -275,7 +279,12 @@ window.VAMP_DATA = {
   },
   {
    "name": "join",
-   "about": "Attach a replica of a tailnet vamp-server (no token: the server admits this machine by its Tail…",
+   "about": "Attach a replica of a vamp-server library (`vamp serve` on another machine) and sync its catalo…",
+   "subs": []
+  },
+  {
+   "name": "serve",
+   "about": "Serve this authority library (current or --context) to other machines and the Vampire apps: run…",
    "subs": []
   },
   {
@@ -329,6 +338,11 @@ window.VAMP_DATA = {
    "subs": [
     "install-service"
    ]
+  },
+  {
+   "name": "self-update",
+   "about": "Update this release install (vamp, vamp-media, vamp-server, vamp-store) to the latest release,…",
+   "subs": []
   }
  ],
  "facts": {
@@ -341,7 +355,7 @@ window.VAMP_DATA = {
   "replay": "Consumers retain their last sequence and request later events. Events are retained; no retention truncation is implemented.",
   "trust": "Explicitly registered local executables; argv passed directly, never through a shell. They run with the user's permissions and are not sandboxed. Imported/shared media cannot register code.",
   "response": "One ToolResponse JSON document on stdout; diagnostics on stderr. Processors return observations or generated representations; they do not edit the catalog directly.",
-  "actor": "VAMP_ACTOR or local; vamp-server attributes writes made by a tailnet peer (the owner's apps on replicas) to tailnet:<login>/<host>. Attribution only, not authentication or authorization."
+  "actor": "VAMP_ACTOR or local; vamp-server attributes writes made by a tailnet peer (the owner's apps on replicas) to tailnet:<login>/<host>. Attribution only, not authentication or authorization. The actor of an asset's media_added event is also kept on the asset as metadata.extra.added_by (native.added_by)."
  },
  "schema": [
   {

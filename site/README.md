@@ -10,7 +10,8 @@ mirrors it to `https://selfdrivingjazz.github.io/vamp.sh/` on every push to `mai
 
 - `install` (and `install.sh`, a symlink to it): the POSIX `sh` installer behind `curl -fsSL https://vamp.sh/install | sh`.
   It downloads `vamp-VERSION-TARGET.tar.gz` from the latest GitHub release of `selfdrivingjazz/vamp`, checks it against the release's
-  `SHA256SUMS` and installs `vamp` + `vamp-media` into `${VAMP_INSTALL_DIR:-~/.local/bin}`; `sh -s -- --version X --dir D`,
+  `SHA256SUMS` and installs `vamp`, `vamp-media`, `vamp-server` and `vamp-store` (those present in the release) into
+  `${VAMP_INSTALL_DIR:-~/.local/bin}`; `sh -s -- --version X --dir D`,
   `VAMP_INSTALL_BASE` overrides the download base. `vamp self-update` uses the same releases.
 - `index.html`, `styles.css`, `app.js`: the Human page (hero with the install one-liner and its copy button, then
   Keep, Deliver, Transform, Share, Vampire, Spec footer), the HUMAN | MACHINE switch and the Deliver terminal replay.

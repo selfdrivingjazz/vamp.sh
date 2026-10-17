@@ -5,9 +5,9 @@
 .head h1 { grid-column: 1 / -1; grid-row: 2; font: 800 var(--d2)/0.86 var(--display); font-stretch: 125%; letter-spacing: -0.03em; text-transform: uppercase; }
 .nav-links a[aria-current="page"] { color: var(--coral); }
 
-/* ── pricing: two plans ── */
+/* ── pricing: Vampire for Mac ── */
 .plans { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 24px; align-items: stretch; }
-.plan { grid-column: span 6; display: flex; flex-direction: column; gap: 20px; min-width: 0; background: var(--ink); border: 1px solid var(--aub-2); padding: clamp(20px, 2.4vw, 36px); }
+.plan { grid-column: span 8; display: flex; flex-direction: column; gap: 20px; min-width: 0; background: var(--ink); border: 1px solid var(--aub-2); padding: clamp(20px, 2.4vw, 36px); }
 .plan-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; min-height: 34px; }
 .plan-head .cap { color: var(--paper); }
 .plan-head .cap span { color: var(--coral); margin-right: 0.8em; }
@@ -21,16 +21,6 @@
 .facts li::before { content: ""; width: 7px; height: 7px; margin-top: 0.55em; background: var(--coral); }
 .facts li b { font-weight: 500; color: var(--paper); }
 .buy-row { margin-top: auto; padding-top: 8px; display: grid; gap: 10px; justify-items: start; }
-
-/* Monthly | Yearly: the HUMAN | MACHINE pill, inline. */
-.period { display: inline-flex; gap: 2px; padding: 3px; background: var(--ground); border: 1px solid var(--aub-2); border-radius: 999px; }
-.period button {
-  all: unset; cursor: pointer; padding: 8px 14px; border-radius: 999px;
-  font: 400 var(--px-s)/1 var(--pixel); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
-}
-.period button:hover { color: var(--paper); }
-.period button[aria-pressed="true"] { background: var(--aub-2); color: var(--coral); }
-.period button:focus-visible { outline: 2px solid var(--coral); outline-offset: 1px; }
 
 /* Buy: a coral pill when checkout is configured (checkout.js); a dashed, inert pill until then. */
 .buy {

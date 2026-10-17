@@ -176,7 +176,7 @@ Palette recorded on the asset (`metadata.colors`): #e13942 33%, #130714 32%, #48
 
 Let in the people, machines and agents you choose. Every change records who made it.
 
-Today sharing is at the level of a library. An authority admits replicas by bearer token, or by Tailscale identity: users and node tags in an allowlist (`vamp-server allow`). Everyone admitted sees the whole library; there are no per-folder or per-item share links yet. Every event carries an actor: `VAMP_ACTOR` for CLI writes, `tailnet:<login>/<host>` for writes from apps on replicas; writes made with the bearer token carry the server's own actor. Attribution, not authorization. Agents run research missions as explorations (`vamp explore`): findings filed with their source URL, which the owner rates and tags in the app and the agent reads back with `vamp explore feedback`.
+Sharing is at the level of a library: run `vamp serve` on a machine you control and connect replicas with `vamp join`. An authority admits replicas by bearer token, or by Tailscale identity: users and node tags in an allowlist (`vamp-server allow`). Everyone admitted sees the whole library. This is protocol-level sharing, not hosted public links. Every event carries an actor: `VAMP_ACTOR` for CLI writes, `tailnet:<login>/<host>` for writes from apps on replicas; writes made with the bearer token carry the server's own actor. Attribution, not authorization. Agents run research missions as explorations (`vamp explore`): findings filed with their source URL, which the owner rates and tags in the app and the agent reads back with `vamp explore feedback`.
 
 ```sh
 $ vamp-server allow --user collaborator@example.com

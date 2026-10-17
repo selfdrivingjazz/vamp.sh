@@ -22,6 +22,10 @@ mirrors it to `https://selfdrivingjazz.github.io/vamp.sh/` on every push to `mai
 - `content.js`: the tagline, the install one-liner, the five section lines, every artifact and the complete plain
   reference. It renders the Machine view (`#machine`) and produces `llms.txt` and `index.md`. `build.mjs --check`
   fails if the tagline, one-liner or lines in `index.html` drift from it.
+- `pricing.html`, `pricing.js`, `checkout.js`, `pages.css`: Vampire for Mac only, $25 once with a 14-day trial.
+  Set the Polar URL in `VAMP_CHECKOUT.mac` when checkout opens; `null` keeps the button disabled.
+  Library sharing uses the free protocol (`vamp serve` / `vamp join`) on machines you control, not hosted public links.
+  `legal/` covers the app, accounts, licensing, privacy and refunds.
 - `data.js`: generated from the protocol repo (schema bundle, `contract.json`) and `vamp commands`.
 - `session.log`: the raw take every artifact is cut from (vamp 0.1.0, a scratch authority served by `vamp-server` on
   127.0.0.1 and a scratch replica). `assets/wing-study-preview.jpg` is the preview VAMP generated in that take.

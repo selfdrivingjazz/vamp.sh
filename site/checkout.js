@@ -2,6 +2,4 @@
    null renders a disabled "Available soon" button; an https:// Polar checkout link turns it into a Buy link. */
 window.VAMP_CHECKOUT = {
   mac: null,          // Vampire for Mac, $25 one-time
-  shareMonthly: null, // Vamp Share, $8 / month
-  shareYearly: null,  // Vamp Share, $80 / year
 };

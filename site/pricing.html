@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pricing — Vampire for Mac and Vamp Share</title>
-<meta name="description" content="Vampire for Mac: $25 once, every future update free, 3 Macs, 14-day free trial. Vamp Share: hosted share links, $80 a year or $8 a month. Prices + VAT where applicable, sold by Polar.">
+<title>Pricing — Vampire for Mac</title>
+<meta name="description" content="Vampire for Mac: $25 once, every future update free, 3 Macs, 14-day free trial. Prices + VAT where applicable, sold by Polar.">
 <meta name="theme-color" content="#08040f">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="favicon.ico" sizes="32x32">
@@ -13,8 +13,8 @@
 <link rel="canonical" href="https://vamp.sh/pricing">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="VAMP">
-<meta property="og:title" content="Pricing — Vampire for Mac and Vamp Share">
-<meta property="og:description" content="Vampire for Mac: $25 once, every future update free, 3 Macs. Vamp Share: hosted share links, $80 a year or $8 a month.">
+<meta property="og:title" content="Pricing — Vampire for Mac">
+<meta property="og:description" content="Vampire for Mac: $25 once, every future update free, 3 Macs, 14-day free trial.">
 <meta property="og:url" content="https://vamp.sh/pricing">
 <meta property="og:image" content="https://vamp.sh/og.png">
 <link rel="stylesheet" href="styles.css">
@@ -27,7 +27,6 @@
   <a class="brand" href="./" aria-label="VAMP, home">VAMP<span>.sh</span></a>
   <nav class="nav-links" aria-label="Sections">
     <a href="#mac">Mac</a>
-    <a href="#share">Share</a>
     <a href="#free">Free</a>
     <a href="#faq">FAQ</a>
   </nav>
@@ -39,7 +38,7 @@
     <header class="head">
       <p class="label">$</p>
       <h1 id="pricing-title">Pricing</h1>
-      <p class="line">Pay once for the Mac app. Subscribe only for hosted share links. The protocol and the vamp CLI stay free.</p>
+      <p class="line">Pay once for the Mac app. The protocol and the vamp CLI stay free.</p>
     </header>
 
     <div class="plans">
@@ -61,32 +60,6 @@
           <div data-checkout="mac"><button type="button" class="buy" disabled>Available soon</button></div>
           <p class="cap buy-note">Checkout opens with the public release.</p>
           <p class="cap">Public download: coming soon.</p>
-        </div>
-      </article>
-
-      <article class="plan" id="share" aria-labelledby="share-title">
-        <div class="plan-head">
-          <h2 class="cap" id="share-title"><span>02</span>Vamp Share</h2>
-          <div class="period" role="group" aria-label="Billing period" hidden>
-            <button type="button" data-period="monthly" aria-pressed="false">Monthly</button>
-            <button type="button" data-period="yearly" aria-pressed="true">Yearly</button>
-          </div>
-        </div>
-        <p class="price" data-period-show="yearly"><span class="amt">$80</span><span class="per">/ year</span></p>
-        <p class="price" data-period-show="monthly" hidden><span class="amt">$8</span><span class="per">/ month</span></p>
-        <p class="cap price-note" data-period-show="yearly">+ VAT where applicable <i>/</i> <b>two months free</b> against $8 / month</p>
-        <p class="cap price-note" data-period-show="monthly" hidden>+ VAT where applicable <i>/</i> $80 / year saves two months</p>
-        <ul class="facts">
-          <li><span><b>Hosted snapshot share links.</b> Publish a folder or a selection; anyone with the link can look.</span></li>
-          <li><span><b>Up when your Mac is asleep.</b> Shares are served from app.vamp.sh, never from your machines.</span></li>
-          <li><span><b>Unlisted, revocable.</b> Links are unguessable and stop working when you revoke them.</span></li>
-          <li><span><b>From Vampire or the CLI.</b> No Vampire license needed to subscribe.</span></li>
-          <li><span><b>14-day free trial.</b> Cancel before it ends and you pay nothing.</span></li>
-          <li><span><b>30-day refund.</b> No questions. Cancel any time.</span></li>
-        </ul>
-        <div class="buy-row">
-          <div data-checkout="share"><button type="button" class="buy" disabled>Available soon</button></div>
-          <p class="cap buy-note">Subscriptions open when Share launches.</p>
         </div>
       </article>
     </div>
@@ -140,8 +113,8 @@
         <dd>Within 30 days of a payment, email <a href="mailto:support@vamp.sh">support@vamp.sh</a> and we refund it through Polar. No questions. A refunded license stops working at its next check. <a href="legal/refunds">Refund policy</a>.</dd>
       </div>
       <div>
-        <dt>Do I need Share to share?</dt>
-        <dd>No. vamp-server already lets the people, machines and agents you allow into your library. Share is for public links that stay up without any of your machines.</dd>
+        <dt>Do I need to pay to share my library?</dt>
+        <dd>No. Use <code>vamp serve</code> on your own machine and <code>vamp join</code> on a replica to connect the people, machines and agents you admit. This is whole-library access, not hosted public links.</dd>
       </div>
     </dl>
   </section>

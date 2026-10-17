@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy — VAMP</title>
-<meta name="description" content="What Vampire, the license server and Vamp Share collect, why, who processes it and how long it is kept. No card data, no ads, no tracking.">
+<meta name="description" content="What Vampire, accounts and the license server collect, why, who processes it and how long it is kept. No card data, no ads, no tracking.">
 <meta name="theme-color" content="#08040f">
 <meta name="color-scheme" content="dark">
 <link rel="icon" href="../favicon.ico" sizes="32x32">
@@ -29,7 +29,7 @@
     <header class="head">
       <p class="label">Legal</p>
       <h1 id="doc-title">Privacy</h1>
-      <p class="line">What we collect to sell and check licenses and to host what you share. Nothing else.</p>
+      <p class="line">What we collect to manage accounts and sell and check licenses. Nothing else.</p>
     </header>
     <div class="doc">
       <nav class="doc-nav" aria-label="Legal">
@@ -40,17 +40,16 @@
       </nav>
       <article class="prose" id="doc">
         <p class="cap">Last updated 2026-10-16</p>
-        <p class="lead">Vampire keeps your library on your machines. We collect only what we need to sell licenses, check them and, if you use Vamp Share, host what you publish. We don't sell personal data, show ads or track you across sites.</p>
+        <p class="lead">Vampire keeps your library on your machines. We collect only what we need to manage accounts, sell licenses and check them. We don't sell personal data, show ads or track you across sites.</p>
 
         <h2>1. Who we are</h2>
-        <p>Self Driving Jazz ("we", "us") makes Vampire and runs vamp.sh, the license server and Vamp Share at app.vamp.sh. Contact: <a href="mailto:support@vamp.sh">support@vamp.sh</a>.</p>
+        <p>Self Driving Jazz ("we", "us") makes Vampire and runs vamp.sh and the accounts and license service at app.vamp.sh. Contact: <a href="mailto:support@vamp.sh">support@vamp.sh</a>.</p>
 
         <h2>2. What we collect</h2>
         <ul>
           <li><strong>When you buy:</strong> Polar sends us your email address, your name if you gave one at checkout, and the order (product, amount, date and status, such as paid or refunded). <strong>We never receive or store card data.</strong></li>
           <li><strong>When you activate Vampire:</strong> your license key; the Mac's name as set in System Settings; its model identifier (such as Mac14,3); the macOS and Vampire versions; a <strong>hashed device ID</strong>, a one-way SHA-256 hash of the Mac's hardware UUID (the UUID itself never leaves the Mac); and when the Mac was activated and last checked its license. These let us bind the license to your Macs and keep it to 3.</li>
-          <li><strong>When you sign in</strong> (once accounts are available): your email address, and the IP address of sign-in requests, for abuse prevention.</li>
-          <li><strong>When you use Vamp Share:</strong> the media and metadata you choose to publish (previews, originals only if you allow downloads, names, and notes or tags only if you include them), your share settings, and view counts in aggregate, without cookies. Reports about a share, and who sent them.</li>
+          <li><strong>When you sign in:</strong> your email address, and the IP address of sign-in requests, for abuse prevention.</li>
           <li><strong>When you email us:</strong> your message and address.</li>
         </ul>
         <p>We don't collect your library, your files or how you use the app. Vampire sends no usage analytics; its diagnostic log stays on your Mac.</p>
@@ -61,15 +60,15 @@
         <h2>4. How we use it</h2>
         <ul>
           <li>To deliver, check and revoke licenses, and to keep a license to 3 Macs.</li>
-          <li>To run Share: store, serve and revoke what you publish, and enforce plan limits.</li>
-          <li>To handle refunds, support, abuse reports and legal obligations.</li>
+          <li>To manage accounts and protect sign-in.</li>
+          <li>To handle refunds, support, abuse and legal obligations.</li>
         </ul>
         <p>Never for advertising, never sold, never used to train models.</p>
 
         <h2>5. Who processes it</h2>
         <ul>
           <li><strong>Polar</strong> (<a href="https://polar.sh">polar.sh</a>), the merchant of record: checkout, payment, tax, receipts, license-key delivery and the customer portal. Polar handles your payment details under its own privacy policy.</li>
-          <li><strong>Cloudflare</strong>: hosts vamp.sh, the license server and its database, Share's storage and delivery, and routes email to <a href="mailto:support@vamp.sh">support@vamp.sh</a>. Like any host it sees request data such as IP addresses, which it uses to deliver and protect these services.</li>
+          <li><strong>Cloudflare</strong>: hosts vamp.sh, the accounts and license service and its database, and routes email to <a href="mailto:support@vamp.sh">support@vamp.sh</a>. Like any host it sees request data such as IP addresses, which it uses to deliver and protect these services.</li>
           <li><strong>OpenPanel</strong>, only if website analytics are on, as described in section 3.</li>
         </ul>
         <p>These providers process data in the United States and other countries.</p>
@@ -78,7 +77,6 @@
         <ul>
           <li><strong>Orders, licenses and activated Macs:</strong> for as long as the license exists (it is perpetual, so you can reactivate at any time), or until you ask us to delete them. Records we must keep for tax or accounting stay for the period the law requires; Polar keeps its own records.</li>
           <li><strong>Sign-in IP addresses:</strong> 30 days.</li>
-          <li><strong>Shared content:</strong> until you revoke or delete the share, or until 30 days after the grace period that follows the end of your subscription. Reported content may be preserved longer where the law requires.</li>
           <li><strong>Support email:</strong> as long as needed to resolve your request.</li>
         </ul>
 
@@ -86,7 +84,7 @@
         <p>You can ask to see, correct, export or delete your data: email <a href="mailto:support@vamp.sh">support@vamp.sh</a> from the address you bought or signed in with. We reply within 30 days. Deleting your license data deactivates the license on every Mac. You can also complain to the data protection authority where you live.</p>
 
         <h2>8. Children</h2>
-        <p>Vampire and Share are not meant for children under 16, and we don't knowingly collect their data.</p>
+        <p>Vampire and the account service are not meant for children under 16, and we don't knowingly collect their data.</p>
 
         <h2>9. Changes</h2>
         <p>We post changes here with a new date. If a change is material, we also email the people it affects.</p>

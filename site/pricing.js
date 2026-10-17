@@ -1,12 +1,10 @@
-/* /pricing: the Share Monthly | Yearly toggle and the Buy buttons, from window.VAMP_CHECKOUT (checkout.js).
-   The HTML already shows the yearly price and disabled buttons, so nothing here is needed to read the page. */
+/* /pricing: the Vampire for Mac Buy button, from window.VAMP_CHECKOUT (checkout.js).
+   The HTML already shows the price and a disabled button, so nothing here is needed to read the page. */
 (function () {
   'use strict';
   var urls = window.VAMP_CHECKOUT || {};
   var LABELS = {
     mac: 'Buy Vampire \u2014 $25',
-    shareMonthly: 'Start free trial \u2014 $8 / month',
-    shareYearly: 'Start free trial \u2014 $80 / year',
   };
 
   // Only absolute https links become hrefs; anything else stays "Available soon".
@@ -36,16 +34,4 @@
 
   var mac = document.querySelector('[data-checkout="mac"]');
   if (mac) renderBuy(mac, 'mac');
-
-  var share = document.querySelector('[data-checkout="share"]');
-  var buttons = document.querySelectorAll('.period button[data-period]');
-  function setPeriod(period) {
-    buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.period === period)); });
-    document.querySelectorAll('[data-period-show]').forEach(function (el) { el.hidden = el.dataset.periodShow !== period; });
-    if (share) renderBuy(share, period === 'monthly' ? 'shareMonthly' : 'shareYearly');
-  }
-  buttons.forEach(function (b) { b.addEventListener('click', function () { setPeriod(b.dataset.period); }); });
-  var toggle = document.querySelector('.period');
-  if (toggle) toggle.hidden = false;
-  setPeriod('yearly');
 })();

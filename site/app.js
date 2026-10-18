@@ -98,9 +98,8 @@
   }
 
   /* The stepper sits under the moon, counting the figure's beats. */
-  var stepper = $('#stepper'), barEl = $('#bar'), beatEls = all('#beats li');
+  var stepper = $('#stepper'), beatEls = all('#beats li');
   function onBeat(n) {
-    barEl.textContent = String((n >> 2) + 1).padStart(4, '0');
     for (var i = 0; i < 4; i++) beatEls[i].classList.toggle('on', i === (n & 3));
   }
   function placeStepper(g) {

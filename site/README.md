@@ -23,7 +23,8 @@ mirrors it to `https://selfdrivingjazz.github.io/vamp.sh/` on every push to `mai
   reference. It renders the Machine view (`#machine`) and produces `llms.txt` and `index.md`. `build.mjs --check`
   fails if the tagline, one-liner or lines in `index.html` drift from it.
 - `pricing.html`, `pricing.js`, `checkout.js`, `pages.css`: Vampire for Mac only, $25 once with a 14-day trial.
-  Set the Polar URL in `VAMP_CHECKOUT.mac` when checkout opens; `null` keeps the button disabled.
+  Set a **live** Polar URL in `VAMP_CHECKOUT.mac` when checkout opens; `null` or sandbox/invalid URLs keep Buy disabled.
+  `showEdgeCityDiscount: false` hides EDGECITY by default; set it `true` to show the 20% ($20 before tax) demo offer.
   Library sharing uses the free protocol (`vamp serve` / `vamp join`) on machines you control, not hosted public links.
   `legal/` covers the app, accounts, licensing, privacy and refunds.
 - `data.js`: generated from the protocol repo (schema bundle, `contract.json`) and `vamp commands`.

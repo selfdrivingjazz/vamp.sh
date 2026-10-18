@@ -7,10 +7,14 @@
     mac: 'Buy Vampire \u2014 $25',
   };
 
-  // Only absolute https links become hrefs; anything else stays "Available soon".
+  // Only LIVE Polar checkout links become hrefs. Sandbox, malformed and unrelated URLs fail closed.
   function checkoutURL(key) {
-    var u = urls[key];
-    return typeof u === 'string' && /^https:\/\/[^\s"'<>]+$/.test(u) ? u : null;
+    var u;
+    try { u = new URL(urls[key]); } catch (_) { return null; }
+    return u.protocol === 'https:' && !u.username && !u.password &&
+      ((u.hostname === 'buy.polar.sh' && u.pathname.length > 1) ||
+       (u.hostname === 'polar.sh' && /^\/checkout\/.+/.test(u.pathname)) ||
+       (u.hostname === 'api.polar.sh' && /^\/v1\/checkout-links\/[^/]+\/redirect$/.test(u.pathname))) ? u.href : null;
   }
 
   function renderBuy(slot, key) {
@@ -34,4 +38,6 @@
 
   var mac = document.querySelector('[data-checkout="mac"]');
   if (mac) renderBuy(mac, 'mac');
+  var discount = document.querySelector('[data-edgecity-discount]');
+  if (discount) discount.hidden = urls.showEdgeCityDiscount !== true || !checkoutURL('mac');
 })();

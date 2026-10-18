@@ -18,3 +18,4 @@
 .hosted-plan .hosted-copy { margin-bottom: 0; }
 @media (max-width: 800px) { .plan.hosted-plan { grid-column: 1 / -1; } }
 @media (max-width: 420px) { .waitlist-row { flex-direction: column; } .waitlist input[type="email"] { flex-basis: auto; } }
+.waitlist-verification:not(:empty) { margin-top: 16px; }

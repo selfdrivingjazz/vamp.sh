@@ -25,6 +25,9 @@ mirrors it to `https://selfdrivingjazz.github.io/vamp.sh/` on every push to `mai
 - `pricing.html`, `pricing.js`, `checkout.js`, `pages.css`: Vampire for Mac only, $25 once with a 14-day trial.
   Set a **live** Polar URL in `VAMP_CHECKOUT.mac` when checkout opens; `null` or sandbox/invalid URLs keep Buy disabled.
   `showEdgeCityDiscount: false` hides EDGECITY by default; set it `true` to show the 20% ($20 before tax) demo offer.
+  `download.js` enables the Mac download button only when `VAMP_CHECKOUT.macDownloadEnabled === true`.
+  Keep it false until a notarized release is available at `https://app.vamp.sh/dl/Vampire.dmg`;
+  then flip that one flag, commit and deploy. The public Sparkle feed is `https://app.vamp.sh/dl/appcast.xml`.
   Library sharing uses the free protocol (`vamp serve` / `vamp join`) on machines you control, not hosted public links.
   `legal/` covers the app, accounts, licensing, privacy and refunds.
 - `data.js`: generated from the protocol repo (schema bundle, `contract.json`) and `vamp commands`.

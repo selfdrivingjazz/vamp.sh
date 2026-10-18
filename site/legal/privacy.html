@@ -51,6 +51,7 @@
           <li><strong>When you activate Vampire:</strong> your license key; the Mac's name as set in System Settings; its model identifier (such as Mac14,3); the macOS and Vampire versions; a <strong>hashed device ID</strong>, a one-way SHA-256 hash of the Mac's hardware UUID (the UUID itself never leaves the Mac); and when the Mac was activated and last checked its license. These let us bind the license to your Macs and keep it to 3.</li>
           <li><strong>When you sign in:</strong> your email address, and the IP address of sign-in requests, for abuse prevention.</li>
           <li><strong>When you email us:</strong> your message and address.</li>
+          <li><strong>When you join a waitlist:</strong> your email, the product list you chose, signup source, consent time and any optional note. To prevent spam, we temporarily store a hash of your IP address, a request count and a short-lived form challenge, not your raw IP address.</li>
         </ul>
         <p>We don't collect your library, your files or how you use the app. Vampire sends no usage analytics; its diagnostic log stays on your Mac.</p>
 
@@ -62,6 +63,7 @@
           <li>To deliver, check and revoke licenses, and to keep a license to 3 Macs.</li>
           <li>To manage accounts and protect sign-in.</li>
           <li>To handle refunds, support, abuse and legal obligations.</li>
+          <li>To send the product updates you requested and record mailing-list consent. Buying Vampire alone does not enroll you in a product mailing list.</li>
         </ul>
         <p>Never for advertising, never sold, never used to train models.</p>
 
@@ -70,6 +72,7 @@
           <li><strong>Polar</strong> (<a href="https://polar.sh">polar.sh</a>), the merchant of record: checkout, payment, tax, receipts, license-key delivery and the customer portal. Polar handles your payment details under its own privacy policy.</li>
           <li><strong>Cloudflare</strong>: hosts vamp.sh, the accounts and license service and its database, and routes email to <a href="mailto:support@vamp.sh">support@vamp.sh</a>. Like any host it sees request data such as IP addresses, which it uses to deliver and protect these services.</li>
           <li><strong>OpenPanel</strong>, only if website analytics are on, as described in section 3.</li>
+          <li><strong>Loops</strong> (<a href="https://loops.so">loops.so</a>): delivers waitlist and product-update emails. We share your address, signup source and product preferences; for buyers, a customer flag and purchased product. We do not send your optional waitlist note to Loops.</li>
         </ul>
         <p>These providers process data in the United States and other countries.</p>
 
@@ -78,10 +81,13 @@
           <li><strong>Orders, licenses and activated Macs:</strong> for as long as the license exists (it is perpetual, so you can reactivate at any time), or until you ask us to delete them. Records we must keep for tax or accounting stay for the period the law requires; Polar keeps its own records.</li>
           <li><strong>Sign-in IP addresses:</strong> 30 days.</li>
           <li><strong>Support email:</strong> as long as needed to resolve your request.</li>
+          <li><strong>Waitlist:</strong> until you remove your signup. The removal link deletes your waitlist address and notes without affecting your license. If Loops is temporarily unavailable, we retain only your address and removal time to finish its deletion when delivery service resumes. A one-way email suppression hash prevents an old purchase notification from recreating the marketing contact.</li>
+          <li><strong>Waitlist abuse protection:</strong> challenges expire after one hour and IP-hash rate buckets after at most one hour; expired records are pruned on subsequent requests.</li>
         </ul>
 
         <h2>7. Your choices and rights</h2>
         <p>You can ask to see, correct, export or delete your data: email <a href="mailto:support@vamp.sh">support@vamp.sh</a> from the address you bought or signed in with. We reply within 30 days. Deleting your license data deactivates the license on every Mac. You can also complain to the data protection authority where you live.</p>
+        <p>Use the removal link shown after signup or in your welcome email to unsubscribe and delete all your VAMP waitlist data and Loops marketing contact in one action. Email us if you no longer have that link. Loops emails also include its unsubscribe/preferences controls.</p>
 
         <h2>8. Children</h2>
         <p>Vampire and the account service are not meant for children under 16, and we don't knowingly collect their data.</p>

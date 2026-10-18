@@ -28,6 +28,7 @@
 <meta name="twitter:description" content="Keep your media where it is. Deliver it between machines and agents. Transform it with your own tools. Share it with who you choose.">
 <meta name="twitter:image" content="https://vamp.sh/og.png">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="waitlist.css">
 </head>
 <body data-view="human">
 <a class="skip" href="#keep">Skip to content</a>
@@ -142,6 +143,26 @@
     </header>
   </section>
 
+  <section class="section hosted" id="hosted" aria-labelledby="hosted-title">
+    <header class="head">
+      <p class="label">06 / waitlist</p>
+      <h2 id="hosted-title">Hosted VAMP</h2>
+      <p class="line">Your library in ChatGPT and Claude.</p>
+    </header>
+    <p class="hosted-copy"><strong>Your files stay in your Drive.</strong> We're building the hosted connection, so you can bring your visual library to your agents without running a server. Coming soon — join the waitlist, not a subscription.</p>
+    <form class="waitlist" data-waitlist="vamp.sh/hero">
+      <label class="cap" for="hosted-email">Email address</label>
+      <div class="waitlist-row">
+        <input id="hosted-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@example.com" required aria-describedby="hosted-privacy hosted-status">
+        <button type="submit">Join the waitlist</button>
+      </div>
+      <div class="waitlist-trap" aria-hidden="true"><label for="hosted-website">Leave this blank</label><input id="hosted-website" name="website" tabindex="-1" autocomplete="off"></div>
+      <p class="waitlist-privacy" id="hosted-privacy">By joining, you agree to receive Hosted VAMP updates by email. No payment. Unsubscribe and delete your signup at any time. <a href="legal/privacy">Privacy</a>.</p>
+      <p class="waitlist-status" id="hosted-status" data-waitlist-status role="status" aria-live="polite" aria-atomic="true"></p>
+      <noscript><p>Email signup needs JavaScript. Please enable it and reload this page.</p></noscript>
+    </form>
+  </section>
+
   <footer class="foot">
     <div class="spec">
       <p class="cap">Spec</p>
@@ -170,5 +191,6 @@
 <script src="field.js"></script>
 <script src="content.js"></script>
 <script src="app.js"></script>
+<script src="waitlist.js"></script>
 </body>
 </html>

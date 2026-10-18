@@ -19,6 +19,7 @@
 <meta property="og:image" content="https://vamp.sh/og.png">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="pages.css">
+<link rel="stylesheet" href="waitlist.css">
 </head>
 <body>
 <a class="skip" href="#plans">Skip to content</a>
@@ -62,6 +63,22 @@
           <p class="cap" data-edgecity-discount hidden>Edge City: use <b>EDGECITY</b> for 20% off — $20 before tax.</p>
           <div data-mac-download><button type="button" class="buy" disabled>Download — coming soon</button></div>
         </div>
+      </article>
+      <article class="plan hosted-plan" id="hosted" aria-labelledby="hosted-title">
+        <div class="plan-head"><h2 class="cap" id="hosted-title"><span>02</span>Hosted (coming soon)</h2></div>
+        <p class="per">Waitlist open</p>
+        <p class="hosted-copy"><strong>Hosted VAMP: your library in ChatGPT and Claude.</strong> Your files stay in your Drive. A hosted connection, without running your own server.</p>
+        <form class="waitlist" data-waitlist="vamp.sh/pricing">
+          <label class="cap" for="hosted-email">Email address</label>
+          <div class="waitlist-row">
+            <input id="hosted-email" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="you@example.com" required aria-describedby="hosted-privacy hosted-status">
+            <button type="submit">Join the waitlist</button>
+          </div>
+          <div class="waitlist-trap" aria-hidden="true"><label for="hosted-website">Leave this blank</label><input id="hosted-website" name="website" tabindex="-1" autocomplete="off"></div>
+          <p class="waitlist-privacy" id="hosted-privacy">By joining, you agree to receive Hosted VAMP updates by email. No payment. Unsubscribe and delete your signup at any time. <a href="legal/privacy">Privacy</a>.</p>
+          <p class="waitlist-status" id="hosted-status" data-waitlist-status role="status" aria-live="polite" aria-atomic="true"></p>
+          <noscript><p>Email signup needs JavaScript. Please enable it and reload this page.</p></noscript>
+        </form>
       </article>
     </div>
 
@@ -132,5 +149,6 @@
 <script src="checkout.js"></script>
 <script src="pricing.js"></script>
 <script src="download.js"></script>
+<script src="waitlist.js"></script>
 </body>
 </html>

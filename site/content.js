@@ -9,7 +9,7 @@
 (function (root) {
   'use strict';
 
-  var TAGLINE = 'visual media for humans and agents';
+  var TAGLINE = 'Visual media for humans and agents.';
   /* The hero's one-liner (index.html#install-cmd must match: build.mjs --check). */
   var INSTALL = 'curl -fsSL https://vamp.sh/install | sh';
   var ID_M = '7c36410c-bdcb-425f-958b-de92e9e29d66';
@@ -100,7 +100,7 @@
 
     p('## About', '', fence('text', [
       leader('NAME', 'VAMP'),
-      leader('WHAT', 'visual media for humans and agents'),
+      leader('WHAT', 'Visual media for humans and agents.'),
       leader('WIRE_VERSION', D.protocol_version),
       leader('STATUS', D.status),
       leader('LICENSE', 'MIT: the protocol (operation contract, Rust types, JSON Schemas), the engine, the vamp CLI, vamp-server and vamp-store'),

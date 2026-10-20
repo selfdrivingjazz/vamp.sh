@@ -1,6 +1,6 @@
 # VAMP
 
-> Visual media libraries for humans and agents
+> visual media for humans and agents
 
 ```text
                               :-:-:-:-:-:-:-::
@@ -36,7 +36,7 @@
 
 ```text
 NAME ............... VAMP
-WHAT ............... Visual media libraries for humans and agents
+WHAT ............... visual media for humans and agents
 WIRE_VERSION ....... 0.1
 STATUS ............. experimental
 LICENSE ............ MIT: the protocol (operation contract, Rust types, JSON Schemas), the engine, the vamp CLI, vamp-server and vamp-store

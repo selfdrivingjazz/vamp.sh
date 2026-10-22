@@ -34,8 +34,6 @@
     }
     el.className = 'buy';
     slot.replaceChildren(el);
-    var note = slot.parentNode.querySelector('.buy-note');
-    if (note) note.hidden = !!url;
   }
 
   Array.prototype.forEach.call(document.querySelectorAll('[data-checkout]'), function (slot) {

@@ -5,6 +5,8 @@
   var urls = window.VAMP_CHECKOUT || {};
   var LABELS = {
     mac: 'Buy Vampire \u2014 $25',
+    supporter: 'Buy Supporter \u2014 $50',
+    patron: 'Buy Patron \u2014 $100',
   };
 
   // Only LIVE Polar checkout links become hrefs. Sandbox, malformed and unrelated URLs fail closed.
@@ -36,8 +38,9 @@
     if (note) note.hidden = !!url;
   }
 
-  var mac = document.querySelector('[data-checkout="mac"]');
-  if (mac) renderBuy(mac, 'mac');
+  Array.prototype.forEach.call(document.querySelectorAll('[data-checkout]'), function (slot) {
+    renderBuy(slot, slot.getAttribute('data-checkout'));
+  });
   var discount = document.querySelector('[data-edgecity-discount]');
   if (discount) discount.hidden = urls.showEdgeCityDiscount !== true || !checkoutURL('mac');
 })();

@@ -3,3 +3,6 @@
 
 /install.sh
   Content-Type: text/plain; charset=utf-8
+
+/fonts/*
+  Access-Control-Allow-Origin: https://app.vamp.sh

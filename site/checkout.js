@@ -2,6 +2,8 @@
    null renders "Available soon"; only a LIVE Polar checkout URL enables Buy. Never put a sandbox URL here. */
 window.VAMP_CHECKOUT = {
   mac: null,          // Vampire for Mac, $25 one-time
+  supporter: null,    // Supporter: the same license, $50 one-time
+  patron: null,       // Patron: the same license, $100 one-time
   showEdgeCityDiscount: false, // Show the demo code on /pricing only when the owner opts in.
   macDownloadEnabled: false, // Enabled after the signed public download is published.
 };

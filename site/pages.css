@@ -33,6 +33,22 @@ a.buy:hover { background: var(--paper); border-color: var(--paper); color: var(-
 .buy[disabled] { cursor: not-allowed; background: transparent; color: var(--muted); border: 1px dashed var(--aub-3); }
 .buy[disabled]::before { content: ""; width: 7px; height: 7px; border: 1px solid var(--muted); }
 
+/* Pay more, if you like: Supporter and Patron are the same license at a higher price, so they sit under the
+   Mac plan in the "Free, always" strip's grid, quieter than it (outline, smaller figure). */
+.support { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 20px; margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--aub-2); }
+.support > .cap { grid-column: 1 / span 2; color: var(--coral); }
+.support-copy { grid-column: 3 / span 6; color: var(--paper); max-width: 60ch; }
+.tier { grid-column: 3 / span 5; display: flex; flex-direction: column; gap: 16px; min-width: 0; border: 1px solid var(--aub-2); padding: clamp(18px, 2vw, 28px); }
+.tier + .tier { grid-column: 8 / span 5; }
+.tier-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.tier-head .cap { color: var(--paper); }
+.tier-head .cap span { color: var(--coral); margin-right: 0.8em; }
+.tier-price { display: flex; align-items: baseline; gap: 10px; }
+.tier-amt { font: 800 clamp(36px, 3.6vw, 56px)/0.9 var(--display); font-stretch: 125%; letter-spacing: -0.03em; color: var(--paper); }
+.tier .per { font-size: var(--px-s); }
+.tier .facts { margin-top: 0; }
+.tier .buy-row { padding-top: 4px; }
+
 /* Free, always: the MIT side, under the plans. */
 .free { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--aub-2); }
 .free > .cap { grid-column: 1 / span 2; color: var(--coral); }
@@ -72,6 +88,10 @@ a.buy:hover { background: var(--paper); border-color: var(--paper); color: var(-
 
 @media (max-width: 1100px) {
   .plan { grid-column: 1 / -1; }
+  .support > .cap { grid-column: 1 / -1; }
+  .support-copy { grid-column: 1 / span 8; }
+  .tier { grid-column: 1 / span 6; }
+  .tier + .tier { grid-column: 7 / span 6; }
   .free > .cap { grid-column: 1 / -1; margin-bottom: 12px; }
   .free > p:not(.cap) { grid-column: 1 / span 8; }
   .free .install-cmd { grid-column: 1 / -1; margin-top: 20px; }
@@ -81,6 +101,7 @@ a.buy:hover { background: var(--paper); border-color: var(--paper); color: var(-
 @media (max-width: 860px) {
   .faq dt, .faq dd { grid-column: 1 / -1; }
   .faq dt { margin-bottom: 8px; }
+  .support-copy, .tier, .tier + .tier { grid-column: 1 / -1; }
   .free > p:not(.cap), .prose { grid-column: 1 / -1; }
 }
 @media (max-width: 600px) {

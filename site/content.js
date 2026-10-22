@@ -18,7 +18,7 @@
 
   /* Utility sections, in page order. `line` is the one line shown on the Human page. */
   var SECTIONS = [
-    { id: 'keep', label: 'Keep', line: 'Originals stay where they are, identified by their exact bytes. Never duplicated, never locked in.' },
+    { id: 'keep', label: 'Keep', line: 'Originals stay where they are, identified by their exact bytes.' },
     { id: 'deliver', label: 'Deliver', line: 'One authority, replicas on your other machines, agents on all of them, following one event stream.' },
     { id: 'transform', label: 'Transform', line: 'Previews, tags and embeddings from the tools you choose. Originals are never touched.' },
     { id: 'share', label: 'Share', line: 'Let in the people, machines and agents you choose. Every change records who made it.' },
@@ -157,7 +157,7 @@
     return L.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
   }
 
-  var SUMMARY = 'VAMP is an experimental, MIT-licensed visual media protocol for humans and agents (wire 0.1): keep media where it is (identified by BLAKE3), deliver it between an authority, its replicas and the agents on them over one ordered event stream, transform it with tools you register, and share it with the people and machines you admit. Vampire is the Mac/iOS viewer built on it.';
+  var SUMMARY = 'VAMP is an experimental, MIT-licensed visual media protocol for humans and agents: keep media where it is (identified by BLAKE3), deliver it between an authority, its replicas and the agents on them over one ordered event stream, transform it with tools you register, and share it with the people and machines you admit. Vampire is the Mac/iOS viewer built on it.';
 
   function banner() { return root.VampField.ascii(76, 27, { aspect: 0.5, radius: 10.5 }); }
 

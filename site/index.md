@@ -58,7 +58,7 @@ Installs the `vamp` CLI, its `vamp-media` helper, the `vamp-server` library serv
 
 ## Keep
 
-Originals stay where they are, identified by their exact bytes. Never duplicated, never locked in.
+Originals stay where they are, identified by their exact bytes.
 
 The catalog is reference-only. An asset has a stable UUID independent of its path; its original is the file in place, identified by the BLAKE3 digest of its exact bytes. Adding the same file at the same path again returns the same asset. Changed bytes need an explicit `vamp media refresh`, which keeps the asset id and advances its revision. Removing moves an asset to the trash; VAMP never modifies or deletes an original, with one opt-in exception: evicting the local copy after a verified cloud upload (`--delete-local-after-upload`). Bytes that arrive without a file (browser clips, uploads, exploration findings) are stored in the library inbox. Optional cloud storage (S3 or a folder) holds a copy of originals only when you configure it. `vamp export` writes metadata and locators.
 
